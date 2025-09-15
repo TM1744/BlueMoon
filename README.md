@@ -1,9 +1,11 @@
-# 🚀 Nexora
+# Nexora
 
 ## 📌 Descrição  
 **Nexora** é um software web desenvolvido em **C#/.NET**, que oferece um gerenciamento completo e eficiente de:
 
-- Vendas  
+- Vendas
+- Produtos
+- Cupons  
 - Funcionários  
 - Estoque  
 - *(Futuramente)* Fornecedores  
