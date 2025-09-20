@@ -1,0 +1,65 @@
+DIAGRAMA DE CLASSE:
+
+PESSOA: 
+
+CORRIGIDO: 
+- Método Cadastrar Cliente agora está escrito de forma correta. Antes: "cadastrarCliene"
+- Tamanho da tabela para que todos os métodos ficassem dentro dela. Antes o tamanho não era suficiente e os métodos passavam dos limites da tabela.
+
+Mudanças:
+- Criação do método atualizarDadosCliente
+
+USUÁRIO:
+
+Admissão com tipo DATE
+
+Mudança: 
+- Alterado para dateTime, conforme o DER.
+- horário início/fim carga horária, tipo mudado para Time. Conforme o DER
+
+
+CUPOM
+
+Mudança: tipo do prazoValidade mudado para dateTime, conforme o DER
+
+
+DIAGRAMA DE ESTADO:
+
+CORREÇÃO:
+
+- Nome do estado e transição com escrita errada. Anteriormente: "Extornada", Agora: "Estornada".
+
+Mudanças:
+- Adicionado Transições: "Tentar Novamente" e mais uma transição de "Venda Cancelada"
+- Adicionado 2 Pontos de Decisões
+- Reorganização do Diagrama
+
+
+DIAGRAMA DE ATIVIDADE:
+
+Mudanças:
+- Adicionado Novas Guardas nas transições:
+- Enquanto Cliente inválido
+- Enquanto Vendedor/Funcionário Inválido
+- Criação das Ações: Adicionar Cliente, Verificar Cadastro Vendedor/Funcionário
+- Reorganização do Diagrama
+
+
+
+
+DIAGRAMA DE Sequência:
+- DELETADO Diagrama "Realizar Venda"
+
+Mudanças: 
+
+- Mudança no fluxo, deixando de acordo com o diagrama de atividade
+
+Interface:
+- Adicionado método inserirVendedorFuncionário
+
+
+GERAL:
+
+- Mudanças no nome dos diagramas, agora padronizados com: nexora_venda_diagrama_"Nome do Diagrama", para o diagrama de classe: nexora_diagrama_classe
+- Mudança nos nomes das transições dos pontos de decisão, agora padronizados como Guardas
+
