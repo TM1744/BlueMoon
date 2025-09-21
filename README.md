@@ -1,7 +1,7 @@
-# Nexora
+# BlueMoon
 
 ## 📌 Descrição  
-**Nexora** é um software web desenvolvido em **C#/.NET**, que oferece um gerenciamento completo e eficiente de:
+**BlueMoon** é um software web desenvolvido em **C#/.NET**, que oferece um gerenciamento completo e eficiente de:
 
 - Vendas
 - Produtos
@@ -14,7 +14,7 @@
 ---
 
 ## 🎯 Objetivo  
-O principal objetivo do **Nexora** é suprir as necessidades de gerenciamento da loja **Atuall Informática**, com a intenção de escalá-lo para outras empresas no futuro.
+O principal objetivo do **BlueMoon** é suprir as necessidades de gerenciamento da loja **Atuall Informática**, com a intenção de escalá-lo para outras empresas no futuro.
 
 Além disso, o projeto serve como **projeto avaliativo para a conclusão de curso** para a graduação em **Análise e Desenvolvimento de Sistemas (A.D.S)** da **Faculdade UMFG**, com previsão de finalização em **2026**.
 
@@ -37,7 +37,7 @@ Além disso, o projeto serve como **projeto avaliativo para a conclusão de curs
 
 ## 🧰 Tecnologias  
 
-O **Nexora** foi desenvolvido com as seguintes tecnologias:
+O **BlueMoon** foi desenvolvido com as seguintes tecnologias:
 
 ### 👨‍💻 Linguagens de Programação  
 - `C#`  
