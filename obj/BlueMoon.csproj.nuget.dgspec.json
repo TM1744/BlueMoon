@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/thiago/Documentos/BlueMoon/BlueMoon/BlueMoon.csproj": {}
+    "/home/thiago/Documentos/Projetos/Programação/BlueMoon/BlueMoon.csproj": {}
   },
   "projects": {
-    "/home/thiago/Documentos/BlueMoon/BlueMoon/BlueMoon.csproj": {
+    "/home/thiago/Documentos/Projetos/Programação/BlueMoon/BlueMoon.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/thiago/Documentos/BlueMoon/BlueMoon/BlueMoon.csproj",
+        "projectUniqueName": "/home/thiago/Documentos/Projetos/Programação/BlueMoon/BlueMoon.csproj",
         "projectName": "BlueMoon",
-        "projectPath": "/home/thiago/Documentos/BlueMoon/BlueMoon/BlueMoon.csproj",
+        "projectPath": "/home/thiago/Documentos/Projetos/Programação/BlueMoon/BlueMoon.csproj",
         "packagesPath": "/home/thiago/.nuget/packages/",
-        "outputPath": "/home/thiago/Documentos/BlueMoon/BlueMoon/obj/",
+        "outputPath": "/home/thiago/Documentos/Projetos/Programação/BlueMoon/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/thiago/.nuget/NuGet/NuGet.Config"
