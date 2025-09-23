@@ -1,4 +1,4 @@
-namespace Nexora.Models;
+namespace BlueMoon.Models;
 
 public class ErrorViewModel
 {

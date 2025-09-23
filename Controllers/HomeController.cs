@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Nexora.Models;
+using BlueMoon.Models;
 
-namespace Nexora.Controllers;
+namespace BlueMoon.Controllers;
 
 public class HomeController : Controller
 {
