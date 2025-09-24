@@ -58,7 +58,7 @@ O **BlueMoon** foi desenvolvido com as seguintes tecnologias:
 ## 👥 Autores  
 
 - **Thiago Marques Paixão** – [`TM1744`](https://github.com/TM1744)  
-- **Leonardo Pereira Comitre Trindade** – [`LeonardoPTC`](https://github.com/LeonardoPTC)
+- **Leonardo Pereira Trindade Comitre** – [`LeonardoPTC`](https://github.com/LeonardoPTC)
 
 ---
 
@@ -66,7 +66,7 @@ O **BlueMoon** foi desenvolvido com as seguintes tecnologias:
 
 > Por se tratar de um **projeto avaliativo**, os únicos contribuintes no desenvolvimento são:  
 > - **Thiago Marques Paixão**  
-> - **Leonardo Pereira Comitre Trindade**  
+> - **Leonardo Pereira Trindade Comitre**  
 >  
 > Ambos estudantes de A.D.S na **Faculdade UMFG**.
 
