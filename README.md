@@ -66,7 +66,8 @@ O **BlueMoon** foi desenvolvido com as seguintes tecnologias:
 
 > Por se tratar de um **projeto avaliativo**, os únicos contribuintes no desenvolvimento são:  
 > - **Thiago Marques Paixão**  
-> - **Leonardo Pereira Trindade Comitre**  
+> - **Leonardo Pereira Trindade Comitre**
+> - **Vitor Hugo Calsavara Pita**
 >  
 > Ambos estudantes de A.D.S na **Faculdade UMFG**.
 
