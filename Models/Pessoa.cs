@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
+using BlueMoon.Models.Enuns;
 using Microsoft.Net.Http.Headers;
 
 namespace BlueMoon.Models;
@@ -9,8 +10,7 @@ public class Pessoa
     public Guid Id { get; private set; } = Guid.NewGuid();
 
     [Required(ErrorMessage = "Tipo é obrigatório")]
-    [MaxLength(20, ErrorMessage = "Tipo ultrapassa o tamanho definido")]
-    public string Tipo { get; private set; } = string.Empty;
+    public TipoPessoa tipo { get; private set; }
 
     [Required(ErrorMessage = "Situacao é obrigatória")]
     [MaxLength(7, ErrorMessage = "Situação ultrapassa o tamanho definido")]
