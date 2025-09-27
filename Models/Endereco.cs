@@ -21,25 +21,38 @@ namespace BlueMoon.Models
         public Guid Id { get; private set; } = Guid.NewGuid();
         public string CEP
         {
-            get {return _cep;}
+            get { return _cep; }
 
             set
             {
-                if (value == null || value.Length > 8)
+                if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentException("CEP inválido ou ultrapassa o tamanho definido");
+                    throw new ArgumentException("CEP não pode ser nulo ou vazio");
                 }
-                _cep = new string(value.Where(char.IsDigit).ToArray());
+
+                value = new string(value.Where(char.IsDigit).ToArray());
+
+                if (value.Length != 8)
+                {
+                    throw new ArgumentException("CEP não corresponde ao tamanho máximo");
+                }
+
+                _cep = value;
             }
         }
         public string Logradouro
         {
-            get {return _logradouro;}
+            get { return _logradouro; }
             set
             {
-                if (value == null || value.Length > 100)
+                if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentException("Logradouro inválido ou ultrapassa o tamanho definido");
+                    throw new ArgumentException("Logradouro não pode ser nulo ou vazio");
+                }
+
+                if (value.Length > 100)
+                {
+                    throw new ArgumentException("Logradouro ultrapassa o tamanho máximo");
                 }
                 _logradouro = value;
             }
@@ -49,11 +62,15 @@ namespace BlueMoon.Models
             get { return _numero; }
             set
             {
-                if (value == null || value.Length > 5)
+                if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentException("Numero de logradouro inválido ou ultrapassa o tamanho definido");
-                }              
-                _numero = new string(value.Where(char.IsDigit).ToArray());
+                    throw new ArgumentException("Número não pode ser nulo ou vazio");
+                }
+                if (value.Length > 10)
+                {
+                    throw new ArgumentException("Numero de logradouro ultrapassa o tamanho máximo");
+                }
+                _numero = value;
             }
         }
         public string Complemento
@@ -61,11 +78,18 @@ namespace BlueMoon.Models
             get { return _complemento; }
             set
             {
-                if (value == null || value.Length > 20)
+                if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentException("Complemento inválido ou ultrapassa o tamanho definido");
+                    _complemento = "NÃO DEFINIDO";
+                    return;
                 }
-                _complemento = value;     
+
+                if (value.Length > 20)
+                {
+                    throw new ArgumentException("Complemento ultrapassa o tamanho máximo");
+                }
+
+                _complemento = value.ToUpper();
             }
         }
         public string Bairro
@@ -73,11 +97,15 @@ namespace BlueMoon.Models
             get { return _bairro; }
             set
             {
-                if (value == null || value.Length > 20)
+                if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentException("Bairro inválido ou ultrapassa o tamanho definido");
+                    throw new ArgumentException("Bairro não pode ser nulo ou vazio");
                 }
-                _bairro = value;
+                if (value.Length > 20)
+                {
+                    throw new ArgumentException("Bairro ultrapassa o tamanho máximo");
+                }
+                _bairro = value.ToUpper();
             }
         }
         public string Cidade
@@ -85,12 +113,17 @@ namespace BlueMoon.Models
             get { return _cidade; }
             set
             {
-                if (value == null || value.Length > 20)
+                if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentException("Cidade inválida ou ultrapassa o tamanho definido");
+                    throw new ArgumentException("Cidade não pode ser nula ou vazia");
                 }
 
-                _cidade = value;
+                if (value.Length > 30)
+                {
+                    throw new ArgumentException("Cidade ultrapassa o tamanho máximo");
+                }
+
+                _cidade = value.ToUpper();
             }
         }
         public string Estado
@@ -98,7 +131,11 @@ namespace BlueMoon.Models
             get { return _estado; }
             set
             {
-                if (value == null || value.Length != 2)
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException("Estado não pode ser nulo ou vazio");
+                }
+                if (value.Length != 2)
                 {
                     throw new ArgumentException("Quantidade de caracteres do Estado é inválida");
                 }
@@ -114,8 +151,9 @@ namespace BlueMoon.Models
 
         private Endereco() { }
 
-        public Endereco(string logradouro, string numero, string complemento, string bairro, string cidade, string estado)
+        public Endereco(string cep, string logradouro, string numero, string complemento, string bairro, string cidade, string estado)
         {
+            CEP = cep;
             Logradouro = logradouro;
             Numero = numero;
             Complemento = complemento;
