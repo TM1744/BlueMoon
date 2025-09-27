@@ -8,17 +8,16 @@ namespace BlueMoon.Models;
 
 public class Pessoa
 {
-    public Guid Id { get; private set; } = Guid.NewGuid();
-
     private string _tipo = string.Empty;
     private string _situacao = string.Empty;
-    private int _codigo;
     private string _email = string.Empty;
     private string _nome = string.Empty;
     private string _cpfCnpj = string.Empty;
     private string _razaoSocial = string.Empty;
     private string _nomeFantasia = string.Empty;
     private string _inscricaoMunicipal = string.Empty;
+
+    public Guid Id { get; private set; } = Guid.NewGuid();
 
     public string Tipo
     {
@@ -27,7 +26,7 @@ public class Pessoa
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new ArgumentNullException("Tipo não pode ser nulo ou vazio");
+                throw new ArgumentException("Tipo não pode ser nulo ou vazio");
             }
             value = value.ToUpper();
             if (!Enum.TryParse<TipoPessoaEnum>(value, true, out _))
@@ -46,7 +45,7 @@ public class Pessoa
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new ArgumentNullException("Situação não pode ser nula ou vazia");
+                throw new ArgumentException("Situação não pode ser nula ou vazia");
             }
             value = value.ToUpper();
             if (!Enum.TryParse<SituacaoPessoaEnum>(value, true, out _))
@@ -98,7 +97,7 @@ public class Pessoa
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new ArgumentNullException("Nome não pode ser nulo ou vazio");
+                throw new ArgumentException("Nome não pode ser nulo ou vazio");
             }
             if (value.Length > 100)
             {
@@ -116,7 +115,7 @@ public class Pessoa
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new ArgumentNullException("CPF/CNPJ não pode ser nulo ou vazio");
+                throw new ArgumentException("CPF/CNPJ não pode ser nulo ou vazio");
             }
 
             value = new string(value.Where(char.IsDigit).ToArray());
@@ -155,7 +154,7 @@ public class Pessoa
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new ArgumentNullException("Razão social não pode ser nula ou vazia");
+                throw new ArgumentException("Razão social não pode ser nula ou vazia");
             }
             if (value.Length > 100)
             {
@@ -173,7 +172,7 @@ public class Pessoa
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new ArgumentNullException("Nome fantasia não pode ser nula ou vazia");
+                throw new ArgumentException("Nome fantasia não pode ser nula ou vazia");
             }
             if (value.Length > 100)
             {
@@ -191,7 +190,7 @@ public class Pessoa
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new ArgumentNullException("Inscrição municipal não pode ser nula ou vazia");
+                throw new ArgumentException("Inscrição municipal não pode ser nula ou vazia");
             }
 
             value = value.Trim();
