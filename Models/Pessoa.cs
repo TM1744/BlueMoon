@@ -19,7 +19,6 @@ public class Pessoa
     private string _razaoSocial = string.Empty;
     private string _nomeFantasia = string.Empty;
     private string _inscricaoMunicipal = string.Empty;
-    private Endereco _endereco;
 
     public string Tipo
     {
@@ -28,7 +27,7 @@ public class Pessoa
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new ArgumentNullException("Situação não pode ser nula ou vazia");
+                throw new ArgumentNullException("Tipo não pode ser nulo ou vazio");
             }
             value = value.ToUpper();
             if (!Enum.TryParse<TipoPessoaEnum>(value, true, out _))
@@ -36,7 +35,7 @@ public class Pessoa
                 throw new ArgumentException("Tipo inválido");
             }
 
-            _situacao = value;
+            _tipo = value;
         }
     }
 
@@ -61,28 +60,34 @@ public class Pessoa
 
     public int Codigo { get; set; }
 
-    public ICollection<Telefone> Telefones { get; private set; } = []; 
+    public ICollection<Telefone> Telefones { get; private set; } = [];
 
     public string Email
     {
         get { return _email; }
         set
         {
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentNullException("Email não pode ser nulo ou vazio");
+                _email = "NÃO INFORMADO";
+                return;
             }
             if (value.Length > 100)
             {
                 throw new ArgumentException("E-mail ultrapassa o tamanho definido");
             }
-            var email = new MailAddress(value);
-            if (!email.Address.Equals(value))
+            try
+            {
+                var email = new MailAddress(value);
+                if (!email.Address.Equals(value, StringComparison.OrdinalIgnoreCase))
+                    throw new ArgumentException("Email inválido");
+
+                _email = email.Address;
+            }
+            catch
             {
                 throw new ArgumentException("Email inválido");
             }
-
-            _email = email.Address;
         }
     }
 
@@ -114,74 +119,27 @@ public class Pessoa
                 throw new ArgumentNullException("CPF/CNPJ não pode ser nulo ou vazio");
             }
 
-            value = Regex.Replace(value, "[^0-9]", "");
+            value = new string(value.Where(char.IsDigit).ToArray());
 
             if (value.Length == 11)
             {
-                if (new string(value[0], value.Length) == value)
-                {
-                    throw new ArgumentException("CPF é inválido");
-                }
-
-                int soma = 0;
-                for (int i = 0; i < 9; i++)
-                    soma += (value[i] - '0') * (10 - i);
-
-                int primeiroDigito = soma % 11;
-                primeiroDigito = (primeiroDigito < 2) ? 0 : 11 - primeiroDigito;
-
-                soma = 0;
-                for (int i = 0; i < 10; i++)
-                    soma += (value[i] - '0') * (11 - i);
-
-                int segundoDigito = soma % 11;
-                segundoDigito = (segundoDigito < 2) ? 0 : 11 - segundoDigito;
-
-                if (value[9] - '0' == primeiroDigito && value[10] - '0' == segundoDigito)
+                if (ValidarCpf(value))
                 {
                     _cpfCnpj = value;
+                    return;
                 }
-                else
-                {
-                    throw new ArgumentException("CPF é inválido");
-                }
+
+                throw new ArgumentException("CPF é inválido");
             }
             else if (value.Length == 14)
             {
-                if (new string(value[0], value.Length) == value)
+                if (ValidarCnpj(value))
                 {
-                    throw new ArgumentException("CNPJ é inválido");
+                    _cpfCnpj = value;
+                    return;
                 }
 
-                int[] multiplicador1 = new int[12] { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
-                int[] multiplicador2 = new int[13] { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
-
-                string tempCnpj = value.Substring(0, 12);
-                int soma = 0;
-
-                for (int i = 0; i < 12; i++)
-                    soma += (tempCnpj[i] - '0') * multiplicador1[i];
-
-                int resto = soma % 11;
-                int digito1 = resto < 2 ? 0 : 11 - resto;
-
-                tempCnpj += digito1;
-                soma = 0;
-
-                for (int i = 0; i < 13; i++)
-                    soma += (tempCnpj[i] - '0') * multiplicador2[i];
-
-                resto = soma % 11;
-                int digito2 = resto < 2 ? 0 : 11 - resto;
-
-                string cnpjCalculado = tempCnpj + digito2;
-
-                if (!value.Equals(cnpjCalculado))
-                {
-                    throw new ArgumentException("CNPJ é inválido");
-                }
-
-                _cpfCnpj = value;
+                throw new ArgumentException("CPF é inválido");
             }
             else
             {
@@ -204,16 +162,160 @@ public class Pessoa
                 throw new ArgumentException("Razão social ultrapassa o tamanho definido");
             }
 
-            _razaoSocial = value;
+            _razaoSocial = value.ToUpper();
         }
     }
 
-    [MaxLength(100, ErrorMessage = "Nome fantasia ultrapassa o tamanho definido")]
-    public string NomeFantasia { get; private set; } = string.Empty;
+    public string NomeFantasia
+    {
+        get { return _nomeFantasia; }
+        set
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException("Nome fantasia não pode ser nula ou vazia");
+            }
+            if (value.Length > 100)
+            {
+                throw new ArgumentException("Nome fantasia ultrapassa o tamanho definido");
+            }
 
-    [MaxLength(20, ErrorMessage = "Inscrição muncipal ultrapassa o tamanho definido")]
-    public string InscricaoMunicipal { get; private set; } = string.Empty;
+            _nomeFantasia = value.ToUpper();
+        }
+    }
 
-    [Required(ErrorMessage = "Endereço é obrigatório")]
+    public string InscricaoMunicipal
+    {
+        get { return _inscricaoMunicipal; }
+        set
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException("Inscrição municipal não pode ser nula ou vazia");
+            }
+
+            value = value.Trim();
+
+            if (value.Length > 20)
+            {
+                throw new ArgumentException("Inscrição municipal ultrapassa o tamanho definido");
+            }
+
+            _inscricaoMunicipal = value;
+        }
+    }
+
     public Endereco Endereco { get; private set; }
+
+    private Pessoa() { }
+
+    public Pessoa(string situacao, string email, string cpfCnpj, string razaoSocial, string nomeFantasia, string inscricaoMunicipal, Endereco endereco, ICollection<Telefone> telefones)
+    {
+        ArgumentNullException.ThrowIfNullOrEmpty(email);
+        ArgumentNullException.ThrowIfNull(endereco);
+        ArgumentNullException.ThrowIfNull(telefones);
+
+        Tipo = "CLIENTE_PJ";
+        Situacao = situacao ?? "ATIVO";
+        Email = email;
+        CPF_CNPJ = cpfCnpj;
+        RazaoSocial = razaoSocial;
+        NomeFantasia = nomeFantasia;
+        InscricaoMunicipal = inscricaoMunicipal;
+        Endereco = endereco;
+        Telefones = telefones;
+    }
+
+    public Pessoa(string situacao, string nome, string email, string cpfCnpj, Endereco endereco, ICollection<Telefone> telefones)
+    {
+        ArgumentNullException.ThrowIfNull(endereco);
+        ArgumentNullException.ThrowIfNull(telefones);
+
+        Tipo = "CLIENTE_PF";
+        Situacao = situacao ?? "ATIVO";
+        Nome = nome;
+        Email = email;
+        CPF_CNPJ = cpfCnpj;
+        Endereco = endereco;
+        Telefones = telefones;
+    }
+
+    public void AdicionarTelefone(Telefone telefone)
+    {
+        if (Telefones.Any(t => t.Numero == telefone.Numero))
+            throw new InvalidOperationException("Telefone já existe.");
+        Telefones.Add(telefone);
+    }
+
+    public void RemoverTelefone(Telefone telefone)
+    {
+        Telefones.Remove(telefone);
+    }
+
+    private bool ValidarCpf(string cpf)
+    {
+        if (new string(cpf[0], cpf.Length) == cpf)
+        {
+            return false;
+        }
+
+        int soma = 0;
+        for (int i = 0; i < 9; i++)
+            soma += (cpf[i] - '0') * (10 - i);
+
+        int primeiroDigito = soma % 11;
+        primeiroDigito = (primeiroDigito < 2) ? 0 : 11 - primeiroDigito;
+
+        soma = 0;
+        for (int i = 0; i < 10; i++)
+            soma += (cpf[i] - '0') * (11 - i);
+
+        int segundoDigito = soma % 11;
+        segundoDigito = (segundoDigito < 2) ? 0 : 11 - segundoDigito;
+
+        if (cpf[9] - '0' == primeiroDigito && cpf[10] - '0' == segundoDigito)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool ValidarCnpj(string cnpj)
+    {
+        if (new string(cnpj[0], cnpj.Length) == cnpj)
+        {
+            return false;
+        }
+
+        int[] multiplicador1 = new int[12] { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+        int[] multiplicador2 = new int[13] { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+
+        string tempCnpj = cnpj.Substring(0, 12);
+        int soma = 0;
+
+        for (int i = 0; i < 12; i++)
+            soma += (tempCnpj[i] - '0') * multiplicador1[i];
+
+        int resto = soma % 11;
+        int digito1 = resto < 2 ? 0 : 11 - resto;
+
+        tempCnpj += digito1;
+        soma = 0;
+
+        for (int i = 0; i < 13; i++)
+            soma += (tempCnpj[i] - '0') * multiplicador2[i];
+
+        resto = soma % 11;
+        int digito2 = resto < 2 ? 0 : 11 - resto;
+
+        string cnpjCalculado = tempCnpj + digito2;
+
+        if (!cnpj.Equals(cnpjCalculado))
+        {
+            return false;
+        }
+
+        return true;
+    }
 }
