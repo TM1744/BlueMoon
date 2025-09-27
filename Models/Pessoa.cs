@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using BlueMoon.Models.Enuns;
 using Microsoft.Net.Http.Headers;
-
 namespace BlueMoon.Models;
 
 public class Pessoa
@@ -10,7 +9,7 @@ public class Pessoa
     public Guid Id { get; private set; } = Guid.NewGuid();
 
     [Required(ErrorMessage = "Tipo é obrigatório")]
-    public TipoPessoa tipo { get; private set; }
+    public TipoPessoaEnum tipo { get; private set; }
 
     [Required(ErrorMessage = "Situacao é obrigatória")]
     [MaxLength(7, ErrorMessage = "Situação ultrapassa o tamanho definido")]
@@ -50,22 +49,5 @@ public class Pessoa
     public string CEP { get; private set; } = string.Empty;
 
     [Required(ErrorMessage = "Endereço é obrigatório")]
-    [MaxLength(100, ErrorMessage = "Endereço ultrapassa o tamanho definido")]
-    public string Endereco { get; private set; } = string.Empty;
-
-    [Required(ErrorMessage = "Numero de endereço é obrigatório")]
-    [MaxLength(5, ErrorMessage = "Número de endereço ultrapassa o tamanho definido")]
-    public string NumeroEndereco { get; private set; } = string.Empty;
-
-    [Required(ErrorMessage = "Bairro é obrigatório")]
-    [MaxLength(70, ErrorMessage = "Bairro ultrapassa o tamanho definido")]
-    public string Bairro { get; private set; } = string.Empty;
-
-    [Required(ErrorMessage = "Cidade é obrigatório")]
-    [MaxLength(50, ErrorMessage = "Cidade ultrapassa o tamanho definido")]
-    public string Cidade { get; private set; } = string.Empty;
-
-    [Required(ErrorMessage = "Estado é obrigatório")]
-    [StringLength(2, ErrorMessage = "Estado não corresponde ao padrão UF")]
-    public char Estado { get; private set; }
+    public Endereco Endereco { get; private set; }
 }

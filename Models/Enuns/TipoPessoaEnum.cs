@@ -1,6 +1,6 @@
 namespace BlueMoon.Models.Enuns
 {
-    public enum TipoPessoa
+    public enum TipoPessoaEnum
     {
         ClientePF,
         ClientePJ,
