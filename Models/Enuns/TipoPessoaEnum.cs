@@ -2,10 +2,10 @@ namespace BlueMoon.Models.Enuns
 {
     public enum TipoPessoaEnum
     {
-        ClientePF,
-        ClientePJ,
-        Funcionario,
-        Gerente,
-        Admin
+        CLIENTE_PF,
+        CLIENTE_PJ,
+        FUNCIONARIO,
+        GERENTE,
+        ADMIN
     }
 }
