@@ -34,9 +34,17 @@ namespace BlueMoon.Models
                     throw new ArgumentNullException("Número não pode ser nulo");
                 }
                 value = new string(value.Where(char.IsDigit).ToArray());
-                if (value.Length < 10 || value.Length > 11)
+                if (value.Length < 8 || value.Length > 9)
                 {
                     throw new ArgumentException("Tamanho de número é inválido");
+                }
+                if (value.Length == 8 && value[0] == 9)
+                {
+                    throw new ArgumentException("Primeiro dígito do número do telefone fixo contém 9");
+                }
+                if (value.Length == 9 && value[0] != 9)
+                {
+                    throw new ArgumentException("Número de telefone requer mais um 9");
                 }
 
                 _numero = value;
