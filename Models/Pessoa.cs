@@ -8,8 +8,6 @@ namespace BlueMoon.Models;
 
 public class Pessoa
 {
-    private string _tipo = string.Empty;
-    private string _situacao = string.Empty;
     private string _email = string.Empty;
     private string _nome = string.Empty;
     private string _cpfCnpj = string.Empty;
@@ -19,43 +17,9 @@ public class Pessoa
 
     public Guid Id { get; private set; } = Guid.NewGuid();
 
-    public string Tipo
-    {
-        get { return _tipo; }
-        set
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentException("Tipo não pode ser nulo ou vazio");
-            }
-            value = value.ToUpper();
-            if (!Enum.TryParse<TipoPessoaEnum>(value, true, out _))
-            {
-                throw new ArgumentException("Tipo inválido");
-            }
+    public TipoPessoaEnum Tipo{ get; private set; }
 
-            _tipo = value;
-        }
-    }
-
-    public string Situacao
-    {
-        get { return _situacao; }
-        set
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentException("Situação não pode ser nula ou vazia");
-            }
-            value = value.ToUpper();
-            if (!Enum.TryParse<SituacaoPessoaEnum>(value, true, out _))
-            {
-                throw new ArgumentException("Situação inválida");
-            }
-
-            _situacao = value;
-        }
-    }
+    public SituacaoPessoaEnum Situacao { get; private set; }
 
     public int Codigo { get; set; }
 
@@ -208,14 +172,15 @@ public class Pessoa
 
     private Pessoa() { }
 
-    public Pessoa(string situacao, string email, string cpfCnpj, string razaoSocial, string nomeFantasia, string inscricaoMunicipal, Endereco endereco, ICollection<Telefone> telefones)
+    public Pessoa(TipoPessoaEnum tipo, SituacaoPessoaEnum situacao, string email, string cpfCnpj,
+    string razaoSocial, string nomeFantasia, string inscricaoMunicipal, Endereco endereco,
+    ICollection<Telefone> telefones)
     {
-        ArgumentNullException.ThrowIfNullOrEmpty(email);
         ArgumentNullException.ThrowIfNull(endereco);
         ArgumentNullException.ThrowIfNull(telefones);
 
-        Tipo = "CLIENTE_PJ";
-        Situacao = situacao ?? "ATIVO";
+        Tipo = tipo;
+        Situacao = situacao;
         Email = email;
         CPF_CNPJ = cpfCnpj;
         RazaoSocial = razaoSocial;
@@ -225,18 +190,34 @@ public class Pessoa
         Telefones = telefones;
     }
 
-    public Pessoa(string situacao, string nome, string email, string cpfCnpj, Endereco endereco, ICollection<Telefone> telefones)
+    public Pessoa(TipoPessoaEnum tipo, SituacaoPessoaEnum situacao, string nome, string email,
+    string cpfCnpj, Endereco endereco, ICollection<Telefone> telefones)
     {
         ArgumentNullException.ThrowIfNull(endereco);
         ArgumentNullException.ThrowIfNull(telefones);
 
-        Tipo = "CLIENTE_PF";
-        Situacao = situacao ?? "ATIVO";
+        Tipo = tipo;
+        Situacao = situacao;
         Nome = nome;
         Email = email;
         CPF_CNPJ = cpfCnpj;
         Endereco = endereco;
         Telefones = telefones;
+    }
+
+    public void AtivarPessoa()
+    {
+        Situacao = SituacaoPessoaEnum.ATIVO;
+    }
+
+    public void InativarPessoa()
+    {
+        Situacao = SituacaoPessoaEnum.INATIVO;
+    }
+
+    public void AlterarTipo(TipoPessoaEnum tipo)
+    {
+        Tipo = tipo;
     }
 
     public void AdicionarTelefone(Telefone telefone)
