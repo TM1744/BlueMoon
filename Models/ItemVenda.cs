@@ -1,6 +1,6 @@
 namespace BlueMoon.Models;
 
-public sealed class ItemVenda 
+public sealed class ItemVenda
 {
 
 }
