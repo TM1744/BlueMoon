@@ -131,12 +131,20 @@ public sealed class Usuario : Pessoa
         return true;
     }
 
-    private Usuario() { }
-
-    public Usuario(string login, string senha, decimal salario, DateOnly admissao, TimeOnly horarioIncioCargaHoraria, TimeOnly horarioFimCargaHoraria)
-        : base ()
+    public Usuario(TipoPessoaEnum tipo, SituacaoPessoaEnum situacao, string nome,
+        string email, string cpfCnpj, Endereco endereco, List<Telefone> telefones,
+        string login, string senha, decimal salario, DateOnly admissao,
+        TimeOnly horarioInicioCargaHoraria, TimeOnly horarioFimCargaHoraria,
+        CargoUsuarioEnum cargo)
+        : base(tipo, situacao, nome, email, cpfCnpj, endereco, telefones)
     {
-        
+        Login = login;
+        Senha = senha;
+        Salario = salario;
+        Admissao = admissao;
+        HorarioInicioCargaHoraria = horarioInicioCargaHoraria;
+        HorarioFimCargaHoraria = horarioFimCargaHoraria;
+        Cargo = cargo;
     }
 
 }
