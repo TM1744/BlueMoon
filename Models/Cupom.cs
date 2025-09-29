@@ -53,13 +53,26 @@ namespace BlueMoon.Models
             decimal ? valorNumerico = null,
             decimal ? valorPorcentagem = null,
             SituacaoCupom situacao = SituacaoCupom.ATIVO)
+
         {
+            validador()
             Tipo = tipo;
             Codigo = codigo;
             PrazoValidade = prazoValidade;
             ValorMinimoUtilizacao = valorMinimoUtilizacao;
             Situacao = situacao;
+            ValorNumerico = valorNumerico;
+            ValorPorcentagem = valorPorcentagem;
+        }
 
+        public void Ativar() => Situacao = SituacaoCupom.ATIVO;
+        public void Inativar() => Situacao = SituacaoCupom.INATIVO;
+
+        public bool EstaValido() 
+            => Situacao == SituacaoCupom.ATIVO && PrazoValidade > DateTime.Now;
+
+        private void validador()
+        {
             if (tipo == TipoCupom.NUMERICO)
             {
                 if (valorNumerico == null || valorNumerico <= 0)
@@ -67,9 +80,6 @@ namespace BlueMoon.Models
                 
                 if (valorPorcentagem != null)
                     throw new ArgumentException("Cupom NUMERICO deve ter ValorPorcentagem nulo.");
-                
-                ValorNumerico = valorNumerico;
-                ValorPorcentagem = null;
             }
             else if (tipo == TipoCupom.PORCENTAGEM)
             {
@@ -78,16 +88,7 @@ namespace BlueMoon.Models
                 
                 if (valorNumerico != null)
                     throw new ArgumentException("Cupom PORCENTAGEM deve ter ValorNumerico nulo.");
-                
-                ValorPorcentagem = valorPorcentagem;
-                ValorNumerico = null;
-            }
         }
-
-        public void Ativar() => Situacao = SituacaoCupom.ATIVO;
-        public void Inativar() => Situacao = SituacaoCupom.INATIVO;
-
-        public bool EstaValido() 
-            => Situacao == SituacaoCupom.ATIVO && PrazoValidade > DateTime.Now;
     }
+        
 }
