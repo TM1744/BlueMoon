@@ -55,7 +55,7 @@ namespace BlueMoon.Models
             SituacaoCupom situacao = SituacaoCupom.ATIVO)
 
         {
-            validador()
+            validador(tipo, valorNumerico, valorPorcentagem)
             Tipo = tipo;
             Codigo = codigo;
             PrazoValidade = prazoValidade;
@@ -71,7 +71,7 @@ namespace BlueMoon.Models
         public bool EstaValido() 
             => Situacao == SituacaoCupom.ATIVO && PrazoValidade > DateTime.Now;
 
-        private void validador()
+        private void validador(TipoCupom tipo, decimal ? valorNumerico, decimal ? valorPorcentagem)
         {
             if (tipo == TipoCupom.NUMERICO)
             {
