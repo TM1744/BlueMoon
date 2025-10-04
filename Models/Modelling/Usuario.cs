@@ -5,7 +5,7 @@ namespace BlueMoon.Models;
 
 public sealed class Usuario : Pessoa
 {
-    public string Login { get; private set; } = string.Empty;
+    public string Login { get; set; } = string.Empty;
     public string Senha { get; set; } = string.Empty;
     public CargoUsuarioEnum Cargo { get; set; }
     public decimal Salario { get; set; } = decimal.Zero;

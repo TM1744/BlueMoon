@@ -1,11 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 using BlueMoon.Models.Enuns;
-using BlueMoon.Models.Validations;
-
 namespace BlueMoon.Models
 {
     public class Telefone

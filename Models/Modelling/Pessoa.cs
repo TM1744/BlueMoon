@@ -9,12 +9,12 @@ namespace BlueMoon.Models;
 public class Pessoa
 {
     public Guid Id { get; private set; } = Guid.NewGuid();
-    public TipoPessoaEnum Tipo { get; private set; }
+    public TipoPessoaEnum Tipo { get; set; }
     public SituacaoPessoaEnum Situacao { get; set; }
     public int Codigo { get; private set; }
     public ICollection<Telefone> Telefones { get; private set; } = [];
     public string Email { get; set; } = string.Empty;
-    public string Nome { get; private set; } = string.Empty;
+    public string Nome { get; set; } = string.Empty;
     public string CPF_CNPJ { get; private set; } = string.Empty;
     public string RazaoSocial { get; set; } = string.Empty;
     public string NomeFantasia { get; set; } = string.Empty;
@@ -77,5 +77,12 @@ public class Pessoa
         if (!Telefones.Any(t => t.Numero == telefone.Numero))
             throw new InvalidOperationException("Telefone não existe.");
         Telefones.Remove(telefone);
+    }
+
+    public void InativarPessoa()
+    {
+        if (Situacao == SituacaoPessoaEnum.INATIVO)
+            throw new InvalidOperationException("Pessoa já inativa.");
+        Situacao = SituacaoPessoaEnum.INATIVO;
     }
 }
