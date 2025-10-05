@@ -1,6 +1,6 @@
 using BlueMoon.Models.Enuns;
 
-namespace BlueMoon.Models
+namespace BlueMoon.Models.Modelling
 {
     public sealed class Cupom
     {
@@ -13,7 +13,7 @@ namespace BlueMoon.Models
         public decimal ValorNumerico { get; private set; } = decimal.Zero;
         public decimal ValorPorcentagem { get; private set; } = decimal.Zero;
 
-        private Cupom() { } 
+        private Cupom() { }
 
         public Cupom(
             TipoCupom tipo,
@@ -35,5 +35,4 @@ namespace BlueMoon.Models
         }
         public void Inativar() => Situacao = SituacaoCupom.INATIVO;
     }
-        
 }

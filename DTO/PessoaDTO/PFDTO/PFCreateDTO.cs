@@ -1,4 +1,4 @@
-using BlueMoon.Models;
+using BlueMoon.Models.Modelling;
 using BlueMoon.Models.Enuns;
 
 namespace BlueMoon.DTO.PessoaDTO.PFDTO

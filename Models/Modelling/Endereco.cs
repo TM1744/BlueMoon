@@ -1,6 +1,6 @@
 using BlueMoon.Models.Enuns;
 
-namespace BlueMoon.Models
+namespace BlueMoon.Models.Modelling
 {
     public sealed class Endereco
     {
