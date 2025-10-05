@@ -1,7 +1,7 @@
 # BlueMoon
 
 ## 📌 Descrição  
-**BlueMoon** é um software web desenvolvido em **C#/.NET**, que oferece um gerenciamento completo e eficiente de:
+**BlueMoon** é uma API Back-end desenvolvida em **C#/.NET**, que oferece um gerenciamento completo e eficiente de:
 
 - Vendas
 - Produtos
@@ -10,6 +10,8 @@
 - Estoque  
 - *(Futuramente)* Fornecedores  
 - *(Futuramente)* Ordem de Serviço (O.S)
+
+Ela é utilizada junto a uma interface separada, o **MoonLight** *(Ainda em desenvolvimento)*.
 
 ---
 
@@ -41,14 +43,10 @@ O **BlueMoon** foi desenvolvido com as seguintes tecnologias:
 
 ### 👨‍💻 Linguagens de Programação  
 - `C#`  
-- `JavaScript`
-
-### 🌐 Linguagens de Marcação e Estilo  
-- `HTML`  
-- `CSS`
 
 ### 🧱 Framework  
-- `.NET (Dotnet)`
+- `ASP.NET`
+- `ENTITY.FRAMEWORK.CORE`
 
 ### 🗄️ Banco de Dados  
 - `MySQL`
