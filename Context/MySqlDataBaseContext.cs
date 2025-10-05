@@ -1,3 +1,4 @@
+using BlueMoon.Mapping;
 using BlueMoon.Models.Modelling;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,6 +28,12 @@ namespace BlueMoon.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            //adicionar classes mapeadas aqui
+            modelBuilder.ApplyConfiguration(new EnderecoMap());
+            modelBuilder.ApplyConfiguration(new TelefoneMap());
+            modelBuilder.ApplyConfiguration(new PessoaMap());
+            modelBuilder.ApplyConfiguration(new UsuarioMap());
         }
     }
 }
