@@ -1,6 +1,6 @@
 namespace BlueMoon.Models.Enuns
 {
-    public enum EnumSituacaoProduto
+    public enum SituacaoProdutoEnum
     {
         ATIVO,
         INATIVO
