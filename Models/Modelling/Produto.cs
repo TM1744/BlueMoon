@@ -17,8 +17,6 @@ public sealed class Produto
     public decimal ValorCusto { get; set; } = decimal.Zero;
     public decimal ValorVenda { get; set; } = decimal.Zero;
     public decimal MargemLucro { get; set; } = decimal.Zero;
-    public decimal SubTotal { get; set; } = decimal.Zero;
-
     private Produto() { }
 
     public Produto
@@ -47,7 +45,6 @@ public sealed class Produto
         ValorCusto = valorCusto;
         ValorVenda = valorVenda;
         MargemLucro = margemLucro;
-        SubTotal =
     }
 
     public void AdicionarEstoque(int quantidade)

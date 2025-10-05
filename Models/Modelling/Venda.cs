@@ -6,149 +6,78 @@ namespace BlueMoon.Models;
 public sealed class Venda
 {
     public Guid Id { get; private set; } = Guid.NewGuid();
-
-    private Pessoa _cliente;
-
-    private Usuario _usuario;
-
-    private Cupom? _cupom;
-
-    private string _codigo;
-
-    private EnumSituacaoVenda _situacao;
-
-    private decimal _valorTotal;
-
-    private List<ItemVenda> _itens = new List<ItemVenda>();
-
-    public IReadOnlyList<ItemVenda> Itens => _itens.AsReadOnly();
-
-
-    public Pessoa Cliente
-    {
-        get { return _cliente; }
-        set
-        {
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value), "Cliente não pode ser nulo!");
-            }
-
-            _cliente = value;
-        }
-    }
-
-    public Usuario Usuario
-    {
-        get { return _usuario; }
-        set
-        {
-
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value), "Usuário não pode ser nulo!");
-            }
-
-            _usuario = value;
-        }
-    }
-
-    public Cupom? Cupom
-    {
-        get { return _cupom; }
-        set { _cupom = value; }
-    }
-
-    public string Codigo
-    {
-        get { return _codigo; }
-        set
-        {
-
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                throw new ArgumentException("Código não pode ser vazio");
-            }
-
-            if (value.Length > 6)
-            {
-                throw new ArgumentException("Código Inválido! O código deve conter no máximo 6 caracteres!");
-            }
-
-            _codigo = value.ToUpper();
-        }
-    }
-
-
-    public EnumSituacaoVenda Situacao
-    {
-        get { return _situacao; }
-        set
-        {
-            if (!Enum.IsDefined(typeof(EnumSituacaoVenda), value))
-            {
-                throw new ArgumentException("Situação inválida!");
-            }
-
-            _situacao = value;
-        }
-    }
-
-    public decimal ValorTotal
-    {
-        get { return _valorTotal; }
-        private set
-        {
-            if (value < 0)
-            {
-                throw new ArgumentException("Valor total não pode ser negativo!");
-            }
-
-            _valorTotal = value;
-        }
-    }
+    public ICollection<ItemVenda> Itens { get; private set; } = [];
+    public Pessoa Cliente { get; private set; }
+    public Usuario Vendedor { get; private set; }
+    public int Codigo { get; private set; }
+    public Cupom Cupom { get; private set; }
+    public ICollection<ProdutoCupom> ProdutosComCupom { get; private set; } = [];
+    public EnumSituacaoVenda Situacao { get; set; } = EnumSituacaoVenda.ABERTA;
+    public decimal ValorTotal { get; private set; }
 
     private Venda() { }
 
-    public Venda(Pessoa cliente, Usuario usuario, Cupom? cupom, string codigo)
+    public Venda
+    (
+        ICollection<ItemVenda> itens,
+        Pessoa cliente,
+        Usuario vendedor,
+        Cupom cupom,
+        ICollection<ProdutoCupom> produtosComCupom,
+        EnumSituacaoVenda situacao
+    )
     {
-        ArgumentNullException.ThrowIfNull(cliente);
-        ArgumentNullException.ThrowIfNull(usuario);
-
-
+        Itens = itens;
         Cliente = cliente;
-        Usuario = usuario;
+        Vendedor = vendedor;
         Cupom = cupom;
-        Codigo = codigo;
-        Situacao = EnumSituacaoVenda.ABERTA;
-        ValorTotal = 0;
+        ProdutosComCupom = produtosComCupom;
+        Situacao = situacao;
+        ValorTotal = CalcularValorTotal();
     }
 
-    public void AdicionarItem(ItemVenda item)
+    public void AdicionarItem(ItemVenda item) => Itens.Add(item);
+
+    public void RemoverItem(ItemVenda item) => Itens.Remove(item);
+
+    private decimal CalcularValorTotal()
     {
-        if (item == null)
+        var itens = CalcularDescontoDeProdutos();
+
+        return itens.Sum(item => item.SubTotal);
+    }
+
+    private ICollection<ItemVenda> CalcularDescontoDeProdutos()
+    {
+        ICollection<ItemVenda> itens = [];
+
+        foreach (ProdutoCupom produtoCupom in ProdutosComCupom)
         {
-            throw new ArgumentNullException(nameof(item));
+            foreach (ItemVenda item in Itens)
+            {
+                if (item.Produto.Id.Equals(ProdutoCupom.Produto.Id) && ProdutoCupom.Cupom.Id.Equals(Cupom.Id))
+                {
+                    itens.Add(DescontarValor(item));
+                }
+                else
+                {
+                    itens.Add(item);
+                }
+            }
         }
 
-        _itens.Add(item);
-        AtualizarValorTotal();
+        return itens;
     }
 
-    public void RemoverItem(ItemVenda item)
+    private ItemVenda DescontarValor(ItemVenda item)
     {
-        if (item == null)
-        {
-            throw new ArgumentNullException(nameof(item));
-        }
+        if (Cupom.Tipo == TipoCupom.PORCENTAGEM)
+            item.SetProdutoValorVenda(item.ProdutoValorVenda - (item.ProdutoValorVenda * (Cupom.ValorPorcentagem / 100)));
 
-        _itens.Remove(item);
-        AtualizarValorTotal();
-    }
+        if (Cupom.Tipo == TipoCupom.NUMERICO)
+            item.SetProdutoValorVenda(item.ProdutoValorVenda - Cupom.ValorNumerico);
 
-    public decimal AtualizarValorTotal()
-    {
-        return ValorTotal = _itens.Sum(ItemVenda => ItemVenda.SubTotal);
+        return item;
     }
 
     public void CancelarVenda() //Quando a venda estiver aberta ou fechada
@@ -193,12 +122,12 @@ public sealed class Venda
             throw new InvalidOperationException("Somente vendas abertas podem ser fechadas.");
         }
 
-        if (_itens.Count == 0)
+        if (Itens.Count == 0)
         {
             throw new InvalidOperationException("Não é possível fechar uma venda sem itens.");
         }
 
-        _valorTotal = AtualizarValorTotal();
+        ValorTotal = CalcularValorTotal();
 
         Situacao = EnumSituacaoVenda.FECHADA;
     }
