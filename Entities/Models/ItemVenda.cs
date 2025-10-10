@@ -1,4 +1,4 @@
-namespace BlueMoon.Models.Modelling
+namespace BlueMoon.Entities.Models
 {
     public sealed class ItemVenda
     {

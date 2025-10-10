@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BlueMoon.Models;
-using BlueMoon.Models.Enuns;
+using BlueMoon.DTO.EnderecoDTO;
+using BlueMoon.DTO.TelefoneDTO;
+using BlueMoon.Entities.Enuns;
 
 namespace BlueMoon.DTO.PessoaDTO.PFDTO
 {
@@ -14,10 +15,10 @@ namespace BlueMoon.DTO.PessoaDTO.PFDTO
         public TipoPessoaEnum Tipo { get; set; }
         public SituacaoPessoaEnum Situacao { get; set; }
         public int Codigo { get; set; }
-        public ICollection<Telefone> Telefones { get; set; }
+        public ICollection<TelefoneReadDTO> Telefones { get; set; }
         public string Email { get; set; }
         public string Nome { get; set; }
         public string CPF { get; set; }
-        public Endereco endereco { get; set; }
+        public EnderecoReadDTO endereco { get; set; }
     }
 }

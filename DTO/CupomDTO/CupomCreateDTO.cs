@@ -1,5 +1,5 @@
 using System;
-using BlueMoon.Models.Enuns;
+using BlueMoon.Entities.Enuns;
 
 namespace BlueMoon.DTO.CupomDTO
 {

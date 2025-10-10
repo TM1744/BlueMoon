@@ -1,5 +1,5 @@
 using BlueMoon.DTO.PessoaDTO.PFDTO;
-using BlueMoon.Models.Enuns;
+using BlueMoon.Entities.Enuns;
 
 namespace BlueMoon.DTO.UsuarioDTO
 {

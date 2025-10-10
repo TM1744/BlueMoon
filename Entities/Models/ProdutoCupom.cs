@@ -1,6 +1,4 @@
-using BlueMoon.Models;
-
-namespace BlueMoon.Models.Modelling
+namespace BlueMoon.Entities.Models
 {
     public sealed class ProdutoCupom
     {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BlueMoon.Models.Enuns;
+using BlueMoon.Entities.Enuns;
 
 namespace BlueMoon.DTO.EnderecoDTO
 {

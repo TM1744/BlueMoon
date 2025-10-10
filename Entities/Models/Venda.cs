@@ -1,5 +1,5 @@
-using BlueMoon.Models.Enuns;
-namespace BlueMoon.Models.Modelling
+using BlueMoon.Entities.Enuns;
+namespace BlueMoon.Entities.Models
 {
     public sealed class Venda
     {

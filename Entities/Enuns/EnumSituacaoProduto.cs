@@ -1,4 +1,4 @@
-namespace BlueMoon.Models.Enuns
+namespace BlueMoon.Entities.Enuns
 {
     public enum SituacaoProdutoEnum
     {
