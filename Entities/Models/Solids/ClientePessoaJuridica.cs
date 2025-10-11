@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BlueMoon.Entities.Models.Solids
 {
-    public class ClientePessoaJuridica : AbstractPessoa
+    public sealed class ClientePessoaJuridica : AbstractPessoa
     {
         public string CNPJ { get; private set; } = string.Empty;
         public string NomeFantasia { get; private set; } = string.Empty;

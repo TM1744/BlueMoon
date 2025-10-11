@@ -1,6 +1,6 @@
 namespace BlueMoon.Entities.Models
 {
-    public class ClientePessoaFisica : AbstractPessoa
+    public sealed class ClientePessoaFisica : AbstractPessoa
     {
         public string CPF { get; private set; } = string.Empty;
         public string Nome { get; private set; } = string.Empty;

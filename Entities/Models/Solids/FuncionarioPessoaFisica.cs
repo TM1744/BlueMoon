@@ -2,8 +2,10 @@ using BlueMoon.Entities.Enuns;
 
 namespace BlueMoon.Entities.Models.Solids
 {
-    public class FuncionarioPessoaFisica : AbstractUsuarioFisico
+    public sealed class FuncionarioPessoaFisica : AbstractUsuario
     {
+        public string CPF { get; private set; }
+        public string Nome { get; private set; }
         public decimal Salario { get; private set; } = 0.00m;
         public DateOnly Admissao { get; private set; }
         public TimeOnly HorarioInicioCargaHoraria { get; private set; }
@@ -26,8 +28,10 @@ namespace BlueMoon.Entities.Models.Solids
             TimeOnly horarioInicioCargaHoraria,
             TimeOnly horarioFimCargaHoraria
         )
-            : base(telefones, email, endereco, login, userName, senha, cpf, nome, cargo)
+            : base(telefones, email, endereco, login, userName, senha, cargo)
         {
+            CPF = cpf;
+            Nome = nome;
             Salario = salario;
             Admissao = admissao;
             HorarioInicioCargaHoraria = horarioInicioCargaHoraria;

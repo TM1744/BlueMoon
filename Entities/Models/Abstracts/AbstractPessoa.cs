@@ -5,8 +5,6 @@ namespace BlueMoon.Entities.Models
 {
     public abstract class AbstractPessoa
     {
-        private AbstractPessoa () {}
-
         public Guid Id { get; private set; } = Guid.NewGuid();
         public SituacaoPessoaEnum Situacao { get; private set; } = SituacaoPessoaEnum.ATIVO;
         public int Codigo { get; private set; }
@@ -14,10 +12,16 @@ namespace BlueMoon.Entities.Models
         public string Email { get; private set; } = string.Empty;
         public Endereco Endereco { get; private set; }
 
-        protected AbstractPessoa(AbstractPessoaCreateDTO abstractPessoaCreate)
+        protected AbstractPessoa
+        (
+            ICollection<Telefone> telefones,
+            string email,
+            Endereco endereco
+        )
         {
-            Telefones
-
+            Telefones = telefones;
+            Email = email;
+            Endereco = endereco;
         }
 
         public void InativarPessoa() => Situacao = SituacaoPessoaEnum.INATIVO;
