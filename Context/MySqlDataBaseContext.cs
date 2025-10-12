@@ -1,5 +1,5 @@
+using BlueMoon.Entities.Models;
 using BlueMoon.Mapping;
-using BlueMoon.Models.Modelling;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlueMoon.Context
@@ -30,10 +30,7 @@ namespace BlueMoon.Context
             base.OnModelCreating(modelBuilder);
 
             //adicionar classes mapeadas aqui
-            modelBuilder.ApplyConfiguration(new EnderecoMap());
-            modelBuilder.ApplyConfiguration(new TelefoneMap());
-            modelBuilder.ApplyConfiguration(new PessoaMap());
-            modelBuilder.ApplyConfiguration(new UsuarioMap());
+            modelBuilder.ApplyConfiguration(new ProdutoMap());
         }
     }
 }

@@ -6,17 +6,16 @@ namespace BlueMoon.Entities.Models
     {
         public Guid Id { get; private set; } = Guid.NewGuid();
         public string Descricao { get; private set; } = string.Empty;
-        public string Marca { get; private set; } = string.Empty;
-        public string Fornecedor { get; private set; } = string.Empty;
-        public string Codigo { get; private set; } = string.Empty;
+        public string Marca { get; private set; } = string.Empty; // n obrigatorio
+        public int Codigo { get; private set; }
         public int QuantidadeEstoque { get; private set; }
-        public int QuantidadeEstoqueMinimo { get; set; }
-        public string NCM { get; private set; } = string.Empty;
-        public string CodigoBarras { get; private set; } = string.Empty;
-        public SituacaoProdutoEnum Situacao { get; set; } = SituacaoProdutoEnum.ATIVO;
-        public decimal ValorCusto { get; set; } = decimal.Zero;
-        public decimal ValorVenda { get; set; } = decimal.Zero;
-        public decimal MargemLucro { get; set; } = decimal.Zero;
+        public int QuantidadeEstoqueMinimo { get; set; } // n obrigatorio
+        public string NCM { get; private set; } = string.Empty; // n obrigatorio
+        public string CodigoBarras { get; private set; } = string.Empty; // n obrigatorio
+        public SituacaoProdutoEnum Situacao { get; set; } = SituacaoProdutoEnum.INDEFINIDO;
+        public decimal ValorCusto { get; set; } = 0.00m; // n obrigatorio
+        public decimal ValorVenda { get; set; } = 0.00m;
+        public decimal MargemLucro { get; set; } = 0.00m; // n obrigatorio
         private Produto() { }
 
         public Produto
@@ -36,7 +35,6 @@ namespace BlueMoon.Entities.Models
         {
             Descricao = descricao;
             Marca = marca;
-            Fornecedor = fornecedor;
             QuantidadeEstoque = quantidadeEstoque;
             QuantidadeEstoqueMinimo = quantidadeEstoqueMinimo;
             NCM = ncm;
