@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using BlueMoon.Entities.Enuns;
 using BlueMoon.Entities.Models;
 using BlueMoon.Repositories.Interfaces;
@@ -36,14 +32,6 @@ namespace BlueMoon.Repositories
             produto.Situacao = SituacaoProdutoEnum.INATIVO;
             _dbSet.Update(produto);
             await _context.SaveChangesAsync();
-        }
-
-        public async Task LogicalRangeDeleteByIdAsync(IEnumerable<Guid> ids)
-        {
-            foreach(Guid id in ids)
-            {
-                var produto = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
-            }
         }
     }
 }

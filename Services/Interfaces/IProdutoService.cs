@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using BlueMoon.Entities.Models;
 
-namespace BlueMoon.Repositories.Interfaces
+namespace BlueMoon.Services.Interfaces
 {
-    public interface IProdutoRepositorio : IRepositorio<Produto>
+    public interface IProdutoService : IService<Produto>
     {
         Task<IEnumerable<Produto>> GetByDescricao(string descricao);
         Task<IEnumerable<Produto>> GetByNCM(string ncm);
