@@ -1,3 +1,4 @@
+using BlueMoon.Context;
 using BlueMoon.Entities.Enuns;
 using BlueMoon.Entities.Models;
 using BlueMoon.Repositories.Interfaces;
@@ -7,7 +8,7 @@ namespace BlueMoon.Repositories
 {
     public class ProdutoRepositorio : Repositorio<Produto>, IProdutoRepositorio
     {
-        public ProdutoRepositorio(DbContext context) : base(context)
+        public ProdutoRepositorio(MySqlDataBaseContext context) : base(context)
         {
         }
 
@@ -29,9 +30,12 @@ namespace BlueMoon.Repositories
         public async Task LogicalDeleteByIdAsync(Guid id)
         {
             var produto = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
-            produto.Situacao = SituacaoProdutoEnum.INATIVO;
-            _dbSet.Update(produto);
-            await _context.SaveChangesAsync();
+            if (produto != null)
+            {
+                produto.Situacao = SituacaoProdutoEnum.INATIVO;
+                _dbSet.Update(produto);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

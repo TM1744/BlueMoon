@@ -8,7 +8,7 @@ namespace BlueMoon.DTO
 {
     public class ProdutoCreateDTO
     {
-        public string Descricao { get; set; }
+        public string Descricao { get; set; } = string.Empty;
         public string? Marca { get; set; }
         public int QuantidadeEstoque { get; set; }
         public int QuantidadeEstoqueMinimo { get; set; }
@@ -21,15 +21,15 @@ namespace BlueMoon.DTO
 
     public class ProdutoReadDTO
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = string.Empty;
         public int Codigo { get; set; }
         public int Situacao { get; set; }
-        public string Descricao { get; set; }
-        public string Marca { get; set; }
+        public string Descricao { get; set; } = string.Empty;
+        public string Marca { get; set; } = string.Empty;
         public int QuantidadeEstoque { get; set; }
         public int QuantidadeEstoqueMinimo { get; set; }
-        public string NCM { get; set; }
-        public string CodigoBarras { get; set; }
+        public string NCM { get; set; } = string.Empty;
+        public string CodigoBarras { get; set; } = string.Empty;
         public decimal ValorCusto { get; set; }
         public decimal ValorVenda { get; set; }
         public decimal MargemLucro { get; set; }
@@ -37,7 +37,7 @@ namespace BlueMoon.DTO
 
     public class ProdutoUpdateDTO
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = string.Empty;
         public int Situacao { get; set; }
         public string? Descricao { get; set; }
         public string? Marca { get; set; }

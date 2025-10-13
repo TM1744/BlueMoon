@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BlueMoon.DTO;
 using BlueMoon.Entities.Models;
 using BlueMoon.Services;
+using BlueMoon.Services.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,9 +15,9 @@ namespace BlueMoon.Controllers
     [Route("/BlueMoon/[Controller]")]
     public class ProdutoController : ControllerBase
     {
-        private readonly ProdutoService _service;
+        private readonly IProdutoService _service;
 
-        public ProdutoController(ProdutoService service)
+        public ProdutoController(IProdutoService service)
         {
             _service = service;
         }
@@ -29,9 +30,9 @@ namespace BlueMoon.Controllers
         }
 
         [HttpGet("{Id}")]
-        public async Task<ActionResult<Produto>> Get(string id)
+        public async Task<ActionResult<Produto>> Get(string Id)
         {
-            var idConvertido = Guid.Parse(id);
+            var idConvertido = Guid.Parse(Id);
             var item = await _service.GetByIdAsync(idConvertido);
             if (item == null)
                 return NotFound();
@@ -57,35 +58,14 @@ namespace BlueMoon.Controllers
         }
 
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete([FromRoute] string Id)
         {
-            var idConvertido = Guid.Parse(id);
+            var idConvertido = Guid.Parse(Id);
             var result = await _service.GetByIdAsync(idConvertido);
             if (result == null)
                 return NotFound();
             await _service.LogicalDeleteByIdAsync(idConvertido);
             return NoContent();
-        }
-
-        [HttpGet("/Search/{Descricao}")]
-        public async Task<ActionResult<IEnumerable<Produto>>> SearchByDescricao(string descricao)
-        {
-            var results = await _service.GetByDescricao(descricao);
-            return Ok(results);
-        }
-
-        [HttpGet("/Search/{NCM}")]
-        public async Task<ActionResult<IEnumerable<Produto>>> SearchByNCM(string ncm)
-        {
-            var results = await _service.GetByNCM(ncm);
-            return Ok(results);
-        }
-
-        [HttpGet("/Search/{Marca}")]
-        public async Task<ActionResult<IEnumerable<Produto>>> SearchByMarca(string marca)
-        {
-            var results = await _service.GetByMarca(marca);
-            return Ok(results);
         }
     }
 }

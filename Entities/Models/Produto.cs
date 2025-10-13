@@ -62,11 +62,6 @@ namespace BlueMoon.Entities.Models
             ValorVenda = produtoUpdateDTO.ValorVenda;
             MargemLucro = produtoUpdateDTO.MargemLucro;
         }
-        
-        public Produto (ProdutoDeleteDTO produtoDeleteDTO)
-        {
-            Id = Guid.Parse(produtoDeleteDTO.Id);
-        }
 
         public void AdicionarEstoque(int quantidade)
         {

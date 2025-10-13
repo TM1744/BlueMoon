@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlueMoon.Context;
 using BlueMoon.Repositories.Interfaces;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +11,10 @@ namespace BlueMoon.Repositories
 {
     public class Repositorio<T> : IRepositorio<T> where T : class
     {
-        protected readonly DbContext _context;
+        protected readonly MySqlDataBaseContext _context;
         protected readonly DbSet<T> _dbSet;
 
-        public Repositorio(DbContext context)
+        public Repositorio(MySqlDataBaseContext context)
         {
             _context = context;
             _dbSet = context.Set<T>();
