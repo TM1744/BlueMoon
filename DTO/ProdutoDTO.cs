@@ -49,9 +49,4 @@ namespace BlueMoon.DTO
         public decimal ValorVenda { get; set; }
         public decimal MargemLucro { get; set; }
     }
-
-    public class ProdutoDeleteDTO
-    {
-        public string Id { get; set; }
-    }
 }

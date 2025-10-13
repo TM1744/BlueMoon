@@ -11,28 +11,30 @@ namespace BlueMoon.Services
 {
     public class ProdutoService : Service<Produto>, IProdutoService
     {
-        public ProdutoService(ProdutoRepositorio repositorio) : base(repositorio)
+        public readonly IProdutoRepositorio _produtoRepositorio;
+        public ProdutoService(IRepositorio<Produto> repositorio, IProdutoRepositorio produtoRepositorio) : base(repositorio)
         {
+            _produtoRepositorio = produtoRepositorio;
         }
 
         public async Task<IEnumerable<Produto>> GetByDescricao(string descricao)
         {
-            return await _repositorio.Get
+            return await _produtoRepositorio.GetByDescricao(descricao);
         }
 
-        public Task<IEnumerable<Produto>> GetByMarca(string marca)
+        public async Task<IEnumerable<Produto>> GetByMarca(string marca)
         {
-            throw new NotImplementedException();
+            return await _produtoRepositorio.GetByMarca(marca);
         }
 
-        public Task<IEnumerable<Produto>> GetByNCM(string ncm)
+        public async Task<IEnumerable<Produto>> GetByNCM(string ncm)
         {
-            throw new NotImplementedException();
+            return await _produtoRepositorio.GetByNCM(ncm);
         }
 
-        public Task LogicalDeleteByIdAsync(Guid id)
+        public async Task LogicalDeleteByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await _produtoRepositorio.LogicalDeleteByIdAsync(id);
         }
     }
 }
