@@ -27,10 +27,9 @@ namespace BlueMoon.Repositories
             return await _dbSet.Where(x => x.NCM == ncm).ToListAsync();
         }
 
-        public async Task LogicalDeleteByIdAsync(Guid id)
+        public async Task LogicalDeleteByIdAsync(Produto produto)
         {
-            var produto = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
-            if (produto != null)
+            if (produto.Situacao != SituacaoProdutoEnum.INATIVO)
             {
                 produto.Situacao = SituacaoProdutoEnum.INATIVO;
                 _dbSet.Update(produto);

@@ -58,14 +58,15 @@ namespace BlueMoon.Controllers
         }
 
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> Delete([FromRoute] string Id)
+        public async Task<IActionResult> Delete(string Id)
         {
-            var idConvertido = Guid.Parse(Id);
-            var result = await _service.GetByIdAsync(idConvertido);
-            if (result == null)
+            var produto = await _service.GetByIdAsync(Guid.Parse(Id));
+            if (produto == null)
+            {
                 return NotFound();
-            await _service.LogicalDeleteByIdAsync(idConvertido);
-            return NoContent();
+            }
+            await _service.LogicalDeleteByIdAsync(produto);
+            return Ok();
         }
     }
 }

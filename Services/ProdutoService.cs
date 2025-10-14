@@ -6,6 +6,7 @@ using BlueMoon.Entities.Models;
 using BlueMoon.Repositories;
 using BlueMoon.Repositories.Interfaces;
 using BlueMoon.Services.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace BlueMoon.Services
 {
@@ -32,9 +33,9 @@ namespace BlueMoon.Services
             return await _produtoRepositorio.GetByNCM(ncm);
         }
 
-        public async Task LogicalDeleteByIdAsync(Guid id)
+        public async Task LogicalDeleteByIdAsync(Produto produto)
         {
-            await _produtoRepositorio.LogicalDeleteByIdAsync(id);
+            await _produtoRepositorio.LogicalDeleteByIdAsync(produto);
         }
     }
 }

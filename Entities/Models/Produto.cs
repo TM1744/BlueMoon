@@ -14,9 +14,10 @@ namespace BlueMoon.Entities.Models
         public string NCM { get; private set; } = string.Empty; // n obrigatorio
         public string CodigoBarras { get; private set; } = string.Empty; // n obrigatorio
         public SituacaoProdutoEnum Situacao { get; set; } = SituacaoProdutoEnum.INDEFINIDO;
-        public decimal ValorCusto { get; set; } = 0.00m; // n obrigatorio
-        public decimal ValorVenda { get; set; } = 0.00m;
-        public decimal MargemLucro { get; set; } = 0.00m; // n obrigatorio
+        public decimal ValorCusto { get; set; } = decimal.Round(0.00m, 2); // n obrigatorio
+        public decimal ValorVenda { get; set; } = decimal.Round(0.00m, 2);
+        public decimal MargemLucro { get; set; } = decimal.Round(0.00m, 2); // n obrigatorio
+
         private Produto() { }
 
         public Produto(ProdutoCreateDTO createDTO)
@@ -27,9 +28,10 @@ namespace BlueMoon.Entities.Models
             QuantidadeEstoqueMinimo = createDTO.QuantidadeEstoqueMinimo;
             NCM = createDTO.NCM ?? "INDEFINIDO";
             CodigoBarras = createDTO.CodigoBarras ?? "INDEFINIDO";
-            ValorCusto = createDTO.ValorCusto;
-            ValorVenda = createDTO.ValorVenda;
-            MargemLucro = createDTO.MargemLucro;
+            Situacao = SituacaoProdutoEnum.ATIVO;
+            ValorCusto = decimal.Round(createDTO.ValorCusto, 2);
+            ValorVenda = decimal.Round(createDTO.ValorVenda, 2);
+            MargemLucro = decimal.Round(createDTO.MargemLucro, 2);
         }
 
         public Produto(ProdutoReadDTO produtoReadDTO)
