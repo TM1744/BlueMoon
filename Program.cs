@@ -3,9 +3,11 @@ using BlueMoon.Repositories;
 using BlueMoon.Repositories.Interfaces;
 using BlueMoon.Services;
 using BlueMoon.Services.Interfaces;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using BlueMoon.Validations;
+using BlueMoon.DTO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,12 +24,15 @@ builder.Services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
 builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
 
-// Configuração de controllers
-builder.Services.AddControllers();
+// Configuração do validadores
+builder.Services.AddControllers()
+    .AddFluentValidation(fv =>
+    {
+        fv.RegisterValidatorsFromAssemblyContaining<ProdutoCreateDTOValidator>();
+    });
 
 var app = builder.Build();
 
 app.UseHttpsRedirection();
 app.MapControllers();
-
 app.Run();

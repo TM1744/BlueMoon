@@ -42,11 +42,13 @@ namespace BlueMoon.Controllers
         [HttpPost]
         public async Task<ActionResult<Produto>> Post(ProdutoCreateDTO createDTO)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             Produto produto = new Produto(createDTO);
             var id = produto.Id;
             await _service.AddAsync(produto);
             return CreatedAtAction(nameof(Get), new { id = produto.Id }, produto);
-
         }
 
         [HttpPut]

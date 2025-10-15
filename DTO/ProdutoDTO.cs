@@ -12,8 +12,8 @@ namespace BlueMoon.DTO
         public string? Marca { get; set; }
         public int QuantidadeEstoque { get; set; }
         public int QuantidadeEstoqueMinimo { get; set; }
-        public string? NCM { get; set; }
-        public string? CodigoBarras { get; set; }
+        public string NCM { get; set; } = string.Empty;
+        public string CodigoBarras { get; set; } = string.Empty;
         public decimal ValorCusto { get; set; }
         public decimal ValorVenda { get; set; }
         public decimal MargemLucro { get; set; }
