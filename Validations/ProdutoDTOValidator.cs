@@ -9,18 +9,17 @@ namespace BlueMoon.Validations
         public ProdutoCreateDTOValidator()
         {
             RuleFor(dto => dto.Descricao)
-                .NotEmpty().WithMessage("Descrição do produto é obrigatório")
+                .NotEmpty().WithMessage("Descrição do produto é obrigatória")
                 .MaximumLength(70).WithMessage("Descrição não deve ter mais de 70 caracteres");
 
             RuleFor(dto => dto.Marca)
                 .MaximumLength(50).WithMessage("Marca não deve ter mais de 50 caracteres");
 
             RuleFor(dto => dto.QuantidadeEstoque)
-                .NotNull().WithMessage("Quantidade em estoque não deve ser nula")
+                .NotNull().WithMessage("Quantidade em estoque é obrigatório")
                 .GreaterThan(0).WithMessage("Quantidade em estoque deve ser maior ou igual a zero");
 
             RuleFor(dto => dto.QuantidadeEstoqueMinimo)
-                .NotNull().WithMessage("Quantidade mínima de estoque não deve ser nula")
                 .GreaterThanOrEqualTo(0).WithMessage("Quantidade mínima de estoque deve ser maior do que zero");
 
             RuleFor(dto => dto.NCM)
@@ -30,6 +29,7 @@ namespace BlueMoon.Validations
                 .GreaterThanOrEqualTo(0.00m).WithMessage("Valor de custo deve ser maior ou igual a zero");
 
             RuleFor(dto => dto.ValorVenda)
+                .NotNull().WithMessage("Valor de venda é obrigatório")
                 .GreaterThan(0.00m).WithMessage("Valor de venda deve ser maior do que zero");
 
             RuleFor(dto => dto.MargemLucro)
@@ -38,7 +38,7 @@ namespace BlueMoon.Validations
 
         public bool NcmValido (string ncm)
         {
-            if (ncm == null)
+            if (ncm == null || ncm.Trim() == "")
                 return true;
 
             var numeros = ncm.Replace(".", "");

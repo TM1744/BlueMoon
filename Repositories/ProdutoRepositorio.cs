@@ -12,19 +12,21 @@ namespace BlueMoon.Repositories
         {
         }
 
+        
+
         public async Task<IEnumerable<Produto>> GetByDescricao(string descricao)
         {
-            return await _dbSet.Where(x => x.Descricao == descricao).ToListAsync();
+            return await _dbSet.Where(x => x.Descricao.Contains(descricao)).ToListAsync();
         }
 
         public async Task<IEnumerable<Produto>> GetByMarca(string marca)
         {
-            return await _dbSet.Where(x => x.Marca == marca).ToListAsync();
+            return await _dbSet.Where(x => x.Marca.Contains(marca)).ToListAsync();
         }
 
         public async Task<IEnumerable<Produto>> GetByNCM(string ncm)
         {
-            return await _dbSet.Where(x => x.NCM == ncm).ToListAsync();
+            return await _dbSet.Where(x => x.NCM.Contains(ncm)).ToListAsync();
         }
 
         public async Task LogicalDeleteByIdAsync(Produto produto)

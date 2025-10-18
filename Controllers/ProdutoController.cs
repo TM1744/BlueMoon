@@ -64,11 +64,41 @@ namespace BlueMoon.Controllers
         {
             var produto = await _service.GetByIdAsync(Guid.Parse(Id));
             if (produto == null)
-            {
                 return NotFound();
-            }
+
             await _service.LogicalDeleteByIdAsync(produto);
             return Ok();
         }
+
+        [HttpGet("por-descricao")]
+        public async Task<ActionResult<IEnumerable<Produto>>> GetByDescricao([FromQuery] string descricao)
+        {
+            var produtos = await _service.GetByDescricao(descricao.ToUpper());
+            if (!produtos.Any())
+                return NotFound();
+
+            return Ok(produtos);
+        }
+
+        [HttpGet("por-ncm")]
+        public async Task<ActionResult<IEnumerable<Produto>>> GetByNCM([FromQuery] string ncm)
+        {
+            var produtos = await _service.GetByNCM(ncm.ToUpper());
+            if (!produtos.Any())
+                return NotFound();
+
+            return Ok(produtos);
+        }
+
+        [HttpGet("por-marca")]
+        public async Task<ActionResult<IEnumerable<Produto>>> GetByMarca([FromQuery] string marca)
+        {
+            var produtos = await _service.GetByMarca(marca.ToUpper());
+            if (!produtos.Any())
+                return NotFound();
+
+            return Ok(produtos);
+        }
+
     }
 }
