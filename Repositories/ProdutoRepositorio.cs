@@ -12,8 +12,6 @@ namespace BlueMoon.Repositories
         {
         }
 
-        
-
         public async Task<IEnumerable<Produto>> GetByDescricao(string descricao)
         {
             return await _dbSet.Where(x => x.Descricao.Contains(descricao)).ToListAsync();
@@ -29,6 +27,11 @@ namespace BlueMoon.Repositories
             return await _dbSet.Where(x => x.NCM.Contains(ncm)).ToListAsync();
         }
 
+        public async Task<Produto> GetByCodigo(int codigo)
+        {
+            return await _dbSet.FirstOrDefaultAsync(x => x.Codigo == codigo);
+        }
+
         public async Task LogicalDeleteByIdAsync(Produto produto)
         {
             if (produto.Situacao != SituacaoProdutoEnum.INATIVO)
@@ -37,6 +40,16 @@ namespace BlueMoon.Repositories
                 _dbSet.Update(produto);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<bool> Exists(Guid id)
+        {
+            return await _dbSet.AnyAsync(x => x.Id == id);
+        }
+
+        public async Task<int> GetGreaterCodeNumber()
+        {
+            return await _dbSet.Select(x => (int?)x.Codigo).MaxAsync() ?? 0;
         }
     }
 }

@@ -11,6 +11,9 @@ namespace BlueMoon.Repositories.Interfaces
         Task<IEnumerable<Produto>> GetByDescricao(string descricao);
         Task<IEnumerable<Produto>> GetByNCM(string ncm);
         Task<IEnumerable<Produto>> GetByMarca(string marca);
+        Task<Produto> GetByCodigo(int codigo);
         Task LogicalDeleteByIdAsync(Produto produto);
+        Task<bool> Exists(Guid id);
+        Task<int> GetGreaterCodeNumber();
     }
 }

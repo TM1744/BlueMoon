@@ -8,7 +8,7 @@ namespace BlueMoon.Entities.Models
         public Guid Id { get; private set; } = Guid.NewGuid();
         public string Descricao { get; private set; } = string.Empty;
         public string Marca { get; private set; } = string.Empty; // n obrigatorio
-        public int Codigo { get; private set; }
+        public int Codigo { get; set; }
         public int QuantidadeEstoque { get; private set; }
         public int QuantidadeEstoqueMinimo { get; set; } // n obrigatorio
         public string NCM { get; private set; } = string.Empty; // n obrigatorio
@@ -23,46 +23,30 @@ namespace BlueMoon.Entities.Models
         public Produto(ProdutoCreateDTO createDTO)
         {
             Descricao = createDTO.Descricao.ToUpper();
-            Marca = createDTO.Marca ?? "INDEFINIDO";
+            Marca = createDTO.Marca.ToUpper();
             QuantidadeEstoque = createDTO.QuantidadeEstoque;
             QuantidadeEstoqueMinimo = createDTO.QuantidadeEstoqueMinimo;
-            NCM = createDTO.NCM ?? "INDEFINIDO";
-            CodigoBarras = createDTO.CodigoBarras ?? "INDEFINIDO";
+            NCM = createDTO.NCM;
+            CodigoBarras = createDTO.CodigoBarras;
             Situacao = SituacaoProdutoEnum.ATIVO;
             ValorCusto = decimal.Round(createDTO.ValorCusto, 2);
             ValorVenda = decimal.Round(createDTO.ValorVenda, 2);
             MargemLucro = decimal.Round(createDTO.MargemLucro, 2);
         }
 
-        public Produto(ProdutoReadDTO produtoReadDTO)
+        public Produto(ProdutoUpdateDTO updateDTO)
         {
-            Id = Guid.Parse(produtoReadDTO.Id);
-            Codigo = produtoReadDTO.Codigo;
-            Situacao = (SituacaoProdutoEnum)produtoReadDTO.Situacao;
-            Descricao = produtoReadDTO.Descricao;
-            Marca = produtoReadDTO.Marca;
-            QuantidadeEstoque = produtoReadDTO.QuantidadeEstoque;
-            QuantidadeEstoqueMinimo = produtoReadDTO.QuantidadeEstoqueMinimo;
-            NCM = produtoReadDTO.NCM;
-            CodigoBarras = produtoReadDTO.CodigoBarras;
-            ValorCusto = produtoReadDTO.ValorCusto;
-            ValorVenda = produtoReadDTO.ValorVenda;
-            MargemLucro = produtoReadDTO.MargemLucro;
-        }
-
-        public Produto(ProdutoUpdateDTO produtoUpdateDTO)
-        {
-            Id = Guid.Parse(produtoUpdateDTO.Id);
-            Situacao = (SituacaoProdutoEnum)produtoUpdateDTO.Situacao;
-            Descricao = produtoUpdateDTO.Descricao ?? "INDEFINIDO";
-            Marca = produtoUpdateDTO.Marca ?? "INDEFINIDO";
-            QuantidadeEstoque = produtoUpdateDTO.QuantidadeEstoque;
-            QuantidadeEstoqueMinimo = produtoUpdateDTO.QuantidadeEstoqueMinimo;
-            NCM = produtoUpdateDTO.NCM ?? "INDEFINIDO";
-            CodigoBarras = produtoUpdateDTO.CodigoBarras ?? "INDEFINIDO";
-            ValorCusto = produtoUpdateDTO.ValorCusto;
-            ValorVenda = produtoUpdateDTO.ValorVenda;
-            MargemLucro = produtoUpdateDTO.MargemLucro;
+            Id = Guid.Parse(updateDTO.Id);
+            Situacao = (SituacaoProdutoEnum)updateDTO.Situacao;
+            Descricao = updateDTO.Descricao.ToUpper();
+            Marca = updateDTO.Marca.ToUpper();
+            QuantidadeEstoque = updateDTO.QuantidadeEstoque;
+            QuantidadeEstoqueMinimo = updateDTO.QuantidadeEstoqueMinimo;
+            NCM = updateDTO.NCM;
+            CodigoBarras = updateDTO.CodigoBarras;
+            ValorCusto = decimal.Round(updateDTO.ValorCusto, 2);
+            ValorVenda = decimal.Round(updateDTO.ValorVenda, 2);
+            MargemLucro = decimal.Round(updateDTO.MargemLucro, 2);
         }
 
         public void AdicionarEstoque(int quantidade)

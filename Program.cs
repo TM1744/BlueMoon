@@ -21,7 +21,6 @@ builder.Services.AddScoped(typeof(IRepositorio<>), typeof(Repositorio<>));
 builder.Services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
 
 // Configuração de serviços
-builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
 
 // Configuração do validadores

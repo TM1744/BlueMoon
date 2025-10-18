@@ -1,41 +1,226 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using BlueMoon.DTO;
 using BlueMoon.Entities.Models;
 using BlueMoon.Repositories;
 using BlueMoon.Repositories.Interfaces;
 using BlueMoon.Services.Interfaces;
+using BlueMoon.Entities.Enuns;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace BlueMoon.Services
 {
-    public class ProdutoService : Service<Produto>, IProdutoService
+    public class ProdutoService : IProdutoService
     {
         public readonly IProdutoRepositorio _produtoRepositorio;
-        public ProdutoService(IRepositorio<Produto> repositorio, IProdutoRepositorio produtoRepositorio) : base(repositorio)
+        public ProdutoService(IProdutoRepositorio produtoRepositorio)
         {
             _produtoRepositorio = produtoRepositorio;
         }
 
-        public async Task<IEnumerable<Produto>> GetByDescricao(string descricao)
+        public async Task<ProdutoReadDTO> GetByCodigo(int codigo)
         {
-            return await _produtoRepositorio.GetByDescricao(descricao);
+            var produto = await _produtoRepositorio.GetByCodigo(codigo);
+
+            if (produto.Situacao == SituacaoProdutoEnum.ATIVO)
+            {
+                ProdutoReadDTO dto = new ProdutoReadDTO();
+
+                dto.Id = produto.Id.ToString();
+                dto.Codigo = produto.Codigo;
+                dto.Situacao = (int)produto.Situacao;
+                dto.Descricao = produto.Descricao;
+                dto.Marca = produto.Marca;
+                dto.QuantidadeEstoque = produto.QuantidadeEstoque;
+                dto.QuantidadeEstoqueMinimo = produto.QuantidadeEstoqueMinimo;
+                dto.NCM = produto.NCM;
+                dto.CodigoBarras = produto.CodigoBarras;
+                dto.ValorCusto = produto.ValorCusto;
+                dto.ValorVenda = produto.ValorVenda;
+                dto.MargemLucro = produto.MargemLucro;
+
+                return dto;
+            }
+
+            return null;
         }
 
-        public async Task<IEnumerable<Produto>> GetByMarca(string marca)
+        public async Task<IEnumerable<ProdutoReadDTO>> GetByDescricao(string descricao)
         {
-            return await _produtoRepositorio.GetByMarca(marca);
+            var produtos = await _produtoRepositorio.GetByDescricao(descricao);
+            ICollection<ProdutoReadDTO> produtosDtos = [];
+            foreach (Produto produto in produtos)
+            {
+                if (produto.Situacao == SituacaoProdutoEnum.ATIVO)
+                {
+                    ProdutoReadDTO dto = new ProdutoReadDTO();
+
+                    dto.Id = produto.Id.ToString();
+                    dto.Codigo = produto.Codigo;
+                    dto.Situacao = (int)produto.Situacao;
+                    dto.Descricao = produto.Descricao;
+                    dto.Marca = produto.Marca;
+                    dto.QuantidadeEstoque = produto.QuantidadeEstoque;
+                    dto.QuantidadeEstoqueMinimo = produto.QuantidadeEstoqueMinimo;
+                    dto.NCM = produto.NCM;
+                    dto.CodigoBarras = produto.CodigoBarras;
+                    dto.ValorCusto = produto.ValorCusto;
+                    dto.ValorVenda = produto.ValorVenda;
+                    dto.MargemLucro = produto.MargemLucro;
+
+                    produtosDtos.Add(dto);
+                }
+
+            }
+
+            return produtosDtos;
         }
 
-        public async Task<IEnumerable<Produto>> GetByNCM(string ncm)
+        public async Task<IEnumerable<ProdutoReadDTO>> GetByMarca(string marca)
         {
-            return await _produtoRepositorio.GetByNCM(ncm);
+            var produtos = await _produtoRepositorio.GetByMarca(marca);
+            ICollection<ProdutoReadDTO> produtosDtos = [];
+            foreach (Produto produto in produtos)
+            {
+                if (produto.Situacao == SituacaoProdutoEnum.ATIVO)
+                {
+                    ProdutoReadDTO dto = new ProdutoReadDTO();
+
+                    dto.Id = produto.Id.ToString();
+                    dto.Codigo = produto.Codigo;
+                    dto.Situacao = (int)produto.Situacao;
+                    dto.Descricao = produto.Descricao;
+                    dto.Marca = produto.Marca;
+                    dto.QuantidadeEstoque = produto.QuantidadeEstoque;
+                    dto.QuantidadeEstoqueMinimo = produto.QuantidadeEstoqueMinimo;
+                    dto.NCM = produto.NCM;
+                    dto.CodigoBarras = produto.CodigoBarras;
+                    dto.ValorCusto = produto.ValorCusto;
+                    dto.ValorVenda = produto.ValorVenda;
+                    dto.MargemLucro = produto.MargemLucro;
+
+                    produtosDtos.Add(dto);
+                }
+            }
+
+            return produtosDtos;
         }
 
-        public async Task LogicalDeleteByIdAsync(Produto produto)
+        public async Task<IEnumerable<ProdutoReadDTO>> GetByNCM(string ncm)
         {
+            var produtos = await _produtoRepositorio.GetByNCM(ncm);
+            ICollection<ProdutoReadDTO> produtosDtos = [];
+            foreach (Produto produto in produtos)
+            {
+                if (produto.Situacao == SituacaoProdutoEnum.ATIVO)
+                {
+                    ProdutoReadDTO dto = new ProdutoReadDTO();
+
+                    dto.Id = produto.Id.ToString();
+                    dto.Codigo = produto.Codigo;
+                    dto.Situacao = (int)produto.Situacao;
+                    dto.Descricao = produto.Descricao;
+                    dto.Marca = produto.Marca;
+                    dto.QuantidadeEstoque = produto.QuantidadeEstoque;
+                    dto.QuantidadeEstoqueMinimo = produto.QuantidadeEstoqueMinimo;
+                    dto.NCM = produto.NCM;
+                    dto.CodigoBarras = produto.CodigoBarras;
+                    dto.ValorCusto = produto.ValorCusto;
+                    dto.ValorVenda = produto.ValorVenda;
+                    dto.MargemLucro = produto.MargemLucro;
+
+                    produtosDtos.Add(dto);
+                }
+            }
+
+            return produtosDtos;
+        }
+
+        public async Task LogicalDeleteByIdAsync(Guid id)
+        {
+            if (await _produtoRepositorio.Exists(id) == false)
+                throw new ArgumentException("O id fornecido não existe no banco de dados");
+
+            var produto = await _produtoRepositorio.GetByIdAsync(id);
             await _produtoRepositorio.LogicalDeleteByIdAsync(produto);
+        }
+
+        public async Task<IEnumerable<ProdutoReadDTO>> GetAllAsync()
+        {
+            var produtos = await _produtoRepositorio.GetAllAsync();
+            ICollection<ProdutoReadDTO> produtosDtos = [];
+            foreach (Produto produto in produtos)
+            {
+                if (produto.Situacao == SituacaoProdutoEnum.ATIVO)
+                {
+                    ProdutoReadDTO dto = new ProdutoReadDTO();
+
+                    dto.Id = produto.Id.ToString();
+                    dto.Codigo = produto.Codigo;
+                    dto.Situacao = (int)produto.Situacao;
+                    dto.Descricao = produto.Descricao;
+                    dto.Marca = produto.Marca;
+                    dto.QuantidadeEstoque = produto.QuantidadeEstoque;
+                    dto.QuantidadeEstoqueMinimo = produto.QuantidadeEstoqueMinimo;
+                    dto.NCM = produto.NCM;
+                    dto.CodigoBarras = produto.CodigoBarras;
+                    dto.ValorCusto = produto.ValorCusto;
+                    dto.ValorVenda = produto.ValorVenda;
+                    dto.MargemLucro = produto.MargemLucro;
+
+                    produtosDtos.Add(dto);
+                }
+            }
+
+            return produtosDtos;
+        }
+
+        public async Task<ProdutoReadDTO> GetByIdAsync(Guid id)
+        {
+            if (await _produtoRepositorio.Exists(id) == false)
+                throw new ArgumentException("O id fornecido não existe no banco de dados");
+
+            var produto = await _produtoRepositorio.GetByIdAsync(id);
+
+            if (produto.Situacao == SituacaoProdutoEnum.ATIVO)
+            {
+                ProdutoReadDTO dto = new ProdutoReadDTO();
+
+                dto.Id = produto.Id.ToString();
+                dto.Codigo = produto.Codigo;
+                dto.Situacao = (int)produto.Situacao;
+                dto.Descricao = produto.Descricao;
+                dto.Marca = produto.Marca;
+                dto.QuantidadeEstoque = produto.QuantidadeEstoque;
+                dto.QuantidadeEstoqueMinimo = produto.QuantidadeEstoqueMinimo;
+                dto.NCM = produto.NCM;
+                dto.CodigoBarras = produto.CodigoBarras;
+                dto.ValorCusto = produto.ValorCusto;
+                dto.ValorVenda = produto.ValorVenda;
+                dto.MargemLucro = produto.MargemLucro;
+
+                return dto;
+            }
+
+            return null;
+        }
+
+        public async Task AddAsync(Produto produto)
+        {
+            produto.Codigo = await _produtoRepositorio.GetGreaterCodeNumber() + 1;
+            await _produtoRepositorio.AddAsync(produto);
+        }
+
+        public async Task UpdateAsync(Produto produto)
+        {
+            if (await _produtoRepositorio.Exists(produto.Id) == false)
+                throw new ArgumentException("O id fornecido não existe no banco de dados");
+
+            await _produtoRepositorio.UpdateAsync(produto);
         }
     }
 }

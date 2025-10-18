@@ -1,16 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using BlueMoon.DTO;
 using BlueMoon.Entities.Models;
 
 namespace BlueMoon.Services.Interfaces
 {
-    public interface IProdutoService : IService<Produto>
+    public interface IProdutoService
     {
-        Task<IEnumerable<Produto>> GetByDescricao(string descricao);
-        Task<IEnumerable<Produto>> GetByNCM(string ncm);
-        Task<IEnumerable<Produto>> GetByMarca(string marca);
-        Task LogicalDeleteByIdAsync(Produto produto);
+        Task<IEnumerable<ProdutoReadDTO>> GetByDescricao(string descricao);
+        Task<IEnumerable<ProdutoReadDTO>> GetByNCM(string ncm);
+        Task<IEnumerable<ProdutoReadDTO>> GetByMarca(string marca);
+        Task<ProdutoReadDTO> GetByCodigo(int codigo);
+        Task LogicalDeleteByIdAsync(Guid id);
+        Task<ProdutoReadDTO> GetByIdAsync(Guid id);
+        Task<IEnumerable<ProdutoReadDTO>> GetAllAsync();
+        Task AddAsync(Produto produto);
+        Task UpdateAsync(Produto produto);
+        
     }
 }

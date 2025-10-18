@@ -23,55 +23,79 @@ namespace BlueMoon.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Produto>>> Get()
+        public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> Get()
         {
             var itens = await _service.GetAllAsync();
+            if (itens == null)
+                return NoContent();
             return Ok(itens);
         }
 
         [HttpGet("{Id}")]
-        public async Task<ActionResult<Produto>> Get(string Id)
+        public async Task<ActionResult<ProdutoReadDTO>> Get(string Id)
         {
-            var idConvertido = Guid.Parse(Id);
-            var item = await _service.GetByIdAsync(idConvertido);
-            if (item == null)
-                return NotFound();
-            return Ok(item);
+            try
+            {
+                var idConvertido = Guid.Parse(Id);
+                var item = await _service.GetByIdAsync(idConvertido);
+                if (item == null)
+                    return NotFound();
+                return Ok(item);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+
         }
 
         [HttpPost]
-        public async Task<ActionResult<Produto>> Post(ProdutoCreateDTO createDTO)
+        public async Task<ActionResult<ProdutoReadDTO>> Post(ProdutoCreateDTO createDTO)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest(ModelState); 
 
             Produto produto = new Produto(createDTO);
             var id = produto.Id;
             await _service.AddAsync(produto);
-            return CreatedAtAction(nameof(Get), new { id = produto.Id }, produto);
+            return Ok(produto);
         }
 
         [HttpPut]
-        public async Task<ActionResult<Produto>> Put(ProdutoUpdateDTO updateDTO)
+        public async Task<ActionResult<ProdutoReadDTO>> Put(ProdutoUpdateDTO updateDTO)
         {
-            Produto produto = new Produto(updateDTO);
-            await _service.UpdateAsync(produto);
-            return Ok(produto);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                Produto produto = new Produto(updateDTO);
+                await _service.UpdateAsync(produto);
+                return Ok(produto);
+            }
+            catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpDelete("{Id}")]
         public async Task<IActionResult> Delete(string Id)
         {
-            var produto = await _service.GetByIdAsync(Guid.Parse(Id));
-            if (produto == null)
-                return NotFound();
-
-            await _service.LogicalDeleteByIdAsync(produto);
-            return Ok();
+            try
+            {
+                var idConvertido = Guid.Parse(Id);
+                await _service.LogicalDeleteByIdAsync(idConvertido);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet("por-descricao")]
-        public async Task<ActionResult<IEnumerable<Produto>>> GetByDescricao([FromQuery] string descricao)
+        public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> GetByDescricao([FromQuery] string descricao)
         {
             var produtos = await _service.GetByDescricao(descricao.ToUpper());
             if (!produtos.Any())
@@ -81,7 +105,7 @@ namespace BlueMoon.Controllers
         }
 
         [HttpGet("por-ncm")]
-        public async Task<ActionResult<IEnumerable<Produto>>> GetByNCM([FromQuery] string ncm)
+        public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> GetByNCM([FromQuery] string ncm)
         {
             var produtos = await _service.GetByNCM(ncm.ToUpper());
             if (!produtos.Any())
@@ -91,13 +115,23 @@ namespace BlueMoon.Controllers
         }
 
         [HttpGet("por-marca")]
-        public async Task<ActionResult<IEnumerable<Produto>>> GetByMarca([FromQuery] string marca)
+        public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> GetByMarca([FromQuery] string marca)
         {
             var produtos = await _service.GetByMarca(marca.ToUpper());
             if (!produtos.Any())
                 return NotFound();
 
             return Ok(produtos);
+        }
+
+        [HttpGet("por-codigo")]
+        public async Task<ActionResult<ProdutoReadDTO>> GetByCodigo([FromQuery] int codigo)
+        {
+            var produto = await _service.GetByCodigo(codigo);
+            if (produto == null)
+                return NotFound();
+
+            return Ok(produto);
         }
 
     }
