@@ -53,12 +53,11 @@ namespace BlueMoon.Controllers
         public async Task<ActionResult<ProdutoReadDTO>> Post(ProdutoCreateDTO createDTO)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState); 
+                return BadRequest(ModelState);
 
             Produto produto = new Produto(createDTO);
-            var id = produto.Id;
-            await _service.AddAsync(produto);
-            return Ok(produto);
+            var dto = await _service.AddAsync(produto);
+            return Ok(dto);
         }
 
         [HttpPut]
@@ -70,8 +69,8 @@ namespace BlueMoon.Controllers
             try
             {
                 Produto produto = new Produto(updateDTO);
-                await _service.UpdateAsync(produto);
-                return Ok(produto);
+                var dto = await _service.UpdateAsync(produto);
+                return Ok(dto);
             }
             catch(Exception ex)
             {

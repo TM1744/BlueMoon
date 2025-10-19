@@ -12,8 +12,7 @@ namespace BlueMoon.Services.Interfaces
         Task LogicalDeleteByIdAsync(Guid id);
         Task<ProdutoReadDTO> GetByIdAsync(Guid id);
         Task<IEnumerable<ProdutoReadDTO>> GetAllAsync();
-        Task AddAsync(Produto produto);
-        Task UpdateAsync(Produto produto);
-        
+        Task<ProdutoReadDTO> AddAsync(Produto produto);
+        Task<ProdutoReadDTO> UpdateAsync(Produto produto);
     }
 }

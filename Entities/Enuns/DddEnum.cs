@@ -2,6 +2,7 @@ namespace BlueMoon.Entities.Enuns
 {
     public enum DddEnum
     {
+        INDEFINIDO = 0,
         DDD11 = 11, // São Paulo - SP
         DDD12 = 12, // São José dos Campos - SP
         DDD13 = 13, // Santos - SP

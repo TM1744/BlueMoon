@@ -1,19 +1,28 @@
-// using BlueMoon.Entities.Enuns;
-// namespace BlueMoon.Entities.Models
-// {
-//     public class Telefone
-//     {
-//         public Guid Id { get; private set; } = Guid.NewGuid();
-//         public DddEnum DDD { get; set; }
-//         public string Numero { get; set; }
+using System;
+using BlueMoon.Entities.Enuns;
+using BlueMoon.DTO;
 
-//         public Telefone(
-//             DddEnum ddd,
-//             string numero
-//         )
-//         {
-//             DDD = ddd;
-//             Numero = numero;
-//         }
-//     }
-// }
+namespace BlueMoon.Entities.Models
+{
+    public class Telefone
+    {
+        public Guid Id { get; private set; } = Guid.NewGuid();
+        public DddEnum DDD { get; private set; } = DddEnum.INDEFINIDO;
+        public string Numero { get; private set; } = string.Empty;
+
+        private Telefone() { }
+
+        public Telefone(TelefoneCreateDTO create)
+        {
+            DDD = (DddEnum)create.DDD;
+            Numero = create.Numero;
+        }
+        
+        public Telefone(TelefoneUpdateDTO update)
+        {
+            Id = Guid.Parse(update.Id);
+            DDD = (DddEnum)update.DDD;
+            Numero = update.Numero;
+        }
+    }
+}

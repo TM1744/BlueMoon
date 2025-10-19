@@ -1,16 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
 using BlueMoon.DTO;
 using BlueMoon.Entities.Models;
-using BlueMoon.Repositories;
 using BlueMoon.Repositories.Interfaces;
 using BlueMoon.Services.Interfaces;
 using BlueMoon.Entities.Enuns;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace BlueMoon.Services
 {
@@ -27,24 +19,7 @@ namespace BlueMoon.Services
             var produto = await _produtoRepositorio.GetByCodigo(codigo);
 
             if (produto.Situacao == SituacaoProdutoEnum.ATIVO)
-            {
-                ProdutoReadDTO dto = new ProdutoReadDTO();
-
-                dto.Id = produto.Id.ToString();
-                dto.Codigo = produto.Codigo;
-                dto.Situacao = (int)produto.Situacao;
-                dto.Descricao = produto.Descricao;
-                dto.Marca = produto.Marca;
-                dto.QuantidadeEstoque = produto.QuantidadeEstoque;
-                dto.QuantidadeEstoqueMinimo = produto.QuantidadeEstoqueMinimo;
-                dto.NCM = produto.NCM;
-                dto.CodigoBarras = produto.CodigoBarras;
-                dto.ValorCusto = produto.ValorCusto;
-                dto.ValorVenda = produto.ValorVenda;
-                dto.MargemLucro = produto.MargemLucro;
-
-                return dto;
-            }
+                return await BuildDTO(produto);
 
             return null;
         }
@@ -56,24 +31,7 @@ namespace BlueMoon.Services
             foreach (Produto produto in produtos)
             {
                 if (produto.Situacao == SituacaoProdutoEnum.ATIVO)
-                {
-                    ProdutoReadDTO dto = new ProdutoReadDTO();
-
-                    dto.Id = produto.Id.ToString();
-                    dto.Codigo = produto.Codigo;
-                    dto.Situacao = (int)produto.Situacao;
-                    dto.Descricao = produto.Descricao;
-                    dto.Marca = produto.Marca;
-                    dto.QuantidadeEstoque = produto.QuantidadeEstoque;
-                    dto.QuantidadeEstoqueMinimo = produto.QuantidadeEstoqueMinimo;
-                    dto.NCM = produto.NCM;
-                    dto.CodigoBarras = produto.CodigoBarras;
-                    dto.ValorCusto = produto.ValorCusto;
-                    dto.ValorVenda = produto.ValorVenda;
-                    dto.MargemLucro = produto.MargemLucro;
-
-                    produtosDtos.Add(dto);
-                }
+                    produtosDtos.Add(await BuildDTO(produto));
 
             }
 
@@ -87,24 +45,7 @@ namespace BlueMoon.Services
             foreach (Produto produto in produtos)
             {
                 if (produto.Situacao == SituacaoProdutoEnum.ATIVO)
-                {
-                    ProdutoReadDTO dto = new ProdutoReadDTO();
-
-                    dto.Id = produto.Id.ToString();
-                    dto.Codigo = produto.Codigo;
-                    dto.Situacao = (int)produto.Situacao;
-                    dto.Descricao = produto.Descricao;
-                    dto.Marca = produto.Marca;
-                    dto.QuantidadeEstoque = produto.QuantidadeEstoque;
-                    dto.QuantidadeEstoqueMinimo = produto.QuantidadeEstoqueMinimo;
-                    dto.NCM = produto.NCM;
-                    dto.CodigoBarras = produto.CodigoBarras;
-                    dto.ValorCusto = produto.ValorCusto;
-                    dto.ValorVenda = produto.ValorVenda;
-                    dto.MargemLucro = produto.MargemLucro;
-
-                    produtosDtos.Add(dto);
-                }
+                    produtosDtos.Add(await BuildDTO(produto));
             }
 
             return produtosDtos;
@@ -117,24 +58,7 @@ namespace BlueMoon.Services
             foreach (Produto produto in produtos)
             {
                 if (produto.Situacao == SituacaoProdutoEnum.ATIVO)
-                {
-                    ProdutoReadDTO dto = new ProdutoReadDTO();
-
-                    dto.Id = produto.Id.ToString();
-                    dto.Codigo = produto.Codigo;
-                    dto.Situacao = (int)produto.Situacao;
-                    dto.Descricao = produto.Descricao;
-                    dto.Marca = produto.Marca;
-                    dto.QuantidadeEstoque = produto.QuantidadeEstoque;
-                    dto.QuantidadeEstoqueMinimo = produto.QuantidadeEstoqueMinimo;
-                    dto.NCM = produto.NCM;
-                    dto.CodigoBarras = produto.CodigoBarras;
-                    dto.ValorCusto = produto.ValorCusto;
-                    dto.ValorVenda = produto.ValorVenda;
-                    dto.MargemLucro = produto.MargemLucro;
-
-                    produtosDtos.Add(dto);
-                }
+                    produtosDtos.Add(await BuildDTO(produto));
             }
 
             return produtosDtos;
@@ -156,24 +80,7 @@ namespace BlueMoon.Services
             foreach (Produto produto in produtos)
             {
                 if (produto.Situacao == SituacaoProdutoEnum.ATIVO)
-                {
-                    ProdutoReadDTO dto = new ProdutoReadDTO();
-
-                    dto.Id = produto.Id.ToString();
-                    dto.Codigo = produto.Codigo;
-                    dto.Situacao = (int)produto.Situacao;
-                    dto.Descricao = produto.Descricao;
-                    dto.Marca = produto.Marca;
-                    dto.QuantidadeEstoque = produto.QuantidadeEstoque;
-                    dto.QuantidadeEstoqueMinimo = produto.QuantidadeEstoqueMinimo;
-                    dto.NCM = produto.NCM;
-                    dto.CodigoBarras = produto.CodigoBarras;
-                    dto.ValorCusto = produto.ValorCusto;
-                    dto.ValorVenda = produto.ValorVenda;
-                    dto.MargemLucro = produto.MargemLucro;
-
-                    produtosDtos.Add(dto);
-                }
+                    produtosDtos.Add(await BuildDTO(produto));
             }
 
             return produtosDtos;
@@ -187,40 +94,47 @@ namespace BlueMoon.Services
             var produto = await _produtoRepositorio.GetByIdAsync(id);
 
             if (produto.Situacao == SituacaoProdutoEnum.ATIVO)
-            {
-                ProdutoReadDTO dto = new ProdutoReadDTO();
-
-                dto.Id = produto.Id.ToString();
-                dto.Codigo = produto.Codigo;
-                dto.Situacao = (int)produto.Situacao;
-                dto.Descricao = produto.Descricao;
-                dto.Marca = produto.Marca;
-                dto.QuantidadeEstoque = produto.QuantidadeEstoque;
-                dto.QuantidadeEstoqueMinimo = produto.QuantidadeEstoqueMinimo;
-                dto.NCM = produto.NCM;
-                dto.CodigoBarras = produto.CodigoBarras;
-                dto.ValorCusto = produto.ValorCusto;
-                dto.ValorVenda = produto.ValorVenda;
-                dto.MargemLucro = produto.MargemLucro;
-
-                return dto;
-            }
+                return await BuildDTO(produto);
 
             return null;
         }
 
-        public async Task AddAsync(Produto produto)
+        public async Task<ProdutoReadDTO> AddAsync(Produto produto)
         {
             produto.Codigo = await _produtoRepositorio.GetGreaterCodeNumber() + 1;
             await _produtoRepositorio.AddAsync(produto);
+
+            return await BuildDTO(produto);
         }
 
-        public async Task UpdateAsync(Produto produto)
+        public async Task<ProdutoReadDTO> UpdateAsync(Produto produto)
         {
             if (await _produtoRepositorio.Exists(produto.Id) == false)
                 throw new ArgumentException("O id fornecido não existe no banco de dados");
 
             await _produtoRepositorio.UpdateAsync(produto);
+
+            return await BuildDTO(produto);
+        }
+
+        private async Task<ProdutoReadDTO> BuildDTO(Produto produto)
+        {
+            ProdutoReadDTO dto = new ProdutoReadDTO();
+
+            dto.Id = produto.Id.ToString();
+            dto.Codigo = produto.Codigo;
+            dto.Situacao = (int)produto.Situacao;
+            dto.Descricao = produto.Descricao;
+            dto.Marca = produto.Marca;
+            dto.QuantidadeEstoque = produto.QuantidadeEstoque;
+            dto.QuantidadeEstoqueMinimo = produto.QuantidadeEstoqueMinimo;
+            dto.NCM = produto.NCM;
+            dto.CodigoBarras = produto.CodigoBarras;
+            dto.ValorCusto = produto.ValorCusto;
+            dto.ValorVenda = produto.ValorVenda;
+            dto.MargemLucro = produto.MargemLucro;
+
+            return dto;
         }
     }
 }
