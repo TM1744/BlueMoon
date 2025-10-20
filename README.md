@@ -57,7 +57,7 @@ O **BlueMoon** foi desenvolvido com as seguintes tecnologias:
 
 - **Thiago Marques Paixão** – [`TM1744`](https://github.com/TM1744)  
 - **Leonardo Pereira Trindade Comitre** – [`LeonardoPTC`](https://github.com/LeonardoPTC)
-- **Vitor Hugo Calsavara Pita** - [`Pita042`](https://github.com/Pita042)
+- **Vitor Hugo Calsavara Pita** - [`Pita042`](https://github.com/vitorpita)
 
 ---
 
