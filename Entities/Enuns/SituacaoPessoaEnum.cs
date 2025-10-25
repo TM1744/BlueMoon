@@ -2,7 +2,8 @@ namespace BlueMoon.Entities.Enuns
 {
     public enum SituacaoPessoaEnum
     {
-        ATIVO,
-        INATIVO
+        INDEFINIDO = 0,
+        ATIVO = 1,
+        INATIVO = 2
     }
 }

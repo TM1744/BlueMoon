@@ -101,6 +101,9 @@ namespace BlueMoon.Services
 
         public async Task<ProdutoReadDTO> AddAsync(Produto produto)
         {
+            if (!await _produtoRepositorio.ValidateUniqueness(produto))
+                throw new ArgumentException("A descrição do produto ou seu código de barras já foram cadastrados");
+
             produto.Codigo = await _produtoRepositorio.GetGreaterCodeNumber() + 1;
             await _produtoRepositorio.AddAsync(produto);
 
@@ -111,6 +114,9 @@ namespace BlueMoon.Services
         {
             if (await _produtoRepositorio.Exists(produto.Id) == false)
                 throw new ArgumentException("O id fornecido não existe no banco de dados");
+
+            if (!await _produtoRepositorio.ValidateUniqueness(produto))
+                throw new ArgumentException("A descrição do produto ou seu código de barras já foram cadastrados");
 
             await _produtoRepositorio.UpdateAsync(produto);
 

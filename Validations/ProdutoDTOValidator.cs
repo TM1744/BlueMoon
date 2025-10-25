@@ -19,7 +19,7 @@ namespace BlueMoon.Validations
 
             RuleFor(dto => dto.QuantidadeEstoque)
                 .NotNull().WithMessage("Quantidade em estoque é obrigatório")
-                .GreaterThan(0).WithMessage("Quantidade em estoque deve ser maior ou igual a zero");
+                .GreaterThanOrEqualTo(0).WithMessage("Quantidade em estoque deve ser maior ou igual a zero");
 
             RuleFor(dto => dto.QuantidadeEstoqueMinimo)
                 .GreaterThanOrEqualTo(0).WithMessage("Quantidade mínima de estoque deve ser maior do que zero");
@@ -66,7 +66,7 @@ namespace BlueMoon.Validations
 
             RuleFor(dto => dto.QuantidadeEstoque)
                 .NotNull().WithMessage("Quantidade em estoque é obrigatório")
-                .GreaterThan(0).WithMessage("Quantidade em estoque deve ser maior ou igual a zero");
+                .GreaterThanOrEqualTo(0).WithMessage("Quantidade em estoque deve ser maior ou igual a zero");
 
             RuleFor(dto => dto.QuantidadeEstoqueMinimo)
                 .GreaterThanOrEqualTo(0).WithMessage("Quantidade mínima de estoque deve ser maior do que zero");

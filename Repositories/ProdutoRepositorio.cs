@@ -51,5 +51,13 @@ namespace BlueMoon.Repositories
         {
             return await _dbSet.Select(x => (int?)x.Codigo).MaxAsync() ?? 0;
         }
+
+        public async Task<bool> ValidateUniqueness(Produto produto)
+        {
+            return !await _dbSet.AnyAsync(x =>
+                (x.Descricao == produto.Descricao ||
+                (x.CodigoBarras == produto.CodigoBarras && produto.CodigoBarras != ""))
+                && x.Id != produto.Id);
+        }
     }
 }

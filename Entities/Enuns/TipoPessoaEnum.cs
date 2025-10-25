@@ -2,10 +2,8 @@ namespace BlueMoon.Entities.Enuns
 {
     public enum TipoPessoaEnum
     {
-        CLIENTE_PF,
-        CLIENTE_PJ,
-        FUNCIONARIO,
-        GERENTE,
-        ADMIN
+        INDEFINIDO = 0,
+        PESSOA_FISICA = 1,
+        PESSOA_JURIDICA = 2
     }
 }

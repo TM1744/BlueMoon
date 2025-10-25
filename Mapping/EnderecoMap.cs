@@ -12,12 +12,12 @@ namespace BlueMoon.Mapping
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id).HasColumnName("id").HasMaxLength(36);
-            builder.Property(x => x.CEP).HasColumnName("cep").IsRequired();
-            builder.Property(x => x.Logradouro).HasColumnName("logradouro").IsRequired();
-            builder.Property(x => x.Numero).HasColumnName("numero").IsRequired();
-            builder.Property(x => x.Complemento).HasColumnName("complemento");
-            builder.Property(x => x.Bairro).HasColumnName("bairro").IsRequired();
-            builder.Property(x => x.Cidade).HasColumnName("cidade").IsRequired();
+            builder.Property(x => x.CEP).HasColumnName("cep").HasMaxLength(8).IsRequired();
+            builder.Property(x => x.Logradouro).HasColumnName("logradouro").HasMaxLength(100).IsRequired();
+            builder.Property(x => x.Numero).HasColumnName("numero").HasMaxLength(10).IsRequired();
+            builder.Property(x => x.Complemento).HasColumnName("complemento").HasMaxLength(40);
+            builder.Property(x => x.Bairro).HasColumnName("bairro").HasMaxLength(70).IsRequired();
+            builder.Property(x => x.Cidade).HasColumnName("cidade").HasMaxLength(50).IsRequired();
             builder.Property(x => x.Estado).HasColumnName("estado").HasColumnType("int").IsRequired();
         }
     }
