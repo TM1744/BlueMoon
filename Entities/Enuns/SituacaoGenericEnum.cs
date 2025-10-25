@@ -1,6 +1,6 @@
 namespace BlueMoon.Entities.Enuns
 {
-    public enum SituacaoPessoaEnum
+    public enum SituacaoGenericEnum
     {
         INDEFINIDO = 0,
         ATIVO = 1,

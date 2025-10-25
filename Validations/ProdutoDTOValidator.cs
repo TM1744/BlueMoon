@@ -10,6 +10,7 @@ namespace BlueMoon.Validations
     {
         public ProdutoCreateDTOValidator()
         {
+
             RuleFor(dto => dto.Descricao)
                 .NotEmpty().WithMessage("Descrição do produto é obrigatória")
                 .MaximumLength(70).WithMessage("Descrição não deve ter mais de 70 caracteres");
