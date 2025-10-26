@@ -10,9 +10,12 @@ namespace BlueMoon.Validations
     {
         public ProdutoCreateDTOValidator()
         {
+            RuleFor(dto => dto.Nome)
+                .NotEmpty().WithMessage("Nome do produto é obrigatório")
+                .MaximumLength(70).WithMessage("Nome não deve ter mais de 70 caracteres");
+
             RuleFor(dto => dto.Descricao)
-                .NotEmpty().WithMessage("Descrição do produto é obrigatória")
-                .MaximumLength(70).WithMessage("Descrição não deve ter mais de 70 caracteres");
+                .MaximumLength(100).WithMessage("Descrição não deve ter mais de 100 caracteres");
 
             RuleFor(dto => dto.Marca)
                 .MaximumLength(50).WithMessage("Marca não deve ter mais de 50 caracteres");
@@ -57,9 +60,12 @@ namespace BlueMoon.Validations
                 .GreaterThanOrEqualTo(0).WithMessage("Situação do produto é inválida")
                 .LessThanOrEqualTo(4).WithMessage("Situação do produto é inválida");
 
+            RuleFor(dto => dto.Nome)
+                .NotEmpty().WithMessage("Nome do produto é obrigatório")
+                .MaximumLength(70).WithMessage("Nome não deve ter mais de 70 caracteres");
+
             RuleFor(dto => dto.Descricao)
-                .NotEmpty().WithMessage("Descrição do produto é obrigatória")
-                .MaximumLength(70).WithMessage("Descrição não deve ter mais de 70 caracteres");
+                .MaximumLength(100).WithMessage("Descrição não deve ter mais de 100 caracteres");
 
             RuleFor(dto => dto.Marca)
                 .MaximumLength(50).WithMessage("Marca não deve ter mais de 50 caracteres");

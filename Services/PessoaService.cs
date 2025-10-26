@@ -155,10 +155,23 @@ namespace BlueMoon.Services
             foreach (Telefone telefone in pessoa.Telefones)
             {
                 TelefoneReadDTO telefoneDTO = new TelefoneReadDTO();
+                telefoneDTO.Id = telefone.Id.ToString();
                 telefoneDTO.DDD = (int)telefone.DDD;
                 telefoneDTO.Numero = telefone.Numero;
                 dto.Telefones.Add(telefoneDTO);
             }
+
+            EnderecoReadDTO endereco = new EnderecoReadDTO();
+            endereco.Id = pessoa.Endereco.Id.ToString();
+            endereco.CEP = pessoa.Endereco.CEP;
+            endereco.Logradouro = pessoa.Endereco.Logradouro;
+            endereco.Complemento = pessoa.Endereco.Complemento;
+            endereco.Cidade = pessoa.Endereco.Cidade;
+            endereco.Bairro = pessoa.Endereco.Bairro;
+            endereco.Numero = pessoa.Endereco.Numero;
+            endereco.Estado = (int)pessoa.Endereco.Estado;
+
+            dto.Endereco = endereco;
 
             return dto;
         }

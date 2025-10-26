@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using BlueMoon.DTO;
 using BlueMoon.Entities.Enuns;
 namespace BlueMoon.Entities.Models
@@ -17,31 +18,41 @@ namespace BlueMoon.Entities.Models
 
         public Endereco(EnderecoCreateDTO create)
         {
-            if (create.Logradouro.Trim().Equals(""))
-                create.Logradouro = "SEM COMPLEMENTO";
-
-            CEP = create.CEP;
-            Logradouro = create.Logradouro;
-            Numero = create.Logradouro;
-            Complemento = create.Logradouro;
-            Bairro = create.Logradouro;
-            Cidade = create.Cidade;
+            CEP = SequenceNumberString(create.CEP);
+            Logradouro = NotEmptyString(create.Logradouro);
+            Numero = NotEmptyString(create.Numero);
+            Complemento = NotEmptyString(create.Complemento);
+            Bairro = NotEmptyString(create.Bairro);
+            Cidade = NotEmptyString(create.Cidade);
             Estado = (EstadoEnum)create.Estado;
         }
 
         public Endereco(EnderecoUpdateDTO update)
         {
-            if (update.Logradouro.Trim().Equals(""))
-                update.Logradouro = "SEM COMPLEMENTO";
-
             Id = Guid.Parse(update.Id);
-            CEP = update.CEP;
-            Logradouro = update.Logradouro;
-            Numero = update.Logradouro;
-            Complemento = update.Logradouro;
-            Bairro = update.Logradouro;
-            Cidade = update.Cidade;
+            CEP = SequenceNumberString(update.CEP);
+            Logradouro = NotEmptyString(update.Logradouro);
+            Numero = NotEmptyString(update.Numero);
+            Complemento = NotEmptyString(update.Complemento);
+            Bairro = NotEmptyString(update.Bairro);
+            Cidade = NotEmptyString(update.Cidade);
             Estado = (EstadoEnum)update.Estado;
+        }
+
+        private string NotEmptyString(string str)
+        {
+            if (str == null || str.Trim() == "")
+                return "N/D";
+
+            return str.ToUpper();
+        }
+        private string SequenceNumberString(string str)
+        {
+            if (str == null || str.Trim() == "")
+                return "N/D";
+
+            str = Regex.Replace(str, "[^0-9]", "");
+            return str.ToUpper();
         }
     }
 }

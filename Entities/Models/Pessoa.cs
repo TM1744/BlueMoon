@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using BlueMoon.DTO;
 using BlueMoon.Entities.Enuns;
 using Microsoft.AspNetCore.Diagnostics;
@@ -16,29 +17,35 @@ namespace BlueMoon.Entities.Models
         public string Documento { get; private set; } = string.Empty;
         public string InscricaoMunicipal { get; private set; } = string.Empty;
         public string InscricaoEstadual { get; private set; } = string.Empty;
-        public Endereco? Endereco { get; private set; }
+        public Endereco Endereco { get; private set; }
 
+        private Pessoa(){}
         public Pessoa(PessoaCreateDTO create)
         {
             Tipo = (TipoPessoaEnum)create.Tipo;
             Situacao = SituacaoPessoaEnum.ATIVO;
-            Email = create.Email;
-            Nome = create.Nome;
-            Documento = create.Documento;
-            InscricaoMunicipal = create.InscricaoMunicipal;
-            InscricaoEstadual = create.InscricaoEstadual;
+            Email = NotEmptyString(create.Email);
+            Nome = NotEmptyString(create.Nome);
+            Documento = SequenceNumberString(create.Documento);
+            InscricaoMunicipal = SequenceNumberString(create.InscricaoMunicipal);
+            InscricaoEstadual = SequenceNumberString(create.InscricaoEstadual);
             Endereco = new Endereco(create.Endereco);
 
+
             foreach (TelefoneCreateDTO telefone in create.Telefones)
-                AdicionarTelefone(new Telefone(telefone));
+                AdicionarTelefone(new Telefone(telefone));                
+
         }
         
         public Pessoa(PessoaUpdateDTO update)
         {
             Id = Guid.Parse(update.Id);
             Situacao = (SituacaoPessoaEnum)update.Situacao;
-            Nome = update.Nome;
-            Email = update.Email;
+            Nome = NotEmptyString(update.Nome);
+            Email = NotEmptyString(update.Email);
+            Documento = SequenceNumberString(update.Documento);
+            InscricaoMunicipal = SequenceNumberString(update.InscricaoMunicipal);
+            InscricaoEstadual = SequenceNumberString(update.InscricaoEstadual);
             Endereco = new Endereco(update.Endereco);
 
             foreach (TelefoneUpdateDTO telefone in update.Telefones)
@@ -59,5 +66,21 @@ namespace BlueMoon.Entities.Models
         }
 
         public void Inativar() => Situacao = SituacaoPessoaEnum.INATIVO;
+        
+        private string NotEmptyString(string str)
+        {
+            if (str == null || str.Trim() == "")
+                return "N/D";
+
+            return str.ToUpper();
+        }
+        private string SequenceNumberString(string str)
+        {
+            if (str == null || str.Trim() == "")
+                return "N/D";
+
+            str = Regex.Replace(str, "[^0-9]", "");
+            return str.ToUpper();
+        }
     }
 }

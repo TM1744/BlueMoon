@@ -5,7 +5,7 @@ namespace BlueMoon.Services.Interfaces
 {
     public interface IProdutoService
     {
-        Task<IEnumerable<ProdutoReadDTO>> GetByDescricao(string descricao);
+        Task<IEnumerable<ProdutoReadDTO>> GetByNome(string nome);
         Task<IEnumerable<ProdutoReadDTO>> GetByNCM(string ncm);
         Task<IEnumerable<ProdutoReadDTO>> GetByMarca(string marca);
         Task<ProdutoReadDTO> GetByCodigo(int codigo);

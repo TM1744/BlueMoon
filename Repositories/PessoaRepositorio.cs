@@ -18,6 +18,17 @@ namespace BlueMoon.Repositories
         public PessoaRepositorio(MySqlDataBaseContext context) : base(context)
         {
         }
+        public override async Task<IEnumerable<Pessoa>?> GetAllAsync()
+        {
+            return await _dbSet.Include(x => x.Endereco)
+                .Include(y => y.Telefones).ToListAsync();
+        }
+
+        public override async Task<Pessoa?> GetByIdAsync(Guid id)
+        {
+            return await _dbSet.Include(x => x.Endereco)
+                .Include(x => x.Telefones).FirstOrDefaultAsync();
+        }
 
         public async Task<bool> Exists(Guid id)
         {
@@ -78,9 +89,9 @@ namespace BlueMoon.Repositories
         public async Task<bool> ValidateUniqueness(Pessoa pessoa)
         {
             return !await _dbSet.AnyAsync(x =>
-            ((x.Documento == pessoa.Documento && pessoa.Documento != "") ||
-            (x.InscricaoEstadual == pessoa.InscricaoEstadual && pessoa.InscricaoEstadual != "") ||
-            (x.InscricaoMunicipal == pessoa.InscricaoMunicipal && pessoa.InscricaoMunicipal != ""))
+            ((x.Documento == pessoa.Documento && pessoa.Documento != "N/D") ||
+            (x.InscricaoEstadual == pessoa.InscricaoEstadual && pessoa.InscricaoEstadual != "N/D") ||
+            (x.InscricaoMunicipal == pessoa.InscricaoMunicipal && pessoa.InscricaoMunicipal != "N/D"))
             && x.Id != pessoa.Id);
         }
     }

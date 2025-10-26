@@ -9,7 +9,7 @@ namespace BlueMoon.DTO
         public string Documento { get; set; } = string.Empty;
         public string InscricaoMunicipal { get; set; } = string.Empty;
         public string InscricaoEstadual { get; set; } = string.Empty;
-        public EnderecoCreateDTO? Endereco { get; set; }
+        public EnderecoCreateDTO Endereco { get; set; } = new EnderecoCreateDTO();
     }
 
     public class PessoaUpdateDTO
@@ -19,7 +19,10 @@ namespace BlueMoon.DTO
         public string Nome { get; set; } = string.Empty;
         public ICollection<TelefoneUpdateDTO> Telefones { get; set; } = [];
         public string Email { get; set; } = string.Empty;
-        public EnderecoUpdateDTO? Endereco { get; set; }
+        public string Documento { get; set; } = string.Empty;
+        public string InscricaoMunicipal { get; set; } = string.Empty;
+        public string InscricaoEstadual { get; set; } = string.Empty;
+        public EnderecoUpdateDTO Endereco { get; set; } = new EnderecoUpdateDTO();
     }
 
     public class PessoaReadDTO
@@ -34,6 +37,6 @@ namespace BlueMoon.DTO
         public string Email { get; set; } = string.Empty;
         public string InscricaoMunicipal { get; set; } = string.Empty;
         public string InscricaoEstadual { get; set; } = string.Empty;
-        public EnderecoReadDTO? Endereco { get; set; }
+        public EnderecoReadDTO Endereco { get; set; } = new EnderecoReadDTO();
     }
 }

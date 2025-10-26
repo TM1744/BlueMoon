@@ -13,7 +13,8 @@ namespace BlueMoon.Mapping
             builder.Property(x => x.Id).HasColumnName("id").HasMaxLength(36);
             builder.Property(x => x.Codigo).HasColumnName("codigo");
             builder.Property(x => x.Situacao).HasColumnName("situacao").HasColumnType("int").IsRequired();
-            builder.Property(x => x.Descricao).HasColumnName("descricao").HasMaxLength(70).IsRequired();
+            builder.Property(x => x.Nome).HasColumnName("nome").HasMaxLength(70).IsRequired();
+            builder.Property(x => x.Descricao).HasColumnName("descricao").HasMaxLength(100);
             builder.Property(x => x.Marca).HasColumnName("marca").HasMaxLength(50);
             builder.Property(x => x.QuantidadeEstoque).HasColumnName("quantidade_estoque").IsRequired();
             builder.Property(x => x.QuantidadeEstoqueMinimo).HasColumnName("quantidade_estoque_minimo");

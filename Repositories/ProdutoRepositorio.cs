@@ -12,9 +12,9 @@ namespace BlueMoon.Repositories
         {
         }
 
-        public async Task<IEnumerable<Produto>> GetByDescricao(string descricao)
+        public async Task<IEnumerable<Produto>> GetByNome(string nome)
         {
-            return await _dbSet.Where(x => x.Descricao.Contains(descricao)).ToListAsync();
+            return await _dbSet.Where(x => x.Nome.Contains(nome)).ToListAsync();
         }
 
         public async Task<IEnumerable<Produto>> GetByMarca(string marca)
@@ -56,7 +56,7 @@ namespace BlueMoon.Repositories
         {
             return !await _dbSet.AnyAsync(x =>
                 (x.Descricao == produto.Descricao ||
-                (x.CodigoBarras == produto.CodigoBarras && produto.CodigoBarras != ""))
+                (x.CodigoBarras == produto.CodigoBarras && produto.CodigoBarras != "N/D"))
                 && x.Id != produto.Id);
         }
     }

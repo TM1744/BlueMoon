@@ -4,6 +4,7 @@ using BlueMoon.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlueMoon.Migrations
 {
     [DbContext(typeof(MySqlDataBaseContext))]
-    partial class MySqlDataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20251025170643_Migration_1.0.0.2")]
+    partial class Migration_1002
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,13 +73,7 @@ namespace BlueMoon.Migrations
                         .HasColumnType("varchar(10)")
                         .HasColumnName("numero");
 
-                    b.Property<Guid?>("id_pessoa")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("id_pessoa")
-                        .IsUnique();
 
                     b.ToTable("Enderecos");
                 });
@@ -125,7 +122,13 @@ namespace BlueMoon.Migrations
                         .HasColumnType("int")
                         .HasColumnName("tipo");
 
+                    b.Property<Guid?>("id_endereco")
+                        .HasColumnType("char(36)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("id_endereco")
+                        .IsUnique();
 
                     b.ToTable("Pessoas");
                 });
@@ -150,8 +153,8 @@ namespace BlueMoon.Migrations
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(70)
+                        .HasColumnType("varchar(70)")
                         .HasColumnName("descricao");
 
                     b.Property<string>("Marca")
@@ -168,12 +171,6 @@ namespace BlueMoon.Migrations
                         .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("ncm");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(70)
-                        .HasColumnType("varchar(70)")
-                        .HasColumnName("nome");
 
                     b.Property<int>("QuantidadeEstoque")
                         .HasColumnType("int")
@@ -228,12 +225,14 @@ namespace BlueMoon.Migrations
                     b.ToTable("Telefones");
                 });
 
-            modelBuilder.Entity("BlueMoon.Entities.Models.Endereco", b =>
+            modelBuilder.Entity("BlueMoon.Entities.Models.Pessoa", b =>
                 {
-                    b.HasOne("BlueMoon.Entities.Models.Pessoa", null)
-                        .WithOne("Endereco")
-                        .HasForeignKey("BlueMoon.Entities.Models.Endereco", "id_pessoa")
+                    b.HasOne("BlueMoon.Entities.Models.Endereco", "Endereco")
+                        .WithOne()
+                        .HasForeignKey("BlueMoon.Entities.Models.Pessoa", "id_endereco")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Endereco");
                 });
 
             modelBuilder.Entity("BlueMoon.Entities.Models.Telefone", b =>
@@ -247,9 +246,6 @@ namespace BlueMoon.Migrations
 
             modelBuilder.Entity("BlueMoon.Entities.Models.Pessoa", b =>
                 {
-                    b.Navigation("Endereco")
-                        .IsRequired();
-
                     b.Navigation("Telefones");
                 });
 #pragma warning restore 612, 618

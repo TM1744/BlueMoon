@@ -1,6 +1,7 @@
 using System;
 using BlueMoon.Entities.Enuns;
 using BlueMoon.DTO;
+using System.Text.RegularExpressions;
 
 namespace BlueMoon.Entities.Models
 {
@@ -15,14 +16,25 @@ namespace BlueMoon.Entities.Models
         public Telefone(TelefoneCreateDTO create)
         {
             DDD = (DddEnum)create.DDD;
-            Numero = create.Numero;
+            Numero = SequenceNumberString(create.Numero);
         }
-        
+
         public Telefone(TelefoneUpdateDTO update)
         {
-            Id = Guid.Parse(update.Id);
+            if (!(update.Id == ""))
+                Id = Guid.Parse(update.Id);
+                
             DDD = (DddEnum)update.DDD;
-            Numero = update.Numero;
+            Numero = SequenceNumberString(update.Numero);
+        }
+        
+        private string SequenceNumberString(string str)
+        {
+            if (str == null || str.Trim() == "")
+                return "N/D";
+
+            str = Regex.Replace(str, "[^0-9]", "");
+            return str.ToUpper();
         }
     }
 }

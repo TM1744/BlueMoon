@@ -29,7 +29,7 @@ namespace BlueMoon.Mapping
             builder
                 .HasOne(x => x.Endereco)
                 .WithOne()
-                .HasForeignKey("id_endereco")
+                .HasForeignKey<Endereco>("id_pessoa")
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired(false);
         }

@@ -19,9 +19,11 @@ builder.Services.AddDbContext<MySqlDataBaseContext>(options =>
 // Configuração de repositórios
 builder.Services.AddScoped(typeof(IRepositorio<>), typeof(Repositorio<>));
 builder.Services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
+builder.Services.AddScoped<IPessoaRepositorio, PessoaRepositorio>();
 
 // Configuração de serviços
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
+builder.Services.AddScoped<IPessoaService, PessoaService>();
 
 // Configuração do validadores
 builder.Services.AddControllers()

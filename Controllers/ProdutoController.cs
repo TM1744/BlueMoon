@@ -13,11 +13,11 @@ namespace BlueMoon.Controllers
 {
     [ApiController]
     [Route("/BlueMoon/[Controller]")]
-    public class ProdutoController : ControllerBase
+    public class ProdutosController : ControllerBase
     {
         private readonly IProdutoService _service;
 
-        public ProdutoController(IProdutoService service)
+        public ProdutosController(IProdutoService service)
         {
             _service = service;
         }
@@ -100,17 +100,17 @@ namespace BlueMoon.Controllers
             }
         }
 
-        [HttpGet("por-descricao")]
-        public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> GetByDescricao([FromQuery] string descricao)
+        [HttpGet("/por-nome")]
+        public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> GetByNome([FromQuery] string nome)
         {
-            var produtos = await _service.GetByDescricao(descricao.ToUpper());
+            var produtos = await _service.GetByNome(nome.ToUpper());
             if (!produtos.Any())
                 return NotFound();
 
             return Ok(produtos);
         }
 
-        [HttpGet("por-ncm")]
+        [HttpGet("/por-ncm")]
         public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> GetByNCM([FromQuery] string ncm)
         {
             var produtos = await _service.GetByNCM(ncm.ToUpper());
@@ -120,7 +120,7 @@ namespace BlueMoon.Controllers
             return Ok(produtos);
         }
 
-        [HttpGet("por-marca")]
+        [HttpGet("/por-marca")]
         public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> GetByMarca([FromQuery] string marca)
         {
             var produtos = await _service.GetByMarca(marca.ToUpper());
@@ -130,7 +130,7 @@ namespace BlueMoon.Controllers
             return Ok(produtos);
         }
 
-        [HttpGet("por-codigo")]
+        [HttpGet("/por-codigo")]
         public async Task<ActionResult<ProdutoReadDTO>> GetByCodigo([FromQuery] int codigo)
         {
             var produto = await _service.GetByCodigo(codigo);

@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using BlueMoon.DTO;
 using BlueMoon.Entities.Enuns;
 
@@ -6,6 +7,7 @@ namespace BlueMoon.Entities.Models
     public sealed class Produto
     {
         public Guid Id { get; private set; } = Guid.NewGuid();
+        public string Nome { get; private set; } = string.Empty;
         public string Descricao { get; private set; } = string.Empty;
         public string Marca { get; private set; } = string.Empty; // n obrigatorio
         public int Codigo { get; set; }
@@ -20,33 +22,35 @@ namespace BlueMoon.Entities.Models
 
         private Produto() { }
 
-        public Produto(ProdutoCreateDTO createDTO)
+        public Produto(ProdutoCreateDTO dto)
         {
-            Descricao = createDTO.Descricao.ToUpper();
-            Marca = createDTO.Marca.ToUpper();
-            QuantidadeEstoque = createDTO.QuantidadeEstoque;
-            QuantidadeEstoqueMinimo = createDTO.QuantidadeEstoqueMinimo;
-            NCM = createDTO.NCM;
-            CodigoBarras = createDTO.CodigoBarras;
+            Nome = NotEmptyString(dto.Nome);
+            Descricao = NotEmptyString(dto.Descricao);
+            Marca = NotEmptyString(dto.Marca);
+            QuantidadeEstoque = dto.QuantidadeEstoque;
+            QuantidadeEstoqueMinimo = dto.QuantidadeEstoqueMinimo;
+            NCM = SequenceNumberString(dto.NCM);
+            CodigoBarras = NotEmptyString(dto.CodigoBarras);
             Situacao = SituacaoProdutoEnum.ATIVO;
-            ValorCusto = decimal.Round(createDTO.ValorCusto, 2);
-            ValorVenda = decimal.Round(createDTO.ValorVenda, 2);
-            MargemLucro = decimal.Round(createDTO.MargemLucro, 2);
+            ValorCusto = decimal.Round(dto.ValorCusto, 2);
+            ValorVenda = decimal.Round(dto.ValorVenda, 2);
+            MargemLucro = decimal.Round(dto.MargemLucro, 2);
         }
 
-        public Produto(ProdutoUpdateDTO updateDTO)
+        public Produto(ProdutoUpdateDTO dto)
         {
-            Id = Guid.Parse(updateDTO.Id);
-            Situacao = (SituacaoProdutoEnum)updateDTO.Situacao;
-            Descricao = updateDTO.Descricao.ToUpper();
-            Marca = updateDTO.Marca.ToUpper();
-            QuantidadeEstoque = updateDTO.QuantidadeEstoque;
-            QuantidadeEstoqueMinimo = updateDTO.QuantidadeEstoqueMinimo;
-            NCM = updateDTO.NCM;
-            CodigoBarras = updateDTO.CodigoBarras;
-            ValorCusto = decimal.Round(updateDTO.ValorCusto, 2);
-            ValorVenda = decimal.Round(updateDTO.ValorVenda, 2);
-            MargemLucro = decimal.Round(updateDTO.MargemLucro, 2);
+            Id = Guid.Parse(dto.Id);
+            Nome = NotEmptyString(dto.Nome);
+            Descricao = NotEmptyString(dto.Descricao);
+            Marca = NotEmptyString(dto.Marca);
+            QuantidadeEstoque = dto.QuantidadeEstoque;
+            QuantidadeEstoqueMinimo = dto.QuantidadeEstoqueMinimo;
+            NCM = SequenceNumberString(dto.NCM);
+            CodigoBarras = NotEmptyString(dto.CodigoBarras);
+            Situacao = (SituacaoProdutoEnum)dto.Situacao;
+            ValorCusto = decimal.Round(dto.ValorCusto, 2);
+            ValorVenda = decimal.Round(dto.ValorVenda, 2);
+            MargemLucro = decimal.Round(dto.MargemLucro, 2);
         }
 
         public void AdicionarEstoque(int quantidade)
@@ -75,5 +79,21 @@ namespace BlueMoon.Entities.Models
         }
 
         public decimal CalcularMargemLucro() => Math.Round(ValorCusto * (1 + (MargemLucro / 100)), 2);
+
+        private string NotEmptyString(string str)
+        {
+            if (str == null || str.Trim() == "")
+                return "N/D";
+
+            return str.ToUpper();
+        }
+        private string SequenceNumberString(string str)
+        {
+            if (str == null || str.Trim() == "")
+                return "N/D";
+
+            str = Regex.Replace(str, "[^0-9]", "");
+            return str.ToUpper();
+        }
     }
 }

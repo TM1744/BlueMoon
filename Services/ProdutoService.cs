@@ -24,9 +24,9 @@ namespace BlueMoon.Services
             return null;
         }
 
-        public async Task<IEnumerable<ProdutoReadDTO>> GetByDescricao(string descricao)
+        public async Task<IEnumerable<ProdutoReadDTO>> GetByNome(string descricao)
         {
-            var produtos = await _produtoRepositorio.GetByDescricao(descricao);
+            var produtos = await _produtoRepositorio.GetByNome(descricao);
             ICollection<ProdutoReadDTO> produtosDtos = [];
             foreach (Produto produto in produtos)
             {
@@ -130,6 +130,7 @@ namespace BlueMoon.Services
             dto.Id = produto.Id.ToString();
             dto.Codigo = produto.Codigo;
             dto.Situacao = (int)produto.Situacao;
+            dto.Nome = produto.Nome;
             dto.Descricao = produto.Descricao;
             dto.Marca = produto.Marca;
             dto.QuantidadeEstoque = produto.QuantidadeEstoque;
