@@ -9,6 +9,7 @@ using BlueMoon.DTO;
 using BlueMoon.Entities.Enuns;
 using BlueMoon.Entities.Models;
 using BlueMoon.Repositories.Interfaces;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlueMoon.Repositories
@@ -18,26 +19,20 @@ namespace BlueMoon.Repositories
         public PessoaRepositorio(MySqlDataBaseContext context) : base(context)
         {
         }
-        public override async Task<IEnumerable<Pessoa>?> GetAllAsync()
-        {
-            return await _dbSet.Include(x => x.Endereco)
-                .Include(y => y.Telefones).ToListAsync();
-        }
 
-        public override async Task<Pessoa?> GetByIdAsync(Guid id)
+        public override async Task<IEnumerable<Pessoa>> GetAllAsync()
         {
-            return await _dbSet.Include(x => x.Endereco)
-                .Include(x => x.Telefones).FirstOrDefaultAsync();
+            return await _dbSet.Where(x => x.Situacao == SituacaoPessoaEnum.ATIVO).ToListAsync();
         }
 
         public async Task<bool> Exists(Guid id)
         {
-            return await _dbSet.AnyAsync(x => x.Id == id);
+            return await _dbSet.AnyAsync(x => x.Id == id && x.Situacao == SituacaoPessoaEnum.ATIVO);
         }
 
         public async Task<Pessoa?> GetByCodigo(int codigo)
         {
-            return await _dbSet.FirstOrDefaultAsync(x => x.Codigo == codigo 
+            return await _dbSet.FirstOrDefaultAsync(x => x.Codigo == codigo
              && x.Situacao == SituacaoPessoaEnum.ATIVO);
         }
 
@@ -50,11 +45,11 @@ namespace BlueMoon.Repositories
         public async Task<IEnumerable<Pessoa?>> GetByLocal(string local)
         {
             return await _dbSet.Where(x =>
-             (x.Endereco.Logradouro.Contains(local) ||
-             x.Endereco.Cidade.Contains(local) ||
-             x.Endereco.Complemento.Contains(local) ||
-             x.Endereco.Bairro.Contains(local) ||
-             x.Endereco.Numero.Contains(local))
+             (x.Logradouro.Contains(local) ||
+             x.Cidade.Contains(local) ||
+             x.Complemento.Contains(local) ||
+             x.Bairro.Contains(local) ||
+             x.Numero.Contains(local))
              && x.Situacao == SituacaoPessoaEnum.ATIVO).ToListAsync();
         }
 
@@ -66,9 +61,8 @@ namespace BlueMoon.Repositories
 
         public async Task<IEnumerable<Pessoa?>> GetByTelefone(string telefone)
         {
-            return await _dbSet.Where(x => x.Telefones.Any(
-                t => t.Numero == telefone)
-                && x.Situacao == SituacaoPessoaEnum.ATIVO).ToListAsync();
+            return await _dbSet.Where(x => x.Telefone.Contains(telefone) &&
+                x.Situacao == SituacaoPessoaEnum.ATIVO).ToListAsync();
         }
 
         public async Task<int> GetGreaterCodeNumber()
@@ -78,12 +72,10 @@ namespace BlueMoon.Repositories
 
         public async Task LogicalDeleteByIdAsync(Pessoa pessoa)
         {
-            if(pessoa.Situacao != SituacaoPessoaEnum.INATIVO)
-            {
-                pessoa.Inativar();
-                _dbSet.Update(pessoa);
-                await _context.SaveChangesAsync();
-            }
+
+            pessoa.Inativar();
+            _dbSet.Update(pessoa);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> ValidateUniqueness(Pessoa pessoa)
@@ -92,7 +84,7 @@ namespace BlueMoon.Repositories
             ((x.Documento == pessoa.Documento && pessoa.Documento != "N/D") ||
             (x.InscricaoEstadual == pessoa.InscricaoEstadual && pessoa.InscricaoEstadual != "N/D") ||
             (x.InscricaoMunicipal == pessoa.InscricaoMunicipal && pessoa.InscricaoMunicipal != "N/D"))
-            && x.Id != pessoa.Id);
+            && x.Id != pessoa.Id && x.Situacao == SituacaoPessoaEnum.ATIVO);
         }
     }
 }

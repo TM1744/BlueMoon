@@ -1,5 +1,6 @@
 using BlueMoon.DTO;
 using BlueMoon.Entities.Models;
+using BlueMoon.Services;
 using BlueMoon.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,10 +20,14 @@ namespace BlueMoon.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PessoaReadDTO>>> Get()
         {
-            var itens = await _service.GetAllAsync();
-            if (!itens.Any())
-                return NotFound("Não há nenhuma pessoa cadastrada");
-            return Ok(itens);
+            try
+            {
+                return Ok(await _service.GetAllAsync());
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
@@ -30,11 +35,7 @@ namespace BlueMoon.Controllers
         {
             try
             {
-                var idConvertido = Guid.Parse(id);
-                var item = await _service.GetByIdAssync(idConvertido);
-                if (item == null)
-                    return NotFound("Não foi encontrada nenhuma pessoa com esse Id");
-                return Ok(item);
+                return Ok(await _service.GetByIdAssync(Guid.Parse(id)));
             }
             catch (Exception ex)
             {
@@ -47,8 +48,7 @@ namespace BlueMoon.Controllers
         {
             try
             {
-                Pessoa pessoa = new Pessoa(dto);
-                return Ok(await _service.AddAssync(pessoa));
+                return Ok(await _service.AddAssync(new Pessoa(dto)));
             }
             catch (Exception ex)
             {
@@ -61,8 +61,10 @@ namespace BlueMoon.Controllers
         {
             try
             {
-                Pessoa pessoa = new Pessoa(dto);
-                return Ok(await _service.UpdateAssync(pessoa));
+                if (!await _service.Exists(Guid.Parse(dto.Id)))
+                    return NotFound("Não há nehuma pessoa com esse ID");
+                    
+                return Ok(await _service.UpdateAssync(new Pessoa(dto)));
             }
             catch (Exception ex)
             {
@@ -75,8 +77,7 @@ namespace BlueMoon.Controllers
         {
             try
             {
-                var idConvertido = Guid.Parse(Id);
-                await _service.LogicalDeleteByIdAsync(idConvertido);
+                await _service.LogicalDeleteByIdAsync(Guid.Parse(Id));
                 return Ok("Pessoa deletada");
             }
             catch (Exception ex)
@@ -88,51 +89,66 @@ namespace BlueMoon.Controllers
         [HttpGet("/por-nome/{nome}")]
         public async Task<ActionResult<IEnumerable<PessoaReadDTO>>> GetByNome(string nome)
         {
-            var pessoas = await _service.GetByNome(nome);
-            if (pessoas == null)
-                return NotFound("Não foi encontrada nenhuma pessoa com esse nome");
-
-            return Ok(pessoas);
+            try
+            {
+                return Ok(await _service.GetByNome(nome));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet("/por-documento/{documento}")]
         public async Task<ActionResult<IEnumerable<PessoaReadDTO>>> GetByDocumento(string documento)
         {
-            var pessoas = await _service.GetByDocumento(documento);
-            if (pessoas == null)
-                return NotFound("Não foi encontrada nenhuma pessoa com esse documento");
-
-            return Ok(pessoas);
+            try
+            {
+                return Ok(await _service.GetByDocumento(documento));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet("/por-telefone/{telefone}")]
         public async Task<ActionResult<IEnumerable<PessoaReadDTO>>> GetByTelefone(string telefone)
         {
-            var pessoas = await _service.GetByTelefone(telefone);
-            if (pessoas == null)
-                return NotFound("Não foi encontrada nenhuma pessoa com esse telefone");
-
-            return Ok(pessoas);
+            try
+            {
+                return Ok(await _service.GetByTelefone(telefone));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet("/por-local/{local}")]
         public async Task<ActionResult<IEnumerable<PessoaReadDTO>>> GetByLocal(string local)
         {
-            var pessoas = await _service.GetByLocal(local);
-            if (pessoas == null)
-                return NotFound("Não foi encontrada nenhuma pessoa relacionada a esse local");
-
-            return Ok(pessoas);
+            try
+            {
+                return Ok(await _service.GetByLocal(local));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet("/por-codigo/{codigo}")]
         public async Task<ActionResult<IEnumerable<PessoaReadDTO>>> GetByCodigo(int codigo)
         {
-            var pessoas = await _service.GetByCodigo(codigo);
-            if (pessoas == null)
-                return NotFound("Não foi encontrada nenhuma pessoa com esse codigo");
-
-            return Ok(pessoas);
+            try
+            {
+                return Ok(await _service.GetByCodigo(codigo));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

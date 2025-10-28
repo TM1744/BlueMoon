@@ -11,58 +11,76 @@ namespace BlueMoon.Entities.Models
         public TipoPessoaEnum Tipo { get; private set; }
         public SituacaoPessoaEnum Situacao { get; private set; }
         public int Codigo { get; set; }
-        public ICollection<Telefone> Telefones { get; private set; } = [];
+        public string Telefone { get; set; } = string.Empty;
         public string Email { get; private set; } = string.Empty;
         public string Nome { get; private set; } = string.Empty;
         public string Documento { get; private set; } = string.Empty;
         public string InscricaoMunicipal { get; private set; } = string.Empty;
         public string InscricaoEstadual { get; private set; } = string.Empty;
-        public Endereco Endereco { get; private set; }
+        public string CEP { get; set; } = string.Empty;
+        public string Logradouro { get; set; } = string.Empty;
+        public string Numero { get; set; } = string.Empty;
+        public string Complemento { get; set; } = string.Empty;
+        public string Bairro { get; set; } = string.Empty;
+        public string Cidade { get; set; } = string.Empty;
+        public EstadoEnum Estado { get; set; }
 
         private Pessoa(){}
-        public Pessoa(PessoaCreateDTO create)
+        public Pessoa(PessoaCreateDTO dto)
         {
-            Tipo = (TipoPessoaEnum)create.Tipo;
+            Tipo = (TipoPessoaEnum)dto.Tipo;
             Situacao = SituacaoPessoaEnum.ATIVO;
-            Email = NotEmptyString(create.Email);
-            Nome = NotEmptyString(create.Nome);
-            Documento = SequenceNumberString(create.Documento);
-            InscricaoMunicipal = SequenceNumberString(create.InscricaoMunicipal);
-            InscricaoEstadual = SequenceNumberString(create.InscricaoEstadual);
-            Endereco = new Endereco(create.Endereco);
+            Telefone = NotEmptyString(dto.Telefone);
+            Email = NotEmptyString(dto.Email);
+            Nome = NotEmptyString(dto.Nome);
+            Documento = SequenceNumberString(dto.Documento);
+            InscricaoMunicipal = SequenceNumberString(dto.InscricaoMunicipal);
+            InscricaoEstadual = SequenceNumberString(dto.InscricaoEstadual);
+            CEP = SequenceNumberString(dto.CEP);
+            Logradouro = NotEmptyString(dto.Logradouro);
+            Numero = NotEmptyString(dto.Numero);
+            Complemento = NotEmptyString(dto.Complemento);
+            Bairro = NotEmptyString(dto.Bairro);
+            Cidade = NotEmptyString(dto.Cidade);
+            Estado = (EstadoEnum)dto.Estado;             
+        }
 
-
-            foreach (TelefoneCreateDTO telefone in create.Telefones)
-                AdicionarTelefone(new Telefone(telefone));                
-
+        public Pessoa(PessoaUpdateDTO dto)
+        {
+            Id = Guid.Parse(dto.Id);
+            Situacao = (SituacaoPessoaEnum)dto.Situacao;
+            Telefone = NotEmptyString(dto.Telefone);
+            Nome = NotEmptyString(dto.Nome);
+            Email = NotEmptyString(dto.Email);
+            Documento = SequenceNumberString(dto.Documento);
+            InscricaoMunicipal = SequenceNumberString(dto.InscricaoMunicipal);
+            InscricaoEstadual = SequenceNumberString(dto.InscricaoEstadual);
+            CEP = SequenceNumberString(dto.CEP);
+            Logradouro = NotEmptyString(dto.Logradouro);
+            Numero = NotEmptyString(dto.Numero);
+            Complemento = NotEmptyString(dto.Complemento);
+            Bairro = NotEmptyString(dto.Bairro);
+            Cidade = NotEmptyString(dto.Cidade);
+            Estado = (EstadoEnum)dto.Estado;
         }
         
-        public Pessoa(PessoaUpdateDTO update)
+        public void Atualizar(Pessoa pessoa)
         {
-            Id = Guid.Parse(update.Id);
-            Situacao = (SituacaoPessoaEnum)update.Situacao;
-            Nome = NotEmptyString(update.Nome);
-            Email = NotEmptyString(update.Email);
-            Documento = SequenceNumberString(update.Documento);
-            InscricaoMunicipal = SequenceNumberString(update.InscricaoMunicipal);
-            InscricaoEstadual = SequenceNumberString(update.InscricaoEstadual);
-            Endereco = new Endereco(update.Endereco);
-
-            foreach (TelefoneUpdateDTO telefone in update.Telefones)
-                AdicionarTelefone(new Telefone(telefone));
-        }
-
-        public void AdicionarTelefone(Telefone telefone)
-        {
-            if (Telefones.Any(t => t.Numero.Equals(telefone.Numero)))
-                throw new InvalidOperationException("Telefone já existe.");
-            Telefones.Add(telefone);
-        }
-        public void RetirarTelefone(Telefone telefone)
-        {
-            if (!Telefones.Any(t => t.Numero.Equals(telefone.Numero)))
-                throw new InvalidOperationException("Telefone não existe.");
-            Telefones.Remove(telefone);
+            Id = pessoa.Id;
+            Situacao = pessoa.Situacao;
+            Telefone = pessoa.Telefone;
+            Nome = pessoa.Nome;
+            Email = pessoa.Email;
+            Documento = pessoa.Documento;
+            InscricaoMunicipal = pessoa.InscricaoMunicipal;
+            InscricaoEstadual = pessoa.InscricaoEstadual;
+            CEP = pessoa.CEP;
+            Logradouro = pessoa.Logradouro;
+            Numero = pessoa.Numero;
+            Complemento = pessoa.Complemento;
+            Bairro = pessoa.Bairro;
+            Cidade = pessoa.Cidade;
+            Estado = pessoa.Estado;
         }
 
         public void Inativar() => Situacao = SituacaoPessoaEnum.INATIVO;

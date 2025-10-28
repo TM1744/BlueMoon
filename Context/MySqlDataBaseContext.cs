@@ -8,8 +8,6 @@ namespace BlueMoon.Context
     {
 
         public DbSet<Produto> Produtos { get; set; }
-        public DbSet<Telefone> Telefones { get; set; }
-        public DbSet<Endereco> Enderecos { get; set; }
         public DbSet<Pessoa> Pessoas { get; set; }
 
         public MySqlDataBaseContext(DbContextOptions<MySqlDataBaseContext> options)
@@ -27,8 +25,6 @@ namespace BlueMoon.Context
 
             //adicionar classes mapeadas aqui
             modelBuilder.ApplyConfiguration(new ProdutoMap());
-            modelBuilder.ApplyConfiguration(new TelefoneMap());
-            modelBuilder.ApplyConfiguration(new EnderecoMap());
             modelBuilder.ApplyConfiguration(new PessoaMap());
         }
     }
