@@ -76,6 +76,10 @@ namespace BlueMoon.Services
         public async Task<IEnumerable<ProdutoReadDTO>> GetAllAsync()
         {
             var produtos = await _produtoRepositorio.GetAllAsync();
+
+            if (!produtos.Any())
+                throw new InvalidOperationException("Não há nenhum produto cadastrado");
+
             ICollection<ProdutoReadDTO> produtosDtos = [];
             foreach (Produto produto in produtos)
             {
@@ -88,21 +92,18 @@ namespace BlueMoon.Services
 
         public async Task<ProdutoReadDTO> GetByIdAsync(Guid id)
         {
-            if (await _produtoRepositorio.Exists(id) == false)
-                throw new ArgumentException("O id fornecido não existe no banco de dados");
-
             var produto = await _produtoRepositorio.GetByIdAsync(id);
 
-            if (produto.Situacao == SituacaoProdutoEnum.ATIVO)
-                return await BuildDTO(produto);
+            if(produto.Situacao != SituacaoProdutoEnum.ATIVO || produto == null)
+                throw new ArgumentException("Não há nenhum produto com esse ID");
 
-            return null;
+            return await BuildDTO(produto);
         }
 
         public async Task<ProdutoReadDTO> AddAsync(Produto produto)
         {
             if (!await _produtoRepositorio.ValidateUniqueness(produto))
-                throw new ArgumentException("A descrição do produto ou seu código de barras já foram cadastrados");
+                throw new ArgumentException("A descrição ou código de barras de produto já foram cadastrados");
 
             produto.Codigo = await _produtoRepositorio.GetGreaterCodeNumber() + 1;
             await _produtoRepositorio.AddAsync(produto);
@@ -112,15 +113,17 @@ namespace BlueMoon.Services
 
         public async Task<ProdutoReadDTO> UpdateAsync(Produto produto)
         {
-            if (await _produtoRepositorio.Exists(produto.Id) == false)
-                throw new ArgumentException("O id fornecido não existe no banco de dados");
-
             if (!await _produtoRepositorio.ValidateUniqueness(produto))
                 throw new ArgumentException("A descrição do produto ou seu código de barras já foram cadastrados");
 
             await _produtoRepositorio.UpdateAsync(produto);
 
             return await BuildDTO(produto);
+        }
+
+        public async Task<bool> Exists(Guid id)
+        {
+            return await _produtoRepositorio.Exists(id);
         }
 
         private async Task<ProdutoReadDTO> BuildDTO(Produto produto)
@@ -143,5 +146,7 @@ namespace BlueMoon.Services
 
             return dto;
         }
+
+
     }
 }

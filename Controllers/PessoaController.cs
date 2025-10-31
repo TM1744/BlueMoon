@@ -62,7 +62,7 @@ namespace BlueMoon.Controllers
             try
             {
                 if (!await _service.Exists(Guid.Parse(dto.Id)))
-                    return NotFound("Não há nehuma pessoa com esse ID");
+                    return NotFound("Não há nenhuma pessoa com esse ID");
                     
                 return Ok(await _service.UpdateAssync(new Pessoa(dto)));
             }

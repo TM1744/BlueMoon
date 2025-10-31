@@ -25,22 +25,22 @@ namespace BlueMoon.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> Get()
         {
-            var itens = await _service.GetAllAsync();
-            if (itens == null)
-                return NoContent();
-            return Ok(itens);
+            try
+            {
+                return Ok(await _service.GetAllAsync());
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-        [HttpGet("{Id}")]
-        public async Task<ActionResult<ProdutoReadDTO>> Get(string Id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProdutoReadDTO>> Get(string id)
         {
             try
             {
-                var idConvertido = Guid.Parse(Id);
-                var item = await _service.GetByIdAsync(idConvertido);
-                if (item == null)
-                    return NotFound();
-                return Ok(item);
+                return Ok(await _service.GetByIdAsync(Guid.Parse(id)));
             }
             catch (Exception ex)
             {
@@ -50,16 +50,14 @@ namespace BlueMoon.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProdutoReadDTO>> Post(ProdutoCreateDTO createDTO)
+        public async Task<ActionResult<ProdutoReadDTO>> Post(ProdutoCreateDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             try
             {
-                Produto produto = new Produto(createDTO);
-                var dto = await _service.AddAsync(produto);
-                return Ok(dto);
+                return Ok(await _service.AddAsync(new Produto(dto)));
             }
             catch (Exception ex)
             {
@@ -68,16 +66,17 @@ namespace BlueMoon.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<ProdutoReadDTO>> Put(ProdutoUpdateDTO updateDTO)
+        public async Task<ActionResult<ProdutoReadDTO>> Put(ProdutoUpdateDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             try
             {
-                Produto produto = new Produto(updateDTO);
-                var dto = await _service.UpdateAsync(produto);
-                return Ok(dto);
+                if (!await _service.Exists(Guid.Parse(dto.Id)))
+                    return NotFound("Não há nenhum produto com esse ID");
+                    
+                return Ok(await _service.UpdateAsync(new Produto(dto)));
             }
             catch (Exception ex)
             {

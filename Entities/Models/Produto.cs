@@ -15,7 +15,7 @@ namespace BlueMoon.Entities.Models
         public int QuantidadeEstoqueMinimo { get; set; } // n obrigatorio
         public string NCM { get; private set; } = string.Empty; // n obrigatorio
         public string CodigoBarras { get; private set; } = string.Empty; // n obrigatorio
-        public SituacaoProdutoEnum Situacao { get; set; } = SituacaoProdutoEnum.INDEFINIDO;
+        public SituacaoProdutoEnum Situacao { get; private set; } = SituacaoProdutoEnum.INDEFINIDO;
         public decimal ValorCusto { get; set; } = decimal.Round(0.00m, 2); // n obrigatorio
         public decimal ValorVenda { get; set; } = decimal.Round(0.00m, 2);
         public decimal MargemLucro { get; set; } = decimal.Round(0.00m, 2); // n obrigatorio
@@ -52,6 +52,8 @@ namespace BlueMoon.Entities.Models
             ValorVenda = decimal.Round(dto.ValorVenda, 2);
             MargemLucro = decimal.Round(dto.MargemLucro, 2);
         }
+
+        public void Inativar() => Situacao = SituacaoProdutoEnum.INATIVO;
 
         public void AdicionarEstoque(int quantidade)
         {

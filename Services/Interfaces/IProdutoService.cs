@@ -14,5 +14,6 @@ namespace BlueMoon.Services.Interfaces
         Task<IEnumerable<ProdutoReadDTO>> GetAllAsync();
         Task<ProdutoReadDTO> AddAsync(Produto produto);
         Task<ProdutoReadDTO> UpdateAsync(Produto produto);
+        Task<bool> Exists(Guid id);
     }
 }
