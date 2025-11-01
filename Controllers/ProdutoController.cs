@@ -84,14 +84,13 @@ namespace BlueMoon.Controllers
             }
         }
 
-        [HttpDelete("{Id}")]
-        public async Task<IActionResult> Delete(string Id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
         {
             try
             {
-                var idConvertido = Guid.Parse(Id);
-                await _service.LogicalDeleteByIdAsync(idConvertido);
-                return Ok();
+                await _service.LogicalDeleteByIdAsync(Guid.Parse(id));
+                return Ok("Produto deletado");
             }
             catch (Exception ex)
             {
@@ -102,41 +101,53 @@ namespace BlueMoon.Controllers
         [HttpGet("/por-nome")]
         public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> GetByNome([FromQuery] string nome)
         {
-            var produtos = await _service.GetByNome(nome.ToUpper());
-            if (!produtos.Any())
-                return NotFound();
-
-            return Ok(produtos);
+            try
+            {
+                return Ok(await _service.GetByNome(nome));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet("/por-ncm")]
         public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> GetByNCM([FromQuery] string ncm)
         {
-            var produtos = await _service.GetByNCM(ncm.ToUpper());
-            if (!produtos.Any())
-                return NotFound();
-
-            return Ok(produtos);
+            try
+            {
+                return Ok(await _service.GetByNCM(ncm));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet("/por-marca")]
         public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> GetByMarca([FromQuery] string marca)
         {
-            var produtos = await _service.GetByMarca(marca.ToUpper());
-            if (!produtos.Any())
-                return NotFound();
-
-            return Ok(produtos);
+            try
+            {
+                return Ok(await _service.GetByMarca(marca));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet("/por-codigo")]
         public async Task<ActionResult<ProdutoReadDTO>> GetByCodigo([FromQuery] int codigo)
         {
-            var produto = await _service.GetByCodigo(codigo);
-            if (produto == null)
-                return NotFound();
-
-            return Ok(produto);
+            try
+            {
+                return Ok(await _service.GetByCodigo(codigo));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
     }

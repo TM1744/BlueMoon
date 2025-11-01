@@ -32,8 +32,18 @@ builder.Services.AddControllers()
         fv.RegisterValidatorsFromAssemblyContaining<ProdutoCreateDTOValidator>();
     });
 
-var app = builder.Build();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost5500", policy =>
+    {
+        policy.WithOrigins("http://localhost:5500")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
+var app = builder.Build();
+app.UseCors("AllowLocalhost5500");
 app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();

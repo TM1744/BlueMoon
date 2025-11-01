@@ -57,7 +57,7 @@ namespace BlueMoon.Repositories
         public async Task<bool> ValidateUniqueness(Produto produto)
         {
             return !await _dbSet.AnyAsync(x =>
-                (x.Descricao == produto.Descricao ||
+                (x.Nome == produto.Nome ||
                 (x.CodigoBarras == produto.CodigoBarras && produto.CodigoBarras != "N/D"))
                 && x.Id != produto.Id && x.Situacao == SituacaoProdutoEnum.ATIVO);
         }
