@@ -46,6 +46,9 @@ namespace BlueMoon.Controllers
         [HttpPost]
         public async Task<ActionResult<PessoaReadDTO>> Post(PessoaCreateDTO dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
                 return Ok(await _service.AddAssync(new Pessoa(dto)));
@@ -59,11 +62,14 @@ namespace BlueMoon.Controllers
         [HttpPut]
         public async Task<ActionResult<PessoaReadDTO>> Put(PessoaUpdateDTO dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
                 if (!await _service.Exists(Guid.Parse(dto.Id)))
                     return NotFound("Não há nenhuma pessoa com esse ID");
-                    
+
                 return Ok(await _service.UpdateAssync(new Pessoa(dto)));
             }
             catch (Exception ex)
