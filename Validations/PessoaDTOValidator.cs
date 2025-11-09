@@ -31,7 +31,6 @@ namespace BlueMoon.Validations
                     .Must(Validacoes.EmailValido).WithMessage("Email informado não é válido");
 
                 RuleFor(dto => dto.Documento)
-                    .MaximumLength(14).WithMessage("Documento não deve ter mais de 14 dígitos")
                     .Must(Validacoes.DocumentoValido).WithMessage("Documento informado não é valido");
 
                 RuleFor(dto => dto.InscricaoMunicipal)
@@ -62,7 +61,7 @@ namespace BlueMoon.Validations
                     .MaximumLength(50).WithMessage("Cidade não deve ter mais de 50 caracteres");
 
                 RuleFor(dto => dto.Estado)
-                    .GreaterThan(0).WithMessage("Valor de Estado deve ser maior do que 0")
+                    .GreaterThan(-1).WithMessage("Valor de Estado não pode ser negativo")
                     .LessThan(27).WithMessage("Valor de Estado deve ser menor do que 27");
             }
         }
@@ -92,7 +91,6 @@ namespace BlueMoon.Validations
                     .Must(Validacoes.EmailValido).WithMessage("Email informado não é válido");
 
                 RuleFor(dto => dto.Documento)
-                    .MaximumLength(14).WithMessage("Documento não deve ter mais de 14 dígitos")
                     .Must(Validacoes.DocumentoValido).WithMessage("Documento informado não é valido");
 
                 RuleFor(dto => dto.InscricaoMunicipal)
@@ -150,7 +148,7 @@ namespace BlueMoon.Validations
                 if (!dddValido)
                     return false;
 
-                if (telefone.Length == 11 && (!telefone[2].Equals("9")))
+                if (telefone.Length == 11 && (telefone[2] != '9'))
                     return false;
 
                 return true;

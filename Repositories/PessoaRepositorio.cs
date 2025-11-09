@@ -20,7 +20,7 @@ namespace BlueMoon.Repositories
         {
         }
 
-        public override async Task<IEnumerable<Pessoa>> GetAllAsync()
+        public override async Task<IEnumerable<Pessoa?>> GetAllAsync()
         {
             return await _dbSet.Where(x => x.Situacao == SituacaoPessoaEnum.ATIVO).ToListAsync();
         }
@@ -83,7 +83,8 @@ namespace BlueMoon.Repositories
             return !await _dbSet.AnyAsync(x =>
             ((x.Documento == pessoa.Documento && pessoa.Documento != "N/D") ||
             (x.InscricaoEstadual == pessoa.InscricaoEstadual && pessoa.InscricaoEstadual != "N/D") ||
-            (x.InscricaoMunicipal == pessoa.InscricaoMunicipal && pessoa.InscricaoMunicipal != "N/D"))
+            (x.InscricaoMunicipal == pessoa.InscricaoMunicipal && pessoa.InscricaoMunicipal != "N/D") ||
+            (x.Email == pessoa.Email && pessoa.Email != "N/D"))
             && x.Id != pessoa.Id && x.Situacao == SituacaoPessoaEnum.ATIVO);
         }
     }

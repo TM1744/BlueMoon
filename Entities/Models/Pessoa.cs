@@ -30,7 +30,7 @@ namespace BlueMoon.Entities.Models
         {
             Tipo = (TipoPessoaEnum)dto.Tipo;
             Situacao = SituacaoPessoaEnum.ATIVO;
-            Telefone = NotEmptyString(dto.Telefone);
+            Telefone = SequenceNumberString(dto.Telefone);
             Email = NotEmptyString(dto.Email);
             Nome = NotEmptyString(dto.Nome);
             Documento = SequenceNumberString(dto.Documento);
@@ -49,7 +49,7 @@ namespace BlueMoon.Entities.Models
         {
             Id = Guid.Parse(dto.Id);
             Situacao = (SituacaoPessoaEnum)dto.Situacao;
-            Telefone = NotEmptyString(dto.Telefone);
+            Telefone = SequenceNumberString(dto.Telefone);
             Nome = NotEmptyString(dto.Nome);
             Email = NotEmptyString(dto.Email);
             Documento = SequenceNumberString(dto.Documento);

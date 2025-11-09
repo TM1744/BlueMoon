@@ -26,7 +26,7 @@ namespace BlueMoon.Services
         public async Task<PessoaReadDTO> AddAssync(Pessoa pessoa)
         {
             if (!await _pessoaRepositorio.ValidateUniqueness(pessoa))
-                throw new ArgumentException("A documentação, inscrição municipal ou inscrição estadual" +
+                throw new ArgumentException("A documentação, e-mail, inscrição municipal ou inscrição estadual" +
                 " da pessoa já foram cadastrados");
 
             pessoa.Codigo = await _pessoaRepositorio.GetGreaterCodeNumber() + 1;
@@ -128,7 +128,7 @@ namespace BlueMoon.Services
                 throw new ArgumentException("Não é possível alterar o documento de pessoa");
 
             if (!await _pessoaRepositorio.ValidateUniqueness(pessoa))
-                throw new ArgumentException("A documentação, inscrição municipal ou inscrição estadual" +
+                throw new ArgumentException("A documentação, e-mail, inscrição municipal ou inscrição estadual" +
                 " da pessoa já foram cadastrados");
 
             old.Atualizar(pessoa);
