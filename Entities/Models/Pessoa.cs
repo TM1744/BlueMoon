@@ -11,19 +11,19 @@ namespace BlueMoon.Entities.Models
         public TipoPessoaEnum Tipo { get; private set; }
         public SituacaoPessoaEnum Situacao { get; private set; }
         public int Codigo { get; set; }
-        public string Telefone { get; set; } = string.Empty;
+        public string Telefone { get; private set; } = string.Empty;
         public string Email { get; private set; } = string.Empty;
         public string Nome { get; private set; } = string.Empty;
         public string Documento { get; private set; } = string.Empty;
         public string InscricaoMunicipal { get; private set; } = string.Empty;
         public string InscricaoEstadual { get; private set; } = string.Empty;
-        public string CEP { get; set; } = string.Empty;
-        public string Logradouro { get; set; } = string.Empty;
-        public string Numero { get; set; } = string.Empty;
-        public string Complemento { get; set; } = string.Empty;
-        public string Bairro { get; set; } = string.Empty;
-        public string Cidade { get; set; } = string.Empty;
-        public EstadoEnum Estado { get; set; }
+        public string CEP { get; private set; } = string.Empty;
+        public string Logradouro { get; private set; } = string.Empty;
+        public string Numero { get; private set; } = string.Empty;
+        public string Complemento { get; private set; } = string.Empty;
+        public string Bairro { get; private set; } = string.Empty;
+        public string Cidade { get; private set; } = string.Empty;
+        public EstadoEnum Estado { get; private set; }
 
         private Pessoa(){}
         public Pessoa(PessoaCreateDTO dto)

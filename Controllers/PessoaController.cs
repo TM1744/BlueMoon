@@ -22,7 +22,7 @@ namespace BlueMoon.Controllers
         {
             try
             {
-                return Ok(await _service.GetAllAsync());
+                return Ok(await _service.BuildDTOList(await _service.GetAllAsync()));
             }
             catch (Exception ex)
             {
@@ -35,7 +35,7 @@ namespace BlueMoon.Controllers
         {
             try
             {
-                return Ok(await _service.GetByIdAssync(Guid.Parse(id)));
+                return Ok(await _service.BuildDTO(await _service.GetByIdAssync(Guid.Parse(id))));
             }
             catch (Exception ex)
             {
@@ -51,7 +51,7 @@ namespace BlueMoon.Controllers
 
             try
             {
-                return Ok(await _service.AddAssync(new Pessoa(dto)));
+                return base.Ok(await _service.BuildDTO(await _service.AddAssync(new Pessoa(dto))));
             }
             catch (Exception ex)
             {
@@ -70,7 +70,7 @@ namespace BlueMoon.Controllers
                 if (!await _service.Exists(Guid.Parse(dto.Id)))
                     return NotFound("Não há nenhuma pessoa com esse ID");
 
-                return Ok(await _service.UpdateAssync(new Pessoa(dto)));
+                return base.Ok(await _service.BuildDTO(await _service.UpdateAssync(new Pessoa(dto))));
             }
             catch (Exception ex)
             {
@@ -97,7 +97,7 @@ namespace BlueMoon.Controllers
         {
             try
             {
-                return Ok(await _service.GetByNome(nome));
+                return Ok(await _service.BuildDTOList(await _service.GetByNome(nome)));
             }
             catch (Exception ex)
             {
@@ -106,11 +106,11 @@ namespace BlueMoon.Controllers
         }
 
         [HttpGet("/por-documento/{documento}")]
-        public async Task<ActionResult<IEnumerable<PessoaReadDTO>>> GetByDocumento(string documento)
+        public async Task <ActionResult<PessoaReadDTO>> GetByDocumento(string documento)
         {
             try
             {
-                return Ok(await _service.GetByDocumento(documento));
+                return Ok(await _service.BuildDTO(await _service.GetByDocumento(documento)));
             }
             catch (Exception ex)
             {
@@ -123,7 +123,7 @@ namespace BlueMoon.Controllers
         {
             try
             {
-                return Ok(await _service.GetByTelefone(telefone));
+                return Ok(await _service.BuildDTOList(await _service.GetByTelefone(telefone)));
             }
             catch (Exception ex)
             {
@@ -136,7 +136,7 @@ namespace BlueMoon.Controllers
         {
             try
             {
-                return Ok(await _service.GetByLocal(local));
+                return Ok(await _service.BuildDTOList(await _service.GetByLocal(local)));
             }
             catch (Exception ex)
             {
@@ -145,11 +145,11 @@ namespace BlueMoon.Controllers
         }
 
         [HttpGet("/por-codigo/{codigo}")]
-        public async Task<ActionResult<IEnumerable<PessoaReadDTO>>> GetByCodigo(int codigo)
+        public async Task<ActionResult<PessoaReadDTO>> GetByCodigo(int codigo)
         {
             try
             {
-                return Ok(await _service.GetByCodigo(codigo));
+                return Ok(await _service.BuildDTO(await _service.GetByCodigo(codigo)));
             }
             catch (Exception ex)
             {

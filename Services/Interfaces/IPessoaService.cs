@@ -5,19 +5,21 @@ namespace BlueMoon.Services.Interfaces
 {
     public interface IPessoaService
     {
-        Task<IEnumerable<PessoaReadDTO>> GetByNome(string nome);
-        Task<PessoaReadDTO> GetByDocumento(string documento);
-        Task<IEnumerable<PessoaReadDTO>> GetByTelefone(string telefone);
+        Task<IEnumerable<Pessoa>> GetByNome(string nome);
+        Task<Pessoa> GetByDocumento(string documento);
+        Task<IEnumerable<Pessoa>> GetByTelefone(string telefone);
 
         //Busca todas as pessoas cadastradas com alguma informação
         //do local, seja endereço, cidade, bairro, etc.
-        Task<IEnumerable<PessoaReadDTO>> GetByLocal(string local);
-        Task<PessoaReadDTO?> GetByCodigo(int codigo);
+        Task<IEnumerable<Pessoa>> GetByLocal(string local);
+        Task<Pessoa> GetByCodigo(int codigo);
         Task LogicalDeleteByIdAsync(Guid id);
-        Task<PessoaReadDTO> GetByIdAssync(Guid id);
-        Task<PessoaReadDTO> AddAssync(Pessoa pessoa);
-        Task<PessoaReadDTO> UpdateAssync(Pessoa pessoa);
-        Task<IEnumerable<PessoaReadDTO>> GetAllAsync();
+        Task<Pessoa> GetByIdAssync(Guid id);
+        Task<Pessoa> AddAssync(Pessoa pessoa);
+        Task<Pessoa> UpdateAssync(Pessoa pessoa);
+        Task<IEnumerable<Pessoa>> GetAllAsync();
         Task<bool> Exists(Guid id);
+        Task<PessoaReadDTO> BuildDTO(Pessoa pessoa);
+        Task<IEnumerable<PessoaReadDTO>> BuildDTOList(IEnumerable<Pessoa> pessoas);
     }
 }

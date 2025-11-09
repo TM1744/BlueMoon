@@ -20,10 +20,13 @@ builder.Services.AddDbContext<MySqlDataBaseContext>(options =>
 builder.Services.AddScoped(typeof(IRepositorio<>), typeof(Repositorio<>));
 builder.Services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
 builder.Services.AddScoped<IPessoaRepositorio, PessoaRepositorio>();
+builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
 
 // Configuração de serviços
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
 builder.Services.AddScoped<IPessoaService, PessoaService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+
 
 // Configuração do validadores
 builder.Services.AddControllers()
@@ -36,7 +39,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowLocalhost5500", policy =>
     {
-        policy.WithOrigins("http://127.0.0.1:5500")
+        policy.WithOrigins("http://127.0.0.1:5500", "http://localhost:5500")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });

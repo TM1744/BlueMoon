@@ -72,7 +72,12 @@ namespace BlueMoon.Repositories
 
         public async Task LogicalDeleteByIdAsync(Pessoa pessoa)
         {
-
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.Pessoa.Id == pessoa.Id);
+            if(usuario != null)
+            {
+                usuario.Inativar();
+                _context.Update(usuario);
+            }
             pessoa.Inativar();
             _dbSet.Update(pessoa);
             await _context.SaveChangesAsync();
