@@ -48,11 +48,13 @@ namespace BlueMoon.Controllers
         [HttpPost]
         public async Task<ActionResult<UsuarioReadDTO>> Post(UsuarioCreateDTO dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             try
             {
                 return Ok(await _usuarioService.BuildDTO(
                     await _usuarioService.AddAssync(
-                        new Usuario (
+                        new Usuario(
                             await _pessoaService.GetByIdAssync(Guid.Parse(dto.IdPessoa)),
                             dto
                         )
@@ -68,6 +70,8 @@ namespace BlueMoon.Controllers
         [HttpPut]
         public async Task<ActionResult<UsuarioReadDTO>> Put(UsuarioUpdateDTO dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             try
             {
                 if (!await _usuarioService.Exists(Guid.Parse(dto.Id)))
@@ -75,7 +79,7 @@ namespace BlueMoon.Controllers
 
                 return Ok(await _usuarioService.BuildDTO(
                     await _usuarioService.UpdateAssync(
-                        new Usuario (
+                        new Usuario(
                             await _pessoaService.GetByIdAssync(Guid.Parse(dto.IdPessoa)),
                             dto
                         )
