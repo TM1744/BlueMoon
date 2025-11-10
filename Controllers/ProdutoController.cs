@@ -98,57 +98,17 @@ namespace BlueMoon.Controllers
             }
         }
 
-        [HttpGet("/por-nome")]
-        public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> GetByNome([FromQuery] string nome)
+        [HttpPost("Search")]
+        public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> Search([FromBody] ProdutoSearchDTO dto)
         {
             try
             {
-                return Ok(await _service.GetByNome(nome));
+                return Ok(await _service.BuildDTOList(await _service.GetBySearch(dto)));
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
-
-        [HttpGet("/por-ncm")]
-        public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> GetByNCM([FromQuery] string ncm)
-        {
-            try
-            {
-                return Ok(await _service.GetByNCM(ncm));
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
-
-        [HttpGet("/por-marca")]
-        public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> GetByMarca([FromQuery] string marca)
-        {
-            try
-            {
-                return Ok(await _service.GetByMarca(marca));
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
-
-        [HttpGet("/por-codigo")]
-        public async Task<ActionResult<ProdutoReadDTO>> GetByCodigo([FromQuery] int codigo)
-        {
-            try
-            {
-                return Ok(await _service.GetByCodigo(codigo));
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
-
     }
 }

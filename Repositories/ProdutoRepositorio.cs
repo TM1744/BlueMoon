@@ -1,4 +1,5 @@
 using BlueMoon.Context;
+using BlueMoon.DTO;
 using BlueMoon.Entities.Enuns;
 using BlueMoon.Entities.Models;
 using BlueMoon.Repositories.Interfaces;
@@ -10,30 +11,6 @@ namespace BlueMoon.Repositories
     {
         public ProdutoRepositorio(MySqlDataBaseContext context) : base(context)
         {
-        }
-
-        public async Task<IEnumerable<Produto?>> GetByNome(string nome)
-        {
-            return await _dbSet.Where(x => x.Nome.Contains(nome) &&
-            x.Situacao == SituacaoProdutoEnum.ATIVO).ToListAsync();
-        }
-
-        public async Task<IEnumerable<Produto?>> GetByMarca(string marca)
-        {
-            return await _dbSet.Where(x => x.Marca.Contains(marca) &&
-            x.Situacao == SituacaoProdutoEnum.ATIVO).ToListAsync();
-        }
-
-        public async Task<IEnumerable<Produto?>> GetByNCM(string ncm)
-        {
-            return await _dbSet.Where(x => x.NCM.Contains(ncm) &&
-            x.Situacao == SituacaoProdutoEnum.ATIVO).ToListAsync();
-        }
-
-        public async Task<Produto?> GetByCodigo(int codigo)
-        {
-            return await _dbSet.FirstOrDefaultAsync(x => x.Codigo == codigo &&
-            x.Situacao == SituacaoProdutoEnum.ATIVO);
         }
 
         public async Task LogicalDeleteByIdAsync(Produto produto)
@@ -60,6 +37,27 @@ namespace BlueMoon.Repositories
                 (x.Nome == produto.Nome ||
                 (x.CodigoBarras == produto.CodigoBarras && produto.CodigoBarras != "N/D"))
                 && x.Id != produto.Id && x.Situacao == SituacaoProdutoEnum.ATIVO);
+        }
+
+        public async Task<IEnumerable<Produto>> GetBySearch(ProdutoSearchDTO dto)
+        {
+            if (dto.Codigo != 0)
+                return await _dbSet
+                .Where(
+                    x => x.Codigo == dto.Codigo &&
+                    x.Nome.Contains(dto.Nome.ToUpper()) &&
+                    x.Marca.Contains(dto.Marca.ToUpper()) &&
+                    x.Situacao == SituacaoProdutoEnum.ATIVO
+                    )
+                .ToListAsync();
+
+            return await _dbSet
+            .Where(
+                x => x.Nome.Contains(dto.Nome.ToUpper()) &&
+                x.Marca.Contains(dto.Marca.ToUpper()) &&
+                x.Situacao == SituacaoProdutoEnum.ATIVO
+            )
+            .ToListAsync();
         }
     }
 }

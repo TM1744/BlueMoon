@@ -15,44 +15,12 @@ namespace BlueMoon.Services
             _produtoRepositorio = produtoRepositorio;
         }
 
-        public async Task<Produto> GetByCodigo(int codigo)
+        public async Task<IEnumerable<Produto>> GetBySearch(ProdutoSearchDTO dto)
         {
-            var produto = await _produtoRepositorio.GetByCodigo(codigo);
-
-            if (produto == null)
-                throw new ArgumentException("Não há nenhum produto com esse código");
-
-            return produto;
-        }
-
-        public async Task<IEnumerable<Produto>> GetByNome(string nome)
-        {
-            var produtos = await _produtoRepositorio.GetByNome(nome.ToUpper());
+            var produtos = await _produtoRepositorio.GetBySearch(dto);
 
             if (!produtos.Any())
-                throw new ArgumentException("Não há nenhum produto com esse nome");
-
-            return produtos;
-        }
-
-        public async Task<IEnumerable<Produto>> GetByMarca(string marca)
-        {
-            var produtos = await _produtoRepositorio.GetByMarca(marca.ToUpper());
-
-            if (!produtos.Any())
-                throw new ArgumentException("Não há nenhum produto com essa marca");
-
-            return produtos;
-        }
-
-        public async Task<IEnumerable<Produto>> GetByNCM(string ncm)
-        {
-            ncm = Regex.Replace(ncm, "[^0-9]", "");
-
-            var produtos = await _produtoRepositorio.GetByNCM(ncm);
-
-            if (!produtos.Any())
-                throw new ArgumentException("Não há nenhum produto com esse NCM");
+                throw new ArgumentException("Não há nenhum produto compatível com as descrições de busca");
 
             return produtos;
         }

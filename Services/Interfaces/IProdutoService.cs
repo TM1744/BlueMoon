@@ -5,10 +5,7 @@ namespace BlueMoon.Services.Interfaces
 {
     public interface IProdutoService
     {
-        Task<IEnumerable<Produto>> GetByNome(string nome);
-        Task<IEnumerable<Produto>> GetByNCM(string ncm);
-        Task<IEnumerable<Produto>> GetByMarca(string marca);
-        Task<Produto> GetByCodigo(int codigo);
+        Task<IEnumerable<Produto>> GetBySearch(ProdutoSearchDTO dto);
         Task LogicalDeleteByIdAsync(Guid id);
         Task<Produto> GetByIdAsync(Guid id);
         Task<IEnumerable<Produto>> GetAllAsync();

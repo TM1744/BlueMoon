@@ -52,4 +52,11 @@ namespace BlueMoon.DTO
         public decimal ValorVenda { get; set; }
         public decimal MargemLucro { get; set; }
     }
+
+    public class ProdutoSearchDTO
+    {
+        public int Codigo { get; set; }
+        public string Nome { get; set; } = string.Empty;
+        public string Marca { get; set; } = string.Empty;
+    }
 }
