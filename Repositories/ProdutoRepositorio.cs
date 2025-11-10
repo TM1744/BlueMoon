@@ -12,7 +12,7 @@ namespace BlueMoon.Repositories
         public ProdutoRepositorio(MySqlDataBaseContext context) : base(context)
         {
         }
-
+        
         public async Task LogicalDeleteByIdAsync(Produto produto)
         {
             produto.Inativar();

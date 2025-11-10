@@ -23,11 +23,11 @@ namespace BlueMoon.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> Get()
+        public async Task<ActionResult<IEnumerable<ProdutoMiniReadDTO>>> Get()
         {
             try
             {
-                return Ok(await _service.BuildDTOList(await _service.GetAllAsync()));
+                return Ok(await _service.BuildMiniDTOList(await _service.GetAllAsync()));
             }
             catch (Exception ex)
             {
@@ -99,11 +99,11 @@ namespace BlueMoon.Controllers
         }
 
         [HttpPost("Search")]
-        public async Task<ActionResult<IEnumerable<ProdutoReadDTO>>> Search([FromBody] ProdutoSearchDTO dto)
+        public async Task<ActionResult<IEnumerable<ProdutoMiniReadDTO>>> Search([FromBody] ProdutoSearchDTO dto)
         {
             try
             {
-                return Ok(await _service.BuildDTOList(await _service.GetBySearch(dto)));
+                return Ok(await _service.BuildMiniDTOList(await _service.GetBySearch(dto)));
             }
             catch (Exception ex)
             {

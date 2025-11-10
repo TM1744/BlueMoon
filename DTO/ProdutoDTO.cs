@@ -59,4 +59,15 @@ namespace BlueMoon.DTO
         public string Nome { get; set; } = string.Empty;
         public string Marca { get; set; } = string.Empty;
     }
+
+    public class ProdutoMiniReadDTO
+    {
+        public string Id { get; set; } = string.Empty;
+        public int Codigo { get; set; }
+        public string Nome { get; set; } = string.Empty;
+        public string Marca { get; set; } = string.Empty;
+        public int Estoque { get; set; }
+        public decimal ValorVenda { get; set; }
+        public decimal ValorCusto { get; set; }
+    }
 }
