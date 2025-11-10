@@ -27,7 +27,7 @@ namespace BlueMoon.Controllers
         {
             try
             {
-                return Ok(await _service.GetAllAsync());
+                return Ok(await _service.BuildDTOList(await _service.GetAllAsync()));
             }
             catch (Exception ex)
             {
@@ -40,7 +40,7 @@ namespace BlueMoon.Controllers
         {
             try
             {
-                return Ok(await _service.GetByIdAsync(Guid.Parse(id)));
+                return Ok(await _service.BuildDTO(await _service.GetByIdAsync(Guid.Parse(id))));
             }
             catch (Exception ex)
             {
@@ -57,7 +57,7 @@ namespace BlueMoon.Controllers
 
             try
             {
-                return Ok(await _service.AddAsync(new Produto(dto)));
+                return Ok(await _service.BuildDTO(await _service.AddAsync(new Produto(dto))));
             }
             catch (Exception ex)
             {
@@ -76,7 +76,7 @@ namespace BlueMoon.Controllers
                 if (!await _service.Exists(Guid.Parse(dto.Id)))
                     return NotFound("Não há nenhum produto com esse ID");
                     
-                return Ok(await _service.UpdateAsync(new Produto(dto)));
+                return Ok(await _service.BuildDTO(await _service.UpdateAsync(new Produto(dto))));
             }
             catch (Exception ex)
             {

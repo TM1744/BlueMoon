@@ -15,61 +15,46 @@ namespace BlueMoon.Services
             _produtoRepositorio = produtoRepositorio;
         }
 
-        public async Task<ProdutoReadDTO> GetByCodigo(int codigo)
+        public async Task<Produto> GetByCodigo(int codigo)
         {
             var produto = await _produtoRepositorio.GetByCodigo(codigo);
 
             if (produto == null)
                 throw new ArgumentException("Não há nenhum produto com esse código");
 
-            return await BuildDTO(produto);
+            return produto;
         }
 
-        public async Task<IEnumerable<ProdutoReadDTO>> GetByNome(string nome)
+        public async Task<IEnumerable<Produto>> GetByNome(string nome)
         {
             var produtos = await _produtoRepositorio.GetByNome(nome.ToUpper());
 
-            if(!produtos.Any())
+            if (!produtos.Any())
                 throw new ArgumentException("Não há nenhum produto com esse nome");
 
-            ICollection<ProdutoReadDTO> produtosDtos = [];
-            
-            foreach (Produto produto in produtos)
-                produtosDtos.Add(await BuildDTO(produto));
-
-            return produtosDtos;
+            return produtos;
         }
 
-        public async Task<IEnumerable<ProdutoReadDTO>> GetByMarca(string marca)
+        public async Task<IEnumerable<Produto>> GetByMarca(string marca)
         {
             var produtos = await _produtoRepositorio.GetByMarca(marca.ToUpper());
 
-            if(!produtos.Any())
+            if (!produtos.Any())
                 throw new ArgumentException("Não há nenhum produto com essa marca");
 
-            ICollection<ProdutoReadDTO> produtosDtos = [];
-            
-            foreach (Produto produto in produtos)
-                produtosDtos.Add(await BuildDTO(produto));
-
-            return produtosDtos;
+            return produtos;
         }
 
-        public async Task<IEnumerable<ProdutoReadDTO>> GetByNCM(string ncm)
+        public async Task<IEnumerable<Produto>> GetByNCM(string ncm)
         {
             ncm = Regex.Replace(ncm, "[^0-9]", "");
 
             var produtos = await _produtoRepositorio.GetByNCM(ncm);
 
-            if(!produtos.Any())
+            if (!produtos.Any())
                 throw new ArgumentException("Não há nenhum produto com esse NCM");
 
-            ICollection<ProdutoReadDTO> produtosDtos = [];
-            
-            foreach (Produto produto in produtos)
-                produtosDtos.Add(await BuildDTO(produto));
-
-            return produtosDtos;
+            return produtos;
         }
 
         public async Task LogicalDeleteByIdAsync(Guid id)
@@ -82,34 +67,27 @@ namespace BlueMoon.Services
             await _produtoRepositorio.LogicalDeleteByIdAsync(produto);
         }
 
-        public async Task<IEnumerable<ProdutoReadDTO>> GetAllAsync()
+        public async Task<IEnumerable<Produto>> GetAllAsync()
         {
             var produtos = await _produtoRepositorio.GetAllAsync();
 
             if (!produtos.Any())
                 throw new InvalidOperationException("Não há nenhum produto cadastrado");
 
-            ICollection<ProdutoReadDTO> produtosDtos = [];
-            foreach (Produto produto in produtos)
-            {
-                if (produto.Situacao == SituacaoProdutoEnum.ATIVO)
-                    produtosDtos.Add(await BuildDTO(produto));
-            }
-
-            return produtosDtos;
+            return produtos;
         }
 
-        public async Task<ProdutoReadDTO> GetByIdAsync(Guid id)
+        public async Task<Produto> GetByIdAsync(Guid id)
         {
             var produto = await _produtoRepositorio.GetByIdAsync(id);
 
-            if(produto.Situacao != SituacaoProdutoEnum.ATIVO || produto == null)
+            if (produto.Situacao != SituacaoProdutoEnum.ATIVO || produto == null)
                 throw new ArgumentException("Não há nenhum produto com esse ID");
 
-            return await BuildDTO(produto);
+            return produto;
         }
 
-        public async Task<ProdutoReadDTO> AddAsync(Produto produto)
+        public async Task<Produto> AddAsync(Produto produto)
         {
             if (!await _produtoRepositorio.ValidateUniqueness(produto))
                 throw new ArgumentException("A descrição ou código de barras de produto já foram cadastrados");
@@ -117,17 +95,17 @@ namespace BlueMoon.Services
             produto.Codigo = await _produtoRepositorio.GetGreaterCodeNumber() + 1;
             await _produtoRepositorio.AddAsync(produto);
 
-            return await BuildDTO(produto);
+            return produto;
         }
 
-        public async Task<ProdutoReadDTO> UpdateAsync(Produto produto)
+        public async Task<Produto> UpdateAsync(Produto produto)
         {
             if (!await _produtoRepositorio.ValidateUniqueness(produto))
                 throw new ArgumentException("A descrição do produto ou seu código de barras já foram cadastrados");
 
             await _produtoRepositorio.UpdateAsync(produto);
 
-            return await BuildDTO(produto);
+            return produto;
         }
 
         public async Task<bool> Exists(Guid id)
@@ -135,7 +113,7 @@ namespace BlueMoon.Services
             return await _produtoRepositorio.Exists(id);
         }
 
-        private async Task<ProdutoReadDTO> BuildDTO(Produto produto)
+        public async Task<ProdutoReadDTO> BuildDTO(Produto produto)
         {
             ProdutoReadDTO dto = new ProdutoReadDTO();
 
@@ -156,6 +134,31 @@ namespace BlueMoon.Services
             return dto;
         }
 
+        public async Task<IEnumerable<ProdutoReadDTO>> BuildDTOList(IEnumerable<Produto> produtos)
+        {
+            ICollection<ProdutoReadDTO> dtos = [];
 
+            foreach (Produto produto in produtos)
+            {
+                ProdutoReadDTO dto = new ProdutoReadDTO();
+                dto.Id = produto.Id.ToString();
+                dto.Codigo = produto.Codigo;
+                dto.Situacao = (int)produto.Situacao;
+                dto.Nome = produto.Nome;
+                dto.Descricao = produto.Descricao;
+                dto.Marca = produto.Marca;
+                dto.QuantidadeEstoque = produto.QuantidadeEstoque;
+                dto.QuantidadeEstoqueMinimo = produto.QuantidadeEstoqueMinimo;
+                dto.NCM = produto.NCM;
+                dto.CodigoBarras = produto.CodigoBarras;
+                dto.ValorCusto = produto.ValorCusto;
+                dto.ValorVenda = produto.ValorVenda;
+                dto.MargemLucro = produto.MargemLucro;
+
+                dtos.Add(dto);
+            }
+
+            return dtos;
+        }
     }
 }

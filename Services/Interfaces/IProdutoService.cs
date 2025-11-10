@@ -5,15 +5,17 @@ namespace BlueMoon.Services.Interfaces
 {
     public interface IProdutoService
     {
-        Task<IEnumerable<ProdutoReadDTO>> GetByNome(string nome);
-        Task<IEnumerable<ProdutoReadDTO>> GetByNCM(string ncm);
-        Task<IEnumerable<ProdutoReadDTO>> GetByMarca(string marca);
-        Task<ProdutoReadDTO> GetByCodigo(int codigo);
+        Task<IEnumerable<Produto>> GetByNome(string nome);
+        Task<IEnumerable<Produto>> GetByNCM(string ncm);
+        Task<IEnumerable<Produto>> GetByMarca(string marca);
+        Task<Produto> GetByCodigo(int codigo);
         Task LogicalDeleteByIdAsync(Guid id);
-        Task<ProdutoReadDTO> GetByIdAsync(Guid id);
-        Task<IEnumerable<ProdutoReadDTO>> GetAllAsync();
-        Task<ProdutoReadDTO> AddAsync(Produto produto);
-        Task<ProdutoReadDTO> UpdateAsync(Produto produto);
+        Task<Produto> GetByIdAsync(Guid id);
+        Task<IEnumerable<Produto>> GetAllAsync();
+        Task<Produto> AddAsync(Produto produto);
+        Task<Produto> UpdateAsync(Produto produto);
         Task<bool> Exists(Guid id);
+        Task<ProdutoReadDTO> BuildDTO(Produto produto);
+        Task<IEnumerable<ProdutoReadDTO>> BuildDTOList(IEnumerable<Produto> produtos);
     }
 }
