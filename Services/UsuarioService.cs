@@ -25,7 +25,7 @@ namespace BlueMoon.Services
         {
             if (!await _repositorio.ValidateUniqueness(usuario))
                 throw new ArgumentException("A documentação, e-mail, inscrição municipal, login ou inscrição estadual" +
-                " do usuário já foram cadastrados");
+                " do usuário já foram cadastrados, ou há outro registro ativo de usuário para a mesma pessoa");
 
             usuario.Codigo = await _repositorio.GetGreaterCodeNumber() + 1;
             await _repositorio.AddAsync(usuario);
@@ -73,7 +73,7 @@ namespace BlueMoon.Services
             var usuario = await _repositorio.GetByIdAsync(id);
 
             if (usuario.Situacao != SituacaoPessoaEnum.ATIVO || usuario == null)
-                throw new ArgumentException("Não há nenhuma pessoa com esse ID");
+                throw new ArgumentException("Não há nenhum Usuário com esse ID");
 
             return usuario;
         }
@@ -120,7 +120,7 @@ namespace BlueMoon.Services
 
         public async Task<Usuario> UpdateAssync(Usuario usuario)
         {
-            var old = await _repositorio.GetByIdAsync(usuario.Pessoa.Id);
+            var old = await _repositorio.GetByIdAsync(usuario.Id);
 
             if (old.Pessoa.Documento != "N/D" && old.Pessoa.Documento != usuario.Pessoa.Documento)
                 throw new ArgumentException("Não é possível alterar o documento de usuário");
@@ -130,7 +130,7 @@ namespace BlueMoon.Services
 
             if (!await _repositorio.ValidateUniqueness(usuario))
                 throw new ArgumentException("A documentação, e-mail, inscrição municipal, login ou inscrição estadual" +
-                " do usuário já foram cadastrados");
+                " do usuário já foram cadastrados, ou há outro registro ativo de usuário para a mesma pessoa");
 
             old.Atualizar(usuario);
 
@@ -142,7 +142,8 @@ namespace BlueMoon.Services
         public async Task<UsuarioReadDTO> BuildDTO(Usuario usuario)
         {
             UsuarioReadDTO dto = new UsuarioReadDTO();
-            dto.Id = usuario.Pessoa.Id.ToString();
+            dto.Id = usuario.Id.ToString();
+            dto.IdPessoa = usuario.Pessoa.Id.ToString();
             dto.CodigoPessoa = usuario.Pessoa.Codigo;
             dto.Nome = usuario.Pessoa.Nome;
             dto.Telefone = usuario.Pessoa.Telefone;
@@ -165,6 +166,7 @@ namespace BlueMoon.Services
             dto.HorarioFimCargaHoraria = usuario.HorarioFimCargaHoraria.ToString();
             dto.Admissao = usuario.Admissao.ToString();
             dto.Cargo = (int)usuario.Cargo;
+            dto.CodigoUsuario = usuario.Codigo;
 
             return dto;
         }
@@ -176,7 +178,8 @@ namespace BlueMoon.Services
             foreach (Usuario usuario in usuarios)
             {
                 UsuarioReadDTO dto = new UsuarioReadDTO();
-                dto.Id = usuario.Pessoa.Id.ToString();
+                dto.Id = usuario.Id.ToString();
+                dto.IdPessoa = usuario.Pessoa.Id.ToString();
                 dto.CodigoPessoa = usuario.Pessoa.Codigo;
                 dto.Nome = usuario.Pessoa.Nome;
                 dto.Telefone = usuario.Pessoa.Telefone;
@@ -199,6 +202,7 @@ namespace BlueMoon.Services
                 dto.HorarioFimCargaHoraria = usuario.HorarioFimCargaHoraria.ToString();
                 dto.Admissao = usuario.Admissao.ToString();
                 dto.Cargo = (int)usuario.Cargo;
+                dto.CodigoUsuario = usuario.Codigo;
 
                 dtos.Add(dto);
             }

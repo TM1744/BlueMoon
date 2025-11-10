@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlueMoon.Migrations
 {
     [DbContext(typeof(MySqlDataBaseContext))]
-    [Migration("20251109190754_Migration_0.0.0.6")]
+    [Migration("20251110114728_Migration_0.0.0.6")]
     partial class Migration_0006
     {
         /// <inheritdoc />
@@ -198,9 +198,11 @@ namespace BlueMoon.Migrations
 
             modelBuilder.Entity("BlueMoon.Entities.Models.Usuario", b =>
                 {
-                    b.Property<Guid>("PessoaId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36)
                         .HasColumnType("char(36)")
-                        .HasColumnName("pessoa_id");
+                        .HasColumnName("id");
 
                     b.Property<DateOnly>("Admissao")
                         .HasColumnType("date")
@@ -229,7 +231,7 @@ namespace BlueMoon.Migrations
                         .HasColumnName("login");
 
                     b.Property<decimal>("Salario")
-                        .HasColumnType("decimal(65,30)")
+                        .HasColumnType("decimal(11,2)")
                         .HasColumnName("salario");
 
                     b.Property<string>("Senha")
@@ -242,7 +244,13 @@ namespace BlueMoon.Migrations
                         .HasColumnType("int")
                         .HasColumnName("situacao");
 
-                    b.HasKey("PessoaId");
+                    b.Property<Guid>("id_pessoa")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id_pessoa");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("id_pessoa");
 
                     b.ToTable("Usuarios");
                 });
@@ -251,7 +259,7 @@ namespace BlueMoon.Migrations
                 {
                     b.HasOne("BlueMoon.Entities.Models.Pessoa", "Pessoa")
                         .WithMany()
-                        .HasForeignKey("PessoaId")
+                        .HasForeignKey("id_pessoa")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

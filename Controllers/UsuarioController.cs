@@ -70,7 +70,7 @@ namespace BlueMoon.Controllers
         {
             try
             {
-                if (!await _usuarioService.Exists(Guid.Parse(dto.IdPessoa)))
+                if (!await _usuarioService.Exists(Guid.Parse(dto.Id)))
                     return NotFound("Não há nenhum usuário com esse ID");
 
                 return Ok(await _usuarioService.BuildDTO(
@@ -94,7 +94,7 @@ namespace BlueMoon.Controllers
             try
             {
                 await _usuarioService.LogicalDeleteByIdAsync(Guid.Parse(Id));
-                return Ok("Usuário deletada");
+                return Ok("Usuário deletado");
             }
             catch (Exception ex)
             {

@@ -20,6 +20,7 @@ namespace BlueMoon.DTO
 
     public class UsuarioUpdateDTO
     {
+        public string Id { get; set; } = string.Empty;
         public string IdPessoa { get; set; } = string.Empty;
         public int Situacao { get; set; }
         public int Cargo { get; set; }
@@ -31,6 +32,7 @@ namespace BlueMoon.DTO
 
     public class UsuarioReadDTO
     {
+        public string IdPessoa { get; set; } = string.Empty;
         public string Id { get; set; } = string.Empty;
         public int CodigoPessoa { get; set; }
         public string Nome { get; set; } = string.Empty;

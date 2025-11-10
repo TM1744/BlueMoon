@@ -16,9 +16,21 @@ namespace BlueMoon.Repositories
         {
         }
 
+        public override async Task<Usuario?> GetByIdAsync(Guid id)
+        {
+            return await _dbSet.Where(x => x.Id == id && x.Situacao == SituacaoPessoaEnum.ATIVO)
+                                    .Include(x => x.Pessoa).FirstOrDefaultAsync();
+        }  
+
+        public override async Task<IEnumerable<Usuario?>> GetAllAsync()
+        {
+            return await _dbSet.Where(x => x.Situacao == SituacaoPessoaEnum.ATIVO)
+                                .Include(x => x.Pessoa).ToListAsync();
+        }
+
         public async Task<bool> Exists(Guid id)
         {
-            return await _dbSet.AnyAsync(x => x.Pessoa.Id == id && x.Situacao == SituacaoPessoaEnum.ATIVO);
+            return await _dbSet.AnyAsync(x => x.Id == id && x.Situacao == SituacaoPessoaEnum.ATIVO);
         }
 
         public async Task<Usuario?> GetByCodigo(int codigo)
@@ -75,8 +87,9 @@ namespace BlueMoon.Repositories
             (x.Pessoa.InscricaoEstadual == usuario.Pessoa.InscricaoEstadual && usuario.Pessoa.InscricaoEstadual != "N/D") ||
             (x.Pessoa.InscricaoMunicipal == usuario.Pessoa.InscricaoMunicipal && usuario.Pessoa.InscricaoMunicipal != "N/D") ||
             (x.Pessoa.Email == usuario.Pessoa.Email && usuario.Pessoa.Email != "N/D") ||
-            (x.Login == usuario.Login))
-            && x.Pessoa.Id != usuario.Pessoa.Id && x.Situacao == SituacaoPessoaEnum.ATIVO);
+            x.Login.Equals(usuario.Login) ||
+            (x.Pessoa.Id == usuario.Pessoa.Id))
+            && x.Id != usuario.Id && x.Situacao == SituacaoPessoaEnum.ATIVO);
         }
     }
 }

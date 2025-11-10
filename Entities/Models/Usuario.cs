@@ -8,6 +8,7 @@ namespace BlueMoon.Entities.Models
 {
     public class Usuario
     {
+        public Guid Id { get; private set; } = Guid.NewGuid();
         public Pessoa Pessoa { get; private set; }
         public int Codigo { get; set; }
         public SituacaoPessoaEnum Situacao { get; private set; }
@@ -25,7 +26,7 @@ namespace BlueMoon.Entities.Models
         {
             Pessoa = pessoa;
             Situacao = SituacaoPessoaEnum.ATIVO;
-            Login = Login;
+            Login = dto.Login;
             Senha = GerarSHA256(dto.Senha);
             Cargo = (CargoUsuarioEnum)dto.Cargo;
             Salario = decimal.Round(dto.Salario, 2);
@@ -36,6 +37,7 @@ namespace BlueMoon.Entities.Models
 
         public Usuario(Pessoa pessoa, UsuarioUpdateDTO dto)
         {
+            Id = Guid.Parse(dto.Id);
             Pessoa = pessoa;
             Situacao = SituacaoPessoaEnum.ATIVO;
             Cargo = (CargoUsuarioEnum)dto.Cargo;
@@ -47,6 +49,7 @@ namespace BlueMoon.Entities.Models
 
         public void Atualizar(Usuario usuario)
         {
+            Id = usuario.Id;
             Pessoa = usuario.Pessoa;
             Situacao = usuario.Situacao;
             Cargo = usuario.Cargo;
