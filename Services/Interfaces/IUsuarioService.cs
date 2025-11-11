@@ -5,6 +5,7 @@ namespace BlueMoon.Services.Interfaces
 {
     public interface IUsuarioService
     {
+        Task<bool> PostLogin(UsuarioPostLoginDTO dto);
         Task<IEnumerable<Usuario>> GetByNome(string nome);
         Task<Usuario> GetByDocumento(string documento);
         Task<IEnumerable<Usuario>> GetByTelefone(string telefone);

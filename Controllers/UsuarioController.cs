@@ -170,5 +170,16 @@ namespace BlueMoon.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpPost("Login")]
+        public async Task<ActionResult<bool>> PostLogin(UsuarioPostLoginDTO dto)
+        {
+            var resultado = await _usuarioService.PostLogin(dto);
+
+            if (resultado)
+                return Ok(true);
+
+            return BadRequest(false);
+        }
     }
 }

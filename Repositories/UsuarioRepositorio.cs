@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlueMoon.Context;
+using BlueMoon.DTO;
 using BlueMoon.Entities.Enuns;
 using BlueMoon.Entities.Models;
 using BlueMoon.Repositories.Interfaces;
@@ -90,6 +91,11 @@ namespace BlueMoon.Repositories
             x.Login.Equals(usuario.Login) ||
             (x.Pessoa.Id == usuario.Pessoa.Id))
             && x.Id != usuario.Id && x.Situacao == SituacaoPessoaEnum.ATIVO);
+        }
+
+        public async Task<bool> ValidateLogin(string login, string senha)
+        {
+            return await _dbSet.AnyAsync(x => x.Login == login && x.Senha == senha);
         }
     }
 }

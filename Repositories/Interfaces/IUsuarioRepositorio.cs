@@ -1,9 +1,11 @@
+using BlueMoon.DTO;
 using BlueMoon.Entities.Models;
 
 namespace BlueMoon.Repositories.Interfaces
 {
     public interface IUsuarioRepositorio : IRepositorio<Usuario>
     {
+        Task<bool> ValidateLogin(string login, string senha);
         Task<IEnumerable<Usuario?>> GetByNome(string nome);
         Task<Usuario?> GetByDocumento(string documento);
         Task<IEnumerable<Usuario?>> GetByTelefone(string telefone);

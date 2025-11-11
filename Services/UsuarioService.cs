@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BlueMoon.DTO;
@@ -208,6 +210,26 @@ namespace BlueMoon.Services
             }
 
             return dtos;
+        }
+
+        public async Task<bool> PostLogin(UsuarioPostLoginDTO dto)
+        {
+            return await _repositorio.ValidateLogin(dto.Login, GerarSHA256(dto.Senha));
+        }
+
+        private string GerarSHA256(string texto)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytesTexto = Encoding.UTF8.GetBytes(texto);
+                byte[] hashBytes = sha256.ComputeHash(bytesTexto);
+
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in hashBytes)
+                    sb.Append(b.ToString("x2"));
+
+                return sb.ToString();
+            }
         }
     }
 }
