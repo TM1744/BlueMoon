@@ -19,6 +19,7 @@ namespace BlueMoon.Context
             if (Database.GetPendingMigrations().Any())
             {
                 Database.Migrate();
+                PopularDBContext.Popular(this);
             }
         }
 
