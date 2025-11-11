@@ -2,10 +2,11 @@ namespace BlueMoon.Entities.Enuns
 {
     public enum EnumSituacaoVenda
     {
-        ABERTA,
-        FECHADA,
-        CANCELADA,
-        ESTORNADA,
-        FATURADA
+        INDEFINIDO = 0,
+        ABERTA = 1,
+        FECHADA = 2,
+        CANCELADA = 3,
+        ESTORNADA = 4,
+        FATURADA = 5
     }
 }

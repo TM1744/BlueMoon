@@ -21,11 +21,13 @@ builder.Services.AddScoped(typeof(IRepositorio<>), typeof(Repositorio<>));
 builder.Services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
 builder.Services.AddScoped<IPessoaRepositorio, PessoaRepositorio>();
 builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
+builder.Services.AddScoped<IVendaRepositorio, VendaRepositorio>();
 
 // Configuração de serviços
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
 builder.Services.AddScoped<IPessoaService, PessoaService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IVendaService, VendaService>();
 
 
 // Configuração do validadores
