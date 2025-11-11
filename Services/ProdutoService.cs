@@ -49,7 +49,7 @@ namespace BlueMoon.Services
         {
             var produto = await _produtoRepositorio.GetByIdAsync(id);
 
-            if (produto.Situacao != SituacaoProdutoEnum.ATIVO || produto == null)
+            if (produto == null)
                 throw new ArgumentException("Não há nenhum produto com esse ID");
 
             return produto;

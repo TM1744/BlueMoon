@@ -12,6 +12,16 @@ namespace BlueMoon.Repositories
         public ProdutoRepositorio(MySqlDataBaseContext context) : base(context)
         {
         }
+
+        public override async Task<IEnumerable<Produto?>> GetAllAsync()
+        {
+            return await _dbSet.Where(x => x.Situacao == SituacaoProdutoEnum.ATIVO).ToListAsync();
+        }
+
+        public override async Task<Produto?> GetByIdAsync(Guid id)
+        {
+            return await _dbSet.FirstOrDefaultAsync(x => x.Id == id && x.Situacao == SituacaoProdutoEnum.ATIVO);
+        }
         
         public async Task LogicalDeleteByIdAsync(Produto produto)
         {
