@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlueMoon.DTO;
+using BlueMoon.Entities.Enuns;
 using BlueMoon.Entities.Models;
 using BlueMoon.Repositories.Interfaces;
 using BlueMoon.Services.Interfaces;
@@ -17,6 +18,9 @@ namespace BlueMoon.Services
 
         public async Task<Venda> AddAsync(Venda venda)
         {
+            if (venda.Cliente.Id == venda.Vendedor.Pessoa.Id)
+                throw new InvalidOperationException("Cliente e Vendedor não podem ser a mesma pessoa");
+
             venda.Codigo = await _repositorio.GetGreatCodeNumber() + 1;
             await _repositorio.AddAsync(venda);
 
@@ -25,8 +29,13 @@ namespace BlueMoon.Services
 
         public async Task<Venda> AddItensAsync(Venda venda)
         {
-            await _repositorio.AddItensAsync(venda);
+            if (!await _repositorio.ValidateIntegrity(venda))
+                throw new InvalidOperationException("Só é possível adicionar itens a uma venda aberta");
 
+            if (venda.Itens.Count == 0)
+                throw new InvalidOperationException("Não é possível fechar uma venda sem itens");
+
+            await _repositorio.AddItensAsync(venda);
             return venda;
         }
 
@@ -127,6 +136,12 @@ namespace BlueMoon.Services
             if (venda == null)
                 throw new ArgumentException("Não há nenhuma venda com esse ID");
 
+            if (venda.Situacao == EnumSituacaoVenda.CANCELADA)
+                throw new InvalidOperationException("Essa venda já foi cancelada");
+
+            if (venda.Situacao != EnumSituacaoVenda.ABERTA && venda.Situacao != EnumSituacaoVenda.FECHADA)
+                throw new InvalidOperationException("Somente vendas abertas ou fechadas podem ser canceladas");
+
             await _repositorio.Cancelar(venda);
         }
 
@@ -136,6 +151,12 @@ namespace BlueMoon.Services
 
             if (venda == null)
                 throw new ArgumentException("Não há nenhuma venda com esse ID");
+
+            if (venda.Situacao == EnumSituacaoVenda.FATURADA)
+                throw new InvalidOperationException("Venda já faturada");
+
+            if (venda.Situacao != EnumSituacaoVenda.FECHADA)
+                throw new InvalidOperationException("Somente vendas fechadas podem ser faturadas");
 
             await _repositorio.Faturar(venda);
         }

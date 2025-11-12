@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlueMoon.Context;
+using BlueMoon.Entities.Enuns;
 using BlueMoon.Entities.Models;
 using BlueMoon.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -50,9 +51,6 @@ namespace BlueMoon.Repositories
 
         public async Task Cancelar(Venda venda)
         {
-            foreach (var item in venda.Itens)
-                item.Produto.AdicionarEstoque(item.Quantidade);
-
             venda.CancelarVenda();
             await _context.SaveChangesAsync();
         }
@@ -66,6 +64,11 @@ namespace BlueMoon.Repositories
         public async Task<int> GetGreatCodeNumber()
         {
             return await _dbSet.Select(x => (int?)x.Codigo).MaxAsync() ?? 0;
+        }
+
+        public async Task<bool> ValidateIntegrity(Venda venda)
+        {
+            return !await _dbSet.AnyAsync(x => x.Situacao != EnumSituacaoVenda.ABERTA && x.Id == venda.Id);
         }
     }
 }
