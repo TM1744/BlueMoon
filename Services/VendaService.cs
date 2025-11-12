@@ -160,5 +160,18 @@ namespace BlueMoon.Services
 
             await _repositorio.Faturar(venda);
         }
+
+        public async Task EstornarVenda(Guid id)
+        {
+            var venda = await _repositorio.GetByIdAsync(id);
+
+            if (venda.Situacao == EnumSituacaoVenda.ESTORNADA)
+                throw new InvalidOperationException("Esta Venda já foi estornada");
+
+            if (venda.Situacao != EnumSituacaoVenda.FATURADA)
+                throw new InvalidOperationException("Só é possível estornar vendas faturadas");
+
+            await _repositorio.Estornar(venda);
+        }
     }
 }

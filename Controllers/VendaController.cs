@@ -94,7 +94,7 @@ namespace BlueMoon.Controllers
         }
 
         [HttpPatch("{id}/Faturar")]
-        public async Task<ActionResult<VendaReadDTO>> PatchFaturar(string id)
+        public async Task<ActionResult<string>> PatchFaturar(string id)
         {
             try
             {
@@ -108,11 +108,25 @@ namespace BlueMoon.Controllers
         }
 
         [HttpPatch("{id}/Cancelar")]
-        public async Task<ActionResult<VendaReadDTO>> PatchCancelar(string id)
+        public async Task<ActionResult<string>> PatchCancelar(string id)
         {
             try
             {
                 await _vendaService.CancelarVenda(Guid.Parse(id));
+                return Ok("Venda cancelada");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPatch("{id}/Estornar")]
+        public async Task<ActionResult<string>> PatchEstornar(string id)
+        {
+            try
+            {
+                await _vendaService.EstornarVenda(Guid.Parse(id));
                 return Ok("Venda cancelada");
             }
             catch (Exception ex)

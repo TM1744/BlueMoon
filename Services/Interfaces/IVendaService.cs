@@ -17,5 +17,6 @@ namespace BlueMoon.Services.Interfaces
         Task<IEnumerable<VendaReadDTO>> BuildDTOList(IEnumerable<Venda> vendas);
         Task FaturarVenda(Guid id);
         Task CancelarVenda(Guid id);
+        Task EstornarVenda(Guid id);
     }
 }

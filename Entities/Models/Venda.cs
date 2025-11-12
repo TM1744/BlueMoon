@@ -39,12 +39,10 @@ namespace BlueMoon.Entities.Models
         }
 
         public void EstornarVenda()
-        {
-            if (Situacao == EnumSituacaoVenda.ESTORNADA)
-                throw new InvalidOperationException("Esta Venda já foi estornada!");
-            
-            if (Situacao != EnumSituacaoVenda.FECHADA)
-                throw new InvalidOperationException("Só é possível estornar vendas fechadas.");
+        {   
+            if (Situacao == EnumSituacaoVenda.FATURADA)
+                foreach (var item in Itens)
+                    item.Produto.AdicionarEstoque(item.Quantidade);
 
             Situacao = EnumSituacaoVenda.ESTORNADA;
         }

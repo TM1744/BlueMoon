@@ -7,6 +7,7 @@ using BlueMoon.Entities.Enuns;
 using BlueMoon.Entities.Models;
 using BlueMoon.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 
 namespace BlueMoon.Repositories
 {
@@ -58,6 +59,12 @@ namespace BlueMoon.Repositories
         public async Task Faturar(Venda venda)
         {
             venda.FaturarVenda();
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Estornar(Venda venda)
+        {
+            venda.EstornarVenda();
             await _context.SaveChangesAsync();
         }
 
