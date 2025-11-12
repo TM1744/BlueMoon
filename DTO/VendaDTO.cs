@@ -11,11 +11,6 @@ namespace BlueMoon.DTO
         public string IdUsuario { get; set; } = string.Empty;
     }
 
-    public class VendaItensDTO
-    {
-        public ICollection<ItemVendaCreateDTO> Itens { get; set; } = [];
-    }
-
     public class VendaReadDTO
     {
         public string Id { get; set; } = string.Empty;
@@ -23,7 +18,7 @@ namespace BlueMoon.DTO
         public string NomeCliente { get; set; } = string.Empty;
         public string IdVendedor { get; set; } = string.Empty;
         public string NomeVendedor { get; set; } = string.Empty;
-        public ICollection<ItemVendaReadDTO> Itens = [];
+        public ICollection<ItemVendaReadDTO> Itens { get; set; } = [];
         public int Codigo { get; set; }
         public int Situacao { get; set; }
         public decimal ValorTotal { get; set; } = 0.00m;

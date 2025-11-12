@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BlueMoon.DTO;
 using BlueMoon.Entities.Models;
+using BlueMoon.Repositories;
 using BlueMoon.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,16 +45,16 @@ namespace BlueMoon.Controllers
         }
 
         [HttpPost("{id}/Itens")]
-        public async Task<ActionResult<VendaReadDTO>> PostItens(string id, VendaItensDTO dto)
+        public async Task<ActionResult<VendaReadDTO>> PostItens(string id, IEnumerable<ItemVendaCreateDTO> dtos)
         {
             try
             {
                 var venda = await _vendaService.GetByIdAsync(Guid.Parse(id));
                 ICollection<ItemVenda> itens = [];
-                foreach (ItemVendaCreateDTO dtoItem in dto.Itens)
+                foreach (ItemVendaCreateDTO dtoItem in dtos)
                 {
                     var produto = await _produtoService.GetByIdAsync(Guid.Parse(dtoItem.IdProduto));
-                    var itemVenda = new ItemVenda(produto, dtoItem);
+                    var itemVenda = new ItemVenda(produto, dtoItem.Quantidade);
                     itens.Add(itemVenda);
                 }
                 venda.AdicionarItens(itens);

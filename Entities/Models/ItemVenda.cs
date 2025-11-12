@@ -15,17 +15,17 @@ namespace BlueMoon.Entities.Models
 
         private ItemVenda() { }
 
-        public ItemVenda(Produto produto, ItemVendaCreateDTO dto)
+        public ItemVenda(Produto produto, int quantidade)
         {
             Produto = produto;
-            Quantidade = dto.Quantidade;
+            Quantidade = quantidade;
             ProdutoValorVenda = decimal.Round(produto.ValorVenda, 2);
             SubTotal = CalcularSubtotal();
             ProdutoNome = produto.Nome;
             ProdutoMarca = produto.Marca;
             ProdutoCodigo = produto.Codigo;
 
-            Produto.RemoverEstoque(dto.Quantidade);
+            Produto.RemoverEstoque(quantidade);
         }
 
         private decimal CalcularSubtotal() => SubTotal = Produto.ValorVenda * Quantidade;

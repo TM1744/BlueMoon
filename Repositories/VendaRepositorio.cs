@@ -20,6 +20,7 @@ namespace BlueMoon.Repositories
             return await _dbSet.Where(x => x.Id == id)
                                 .Include(x => x.Cliente)
                                 .Include(x => x.Vendedor)
+                                    .ThenInclude(x => x.Pessoa)
                                 .Include(x => x.Itens)
                                     .ThenInclude(y => y.Produto)
                                 .FirstOrDefaultAsync();
@@ -29,6 +30,7 @@ namespace BlueMoon.Repositories
         {
             return await _dbSet.Include(x => x.Cliente)
                                 .Include(x => x.Vendedor)
+                                    .ThenInclude(x => x.Pessoa)
                                 .Include(x => x.Itens)
                                     .ThenInclude(y => y.Produto)
                                 .ToListAsync();
@@ -36,7 +38,13 @@ namespace BlueMoon.Repositories
 
         public async Task AddItensAsync(Venda venda)
         {
+            foreach (var item in venda.Itens)
+            {
+                await _context.ItemVendas.AddAsync(item);
+                _context.Produtos.Update(item.Produto);
+            }
             _dbSet.Update(venda);
+                
             await _context.SaveChangesAsync();
         }
 
@@ -44,7 +52,7 @@ namespace BlueMoon.Repositories
         {
             foreach (var item in venda.Itens)
                 item.Produto.AdicionarEstoque(item.Quantidade);
-            
+
             venda.CancelarVenda();
             await _context.SaveChangesAsync();
         }

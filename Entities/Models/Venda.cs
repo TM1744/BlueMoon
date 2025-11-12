@@ -5,7 +5,7 @@ namespace BlueMoon.Entities.Models
     public sealed class Venda
     {
         public Guid Id { get; private set; } = Guid.NewGuid();
-        public ICollection<ItemVenda> Itens { get; private set; } = [];
+        public ICollection<ItemVenda> Itens { get; private set; } = new List<ItemVenda>();
         public Pessoa Cliente { get; private set; }
         public Usuario Vendedor { get; private set; }
         public int Codigo { get; set; }
@@ -14,7 +14,6 @@ namespace BlueMoon.Entities.Models
         public DateTime Data { get; private set; } = DateTime.Now;
 
         private Venda() { }
-
         public Venda (Usuario vendedor, Pessoa cliente)
         {
             Situacao = EnumSituacaoVenda.ABERTA;
@@ -82,7 +81,7 @@ namespace BlueMoon.Entities.Models
     
         private void CalcularValorTotal()
         {
-            ValorTotal = Itens.Sum(x => x.SubTotal);
+            ValorTotal = decimal.Round(Itens.Sum(x => x.SubTotal), 2);
         }
     }
 }

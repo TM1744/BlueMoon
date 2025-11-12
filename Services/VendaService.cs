@@ -32,6 +32,7 @@ namespace BlueMoon.Services
 
         public async Task<VendaReadDTO> BuildDTO(Venda venda)
         {
+
             var dto = new VendaReadDTO();
             dto.Id = venda.Id.ToString();
             dto.IdCliente = venda.Cliente.Id.ToString();
