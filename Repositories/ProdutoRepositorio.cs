@@ -15,7 +15,7 @@ namespace BlueMoon.Repositories
 
         public override async Task<IEnumerable<Produto?>> GetAllAsync()
         {
-            return await _dbSet.Where(x => x.Situacao == SituacaoProdutoEnum.ATIVO).ToListAsync();
+            return await _dbSet.Where(x => x.Situacao == SituacaoProdutoEnum.ATIVO).OrderBy(x => x.Codigo).ToListAsync();
         }
 
         public override async Task<Produto?> GetByIdAsync(Guid id)

@@ -35,6 +35,7 @@ namespace BlueMoon.Repositories
                                     .ThenInclude(x => x.Pessoa)
                                 .Include(x => x.Itens)
                                     .ThenInclude(y => y.Produto)
+                                .OrderBy(x => x.Codigo)
                                 .ToListAsync();
         }
 
