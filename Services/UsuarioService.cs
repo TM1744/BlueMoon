@@ -29,7 +29,7 @@ namespace BlueMoon.Services
                 throw new ArgumentException("A documentação, e-mail, inscrição municipal, login ou inscrição estadual" +
                 " do usuário já foram cadastrados, ou há outro registro ativo de usuário para a mesma pessoa");
 
-            usuario.Codigo = await _repositorio.GetGreaterCodeNumber() + 1;
+            usuario.Codigo = _repositorio.GetGreaterCodeNumber() + 1;
             await _repositorio.AddAsync(usuario);
 
             return usuario;

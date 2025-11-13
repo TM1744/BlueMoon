@@ -13,6 +13,6 @@ namespace BlueMoon.Repositories.Interfaces
         Task LogicalDeleteByIdAsync(Produto produto);
         Task<bool> Exists(Guid id);
         Task<bool> ValidateUniqueness(Produto produto);
-        Task<int> GetGreaterCodeNumber();
+        int GetGreaterCodeNumber();
     }
 }

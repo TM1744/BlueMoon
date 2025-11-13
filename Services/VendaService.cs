@@ -21,7 +21,7 @@ namespace BlueMoon.Services
             if (venda.Cliente.Id == venda.Vendedor.Pessoa.Id)
                 throw new InvalidOperationException("Cliente e Vendedor não podem ser a mesma pessoa");
 
-            venda.Codigo = await _repositorio.GetGreatCodeNumber() + 1;
+            venda.Codigo = _repositorio.GetGreatCodeNumber() + 1;
             await _repositorio.AddAsync(venda);
 
             return venda;

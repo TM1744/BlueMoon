@@ -12,7 +12,7 @@ namespace BlueMoon.Repositories.Interfaces
         Task Faturar(Venda venda);
         Task Cancelar(Venda venda);
         Task Estornar(Venda venda);
-        Task<int> GetGreatCodeNumber();
+        int GetGreatCodeNumber();
         Task<bool> ValidateIntegrity(Venda venda);
     }
 }

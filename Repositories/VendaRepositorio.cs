@@ -68,9 +68,9 @@ namespace BlueMoon.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<int> GetGreatCodeNumber()
+        public int GetGreatCodeNumber()
         {
-            return await _dbSet.Select(x => (int?)x.Codigo).MaxAsync() ?? 0;
+            return _dbSet.Select(x => (int?)x.Codigo).Max() ?? 0;
         }
 
         public async Task<bool> ValidateIntegrity(Venda venda)

@@ -36,9 +36,9 @@ namespace BlueMoon.Repositories
                 x.Situacao == SituacaoProdutoEnum.ATIVO);
         }
 
-        public async Task<int> GetGreaterCodeNumber()
+        public int GetGreaterCodeNumber()
         {
-            return await _dbSet.Select(x => (int?)x.Codigo).MaxAsync() ?? 0;
+            return _dbSet.Select(x => (int?)x.Codigo).Max() ?? 0;
         }
 
         public async Task<bool> ValidateUniqueness(Produto produto)

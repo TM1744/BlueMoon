@@ -58,9 +58,9 @@ namespace BlueMoon.Services
         public async Task<Produto> AddAsync(Produto produto)
         {
             if (!await _produtoRepositorio.ValidateUniqueness(produto))
-                throw new ArgumentException("A descrição ou código de barras de produto já foram cadastrados");
+                throw new ArgumentException("O nome ou código de barras de produto já foram cadastrados");
 
-            produto.Codigo = await _produtoRepositorio.GetGreaterCodeNumber() + 1;
+            produto.Codigo = _produtoRepositorio.GetGreaterCodeNumber() + 1;
             await _produtoRepositorio.AddAsync(produto);
 
             return produto;
