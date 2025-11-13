@@ -22,7 +22,8 @@ namespace BlueMoon.DTO
         public int Codigo { get; set; }
         public int Situacao { get; set; }
         public decimal ValorTotal { get; set; } = 0.00m;
-        public string Data { get; set; } = string.Empty;
+        public string DataAbertura { get; set; } = string.Empty;
+        public string DataFaturamento { get; set; } = string.Empty;
 
     }
 }

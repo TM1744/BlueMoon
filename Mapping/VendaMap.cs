@@ -18,7 +18,8 @@ namespace BlueMoon.Mapping
             builder.Property(x => x.Codigo).HasColumnName("codigo");
             builder.Property(x => x.Situacao).HasColumnName("situacao");
             builder.Property(x => x.ValorTotal).HasColumnName("valor_total").HasColumnType("decimal(11,2)");
-            builder.Property(x => x.Data).HasColumnName("data");
+            builder.Property(x => x.DataAbertura).HasColumnName("data_abertura");
+            builder.Property(x => x.DataFaturamento).HasColumnName("data_faturamento");
             builder.Property<Guid>("id_pessoa").HasColumnName("id_pessoa").IsRequired();
             builder.Property<Guid>("id_usuario").HasColumnName("id_usuario").IsRequired();
 

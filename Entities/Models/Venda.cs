@@ -11,7 +11,8 @@ namespace BlueMoon.Entities.Models
         public int Codigo { get; set; }
         public EnumSituacaoVenda Situacao { get; set; }
         public decimal ValorTotal { get; private set; } = 0.00m;
-        public DateTime Data { get; private set; } = DateTime.Now;
+        public DateTime DataAbertura { get; private set; } = DateTime.Now;
+        public DateTime DataFaturamento { get; private set; } = DateTime.MinValue;
 
         private Venda() { }
         public Venda (Usuario vendedor, Pessoa cliente)
@@ -53,7 +54,11 @@ namespace BlueMoon.Entities.Models
             Situacao = EnumSituacaoVenda.FECHADA;
         }
 
-        public void FaturarVenda() => Situacao = EnumSituacaoVenda.FATURADA;
+        public void FaturarVenda()
+        {
+            Situacao = EnumSituacaoVenda.FATURADA;
+            DataFaturamento = DateTime.Now; 
+        } 
     
         private void CalcularValorTotal() => ValorTotal = decimal.Round(Itens.Sum(x => x.SubTotal), 2);
     }

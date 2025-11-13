@@ -51,7 +51,8 @@ namespace BlueMoon.Services
             dto.Codigo = venda.Codigo;
             dto.Situacao = (int)venda.Situacao;
             dto.ValorTotal = decimal.Round(venda.ValorTotal, 2);
-            dto.Data = venda.Data.ToString();
+            dto.DataAbertura = venda.DataAbertura.ToString("dd/MM/yyyy HH:mm:ss");
+            dto.DataFaturamento = venda.DataFaturamento.ToString("dd/MM/yyyy HH:mm:ss");
 
             foreach (var item in venda.Itens)
             {
@@ -86,7 +87,8 @@ namespace BlueMoon.Services
                 dto.Codigo = venda.Codigo;
                 dto.Situacao = (int)venda.Situacao;
                 dto.ValorTotal = decimal.Round(venda.ValorTotal, 2);
-                dto.Data = venda.Data.ToString();
+                dto.DataAbertura = venda.DataAbertura.ToString("dd/MM/yyyy HH:mm:ss");
+                dto.DataFaturamento = venda.DataFaturamento.ToString("dd/MM/yyyy HH:mm:ss");
 
                 foreach (var item in venda.Itens)
                 {
