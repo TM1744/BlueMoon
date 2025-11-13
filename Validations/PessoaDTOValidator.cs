@@ -138,6 +138,9 @@ namespace BlueMoon.Validations
                 if (telefone.Length < 10 || telefone.Length > 11)
                     return false;
 
+                if (telefone.All(x => x == telefone[0]))
+                    return false;
+
                 string ddd = telefone.Substring(0, 2);
 
                 if (!int.TryParse(ddd, out int numero))
