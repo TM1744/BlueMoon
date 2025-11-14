@@ -8,8 +8,11 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using BlueMoon.Validations;
 using BlueMoon.DTO;
+using QuestPDF.Infrastructure; 
 
 var builder = WebApplication.CreateBuilder(args);
+
+QuestPDF.Settings.License = LicenseType.Community;
 
 // Configuração do contexto do banco de dados
 builder.Services.AddDbContext<MySqlDataBaseContext>(options =>
