@@ -1,0 +1,86 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/zarest/Documentos/projetos/BlueMoon/BlueMoon.csproj": {}
+  },
+  "projects": {
+    "/home/zarest/Documentos/projetos/BlueMoon/BlueMoon.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/zarest/Documentos/projetos/BlueMoon/BlueMoon.csproj",
+        "projectName": "BlueMoon",
+        "projectPath": "/home/zarest/Documentos/projetos/BlueMoon/BlueMoon.csproj",
+        "packagesPath": "/home/zarest/.nuget/packages/",
+        "outputPath": "/home/zarest/Documentos/projetos/BlueMoon/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/zarest/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[10.4.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.20, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "target": "Package",
+              "version": "[8.0.20, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[8.0.3, )"
+            },
+            "QuestPDF": {
+              "target": "Package",
+              "version": "[2024.3.8, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.121/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
