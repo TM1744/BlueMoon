@@ -121,7 +121,7 @@ namespace BlueMoon.Validations
                     .MaximumLength(50).WithMessage("Cidade não deve ter mais de 50 caracteres");
 
                 RuleFor(dto => dto.Estado)
-                    .GreaterThan(0).WithMessage("Valor de Estado deve ser maior do que 0")
+                    .GreaterThanOrEqualTo(0).WithMessage("Valor de Estado deve ser maior ou igual a 0")
                     .LessThan(27).WithMessage("Valor de Estado deve ser menor do que 27");
             }
         }
