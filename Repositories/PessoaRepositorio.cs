@@ -30,41 +30,6 @@ namespace BlueMoon.Repositories
             return await _dbSet.AnyAsync(x => x.Id == id && x.Situacao == SituacaoPessoaEnum.ATIVO);
         }
 
-        public async Task<Pessoa?> GetByCodigo(int codigo)
-        {
-            return await _dbSet.FirstOrDefaultAsync(x => x.Codigo == codigo
-             && x.Situacao == SituacaoPessoaEnum.ATIVO);
-        }
-
-        public async Task<Pessoa?> GetByDocumento(string documento)
-        {
-            return await _dbSet.FirstOrDefaultAsync(x => x.Documento == documento
-             && x.Situacao == SituacaoPessoaEnum.ATIVO);
-        }
-
-        public async Task<IEnumerable<Pessoa?>> GetByLocal(string local)
-        {
-            return await _dbSet.Where(x =>
-             (x.Logradouro.Contains(local) ||
-             x.Cidade.Contains(local) ||
-             x.Complemento.Contains(local) ||
-             x.Bairro.Contains(local) ||
-             x.Numero.Contains(local))
-             && x.Situacao == SituacaoPessoaEnum.ATIVO).ToListAsync();
-        }
-
-        public async Task<IEnumerable<Pessoa?>> GetByNome(string nome)
-        {
-            return await _dbSet.Where(x => x.Nome.Contains(nome)
-                && x.Situacao == SituacaoPessoaEnum.ATIVO).ToListAsync();
-        }
-
-        public async Task<IEnumerable<Pessoa?>> GetByTelefone(string telefone)
-        {
-            return await _dbSet.Where(x => x.Telefone.Contains(telefone) &&
-                x.Situacao == SituacaoPessoaEnum.ATIVO).ToListAsync();
-        }
-
         public int GetGreaterCodeNumber()
         {
             return _dbSet.Select(x => (int?)x.Codigo).Max() ?? 0;
@@ -73,7 +38,7 @@ namespace BlueMoon.Repositories
         public async Task LogicalDeleteByIdAsync(Pessoa pessoa)
         {
             var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.Pessoa.Id == pessoa.Id);
-            if(usuario != null)
+            if (usuario != null)
             {
                 usuario.Inativar();
                 _context.Update(usuario);
@@ -91,6 +56,27 @@ namespace BlueMoon.Repositories
             (x.InscricaoMunicipal == pessoa.InscricaoMunicipal && pessoa.InscricaoMunicipal != "N/D") ||
             (x.Email == pessoa.Email && pessoa.Email != "N/D"))
             && x.Id != pessoa.Id && x.Situacao == SituacaoPessoaEnum.ATIVO);
+        }
+
+        public async Task<IEnumerable<Pessoa>> GetBySearch(PessoaSearchDTO dto)
+        {
+            if (dto.Codigo != 0)
+                return await _dbSet
+                .Where(
+                    x => x.Codigo == dto.Codigo &&
+                    x.Nome.Contains(dto.Nome.ToUpper()) &&
+                    x.Documento.Contains(dto.Documento) &&
+                    x.Situacao == SituacaoPessoaEnum.ATIVO
+                    )
+                .ToListAsync();
+
+            return await _dbSet
+            .Where(
+                x => x.Nome.Contains(dto.Nome.ToUpper()) &&
+                x.Documento.Contains(dto.Documento) &&
+                x.Situacao == SituacaoPessoaEnum.ATIVO
+            )
+            .ToListAsync();
         }
     }
 }

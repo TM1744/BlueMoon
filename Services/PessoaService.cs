@@ -23,6 +23,7 @@ namespace BlueMoon.Services
         {
             _pessoaRepositorio = pessoaRepositorio;
         }
+        
         public async Task<Pessoa> AddAssync(Pessoa pessoa)
         {
             if (!await _pessoaRepositorio.ValidateUniqueness(pessoa))
@@ -34,27 +35,6 @@ namespace BlueMoon.Services
 
             return pessoa;
         }
-
-        public async Task<Pessoa> GetByCodigo(int codigo)
-        {
-            var pessoa = await _pessoaRepositorio.GetByCodigo(codigo);
-
-            if (pessoa == null)
-                throw new ArgumentException("Não há nenhuma pessoa com esse codigo");
-
-            return pessoa;
-        }
-
-        public async Task<Pessoa> GetByDocumento(string documento)
-        {
-            var pessoa = await _pessoaRepositorio.GetByDocumento(Regex.Replace(documento, "[^0-9]", ""));
-
-            if (pessoa == null)
-                throw new ArgumentException("Não há nenhuma pessoa com esse documento");
-
-            return pessoa;
-        }
-
         public async Task<Pessoa> GetByIdAssync(Guid id)
         {
             var pessoa = await _pessoaRepositorio.GetByIdAsync(id);
@@ -63,36 +43,6 @@ namespace BlueMoon.Services
                 throw new ArgumentException("Não há nenhuma pessoa com esse ID");
 
             return pessoa;
-        }
-
-        public async Task<IEnumerable<Pessoa>> GetByLocal(string local)
-        {
-            var pessoas = await _pessoaRepositorio.GetByLocal(local.ToUpper());
-
-            if (!pessoas.Any())
-                throw new ArgumentException("Não há nenhuma pessoa que reside nesse local");
-
-            return pessoas;
-        }
-
-        public async Task<IEnumerable<Pessoa>> GetByNome(string nome)
-        {
-            var pessoas = await _pessoaRepositorio.GetByNome(nome.ToUpper());
-
-            if (!pessoas.Any())
-                throw new ArgumentException("Não há nenhuma pessoa com esse nome");
-
-            return pessoas;
-        }
-
-        public async Task<IEnumerable<Pessoa>> GetByTelefone(string telefone)
-        {
-            var pessoas = await _pessoaRepositorio.GetByTelefone(Regex.Replace(telefone, "[^0-9]", ""));
-
-            if (!pessoas.Any())
-                throw new ArgumentException("Não há nenhuma pessoa com esse telefone");
-
-            return pessoas;
         }
 
         public async Task LogicalDeleteByIdAsync(Guid id)
@@ -163,35 +113,35 @@ namespace BlueMoon.Services
             return dto;
         }
 
-        public async Task<IEnumerable<PessoaReadDTO>> BuildDTOList(IEnumerable<Pessoa> pessoas)
+        public async Task<IEnumerable<PessoaMiniReadDTO>> BuildDTOList(IEnumerable<Pessoa> pessoas)
         {
-            ICollection<PessoaReadDTO> dtos = [];
+            ICollection<PessoaMiniReadDTO> dtos = [];
 
             foreach (Pessoa pessoa in pessoas)
             {
-                PessoaReadDTO dto = new PessoaReadDTO();
+                PessoaMiniReadDTO dto = new PessoaMiniReadDTO();
                 dto.Id = pessoa.Id.ToString();
                 dto.Codigo = pessoa.Codigo;
                 dto.Nome = pessoa.Nome;
                 dto.Telefone = pessoa.Telefone;
-                dto.Documento = pessoa.Documento;
-                dto.Tipo = (int)pessoa.Tipo;
-                dto.Situacao = (int)pessoa.Situacao;
-                dto.Email = pessoa.Email;
-                dto.InscricaoMunicipal = pessoa.InscricaoMunicipal;
-                dto.InscricaoEstadual = pessoa.InscricaoEstadual;
-                dto.CEP = pessoa.CEP;
-                dto.Logradouro = pessoa.Logradouro;
-                dto.Complemento = pessoa.Complemento;
                 dto.Cidade = pessoa.Cidade;
-                dto.Bairro = pessoa.Bairro;
-                dto.Numero = pessoa.Numero;
-                dto.Estado = (int)pessoa.Estado;
-
+                dto.Endereco = pessoa.Logradouro + ", " + pessoa.Numero;
                 dtos.Add(dto);
             }
 
             return dtos;
+        }
+
+        public async Task<IEnumerable<Pessoa>> GetBySearch(PessoaSearchDTO dto)
+        {
+            dto.Documento = Regex.Replace(dto.Documento, "[^0-9]", "");
+
+            var pessoas = await _pessoaRepositorio.GetBySearch(dto);
+
+            if(!pessoas.Any())
+                throw new ArgumentException("Não há nenhuma pessoa compatível com as descrições de busca");
+
+            return pessoas;
         }
     }
 }

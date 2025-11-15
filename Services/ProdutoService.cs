@@ -102,34 +102,7 @@ namespace BlueMoon.Services
             return dto;
         }
 
-        public async Task<IEnumerable<ProdutoReadDTO>> BuildDTOList(IEnumerable<Produto> produtos)
-        {
-            ICollection<ProdutoReadDTO> dtos = [];
-
-            foreach (Produto produto in produtos)
-            {
-                ProdutoReadDTO dto = new ProdutoReadDTO();
-                dto.Id = produto.Id.ToString();
-                dto.Codigo = produto.Codigo;
-                dto.Situacao = (int)produto.Situacao;
-                dto.Nome = produto.Nome;
-                dto.Descricao = produto.Descricao;
-                dto.Marca = produto.Marca;
-                dto.QuantidadeEstoque = produto.QuantidadeEstoque;
-                dto.QuantidadeEstoqueMinimo = produto.QuantidadeEstoqueMinimo;
-                dto.NCM = produto.NCM;
-                dto.CodigoBarras = produto.CodigoBarras;
-                dto.ValorCusto = produto.ValorCusto;
-                dto.ValorVenda = produto.ValorVenda;
-                dto.MargemLucro = produto.MargemLucro;
-
-                dtos.Add(dto);
-            }
-
-            return dtos;
-        }
-
-        public async Task<IEnumerable<ProdutoMiniReadDTO>> BuildMiniDTOList(IEnumerable<Produto> produtos)
+        public async Task<IEnumerable<ProdutoMiniReadDTO>> BuildDTOList(IEnumerable<Produto> produtos)
         {
             ICollection<ProdutoMiniReadDTO> dtos = [];
 

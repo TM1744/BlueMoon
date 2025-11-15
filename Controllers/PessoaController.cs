@@ -92,68 +92,16 @@ namespace BlueMoon.Controllers
             }
         }
 
-        [HttpGet("/por-nome/{nome}")]
-        public async Task<ActionResult<IEnumerable<PessoaReadDTO>>> GetByNome(string nome)
+        [HttpPost("Search")]
+        public async Task<ActionResult<IEnumerable<PessoaMiniReadDTO>>> Search(PessoaSearchDTO dto)
         {
             try
             {
-                return Ok(await _service.BuildDTOList(await _service.GetByNome(nome)));
+                return Ok(await _service.BuildDTOList(await _service.GetBySearch(dto)));
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
-            }
-        }
-
-        [HttpGet("/por-documento/{documento}")]
-        public async Task <ActionResult<PessoaReadDTO>> GetByDocumento(string documento)
-        {
-            try
-            {
-                return Ok(await _service.BuildDTO(await _service.GetByDocumento(documento)));
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
-
-        [HttpGet("/por-telefone/{telefone}")]
-        public async Task<ActionResult<IEnumerable<PessoaReadDTO>>> GetByTelefone(string telefone)
-        {
-            try
-            {
-                return Ok(await _service.BuildDTOList(await _service.GetByTelefone(telefone)));
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
-
-        [HttpGet("/por-local/{local}")]
-        public async Task<ActionResult<IEnumerable<PessoaReadDTO>>> GetByLocal(string local)
-        {
-            try
-            {
-                return Ok(await _service.BuildDTOList(await _service.GetByLocal(local)));
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
-
-        [HttpGet("/por-codigo/{codigo}")]
-        public async Task<ActionResult<PessoaReadDTO>> GetByCodigo(int codigo)
-        {
-            try
-            {
-                return Ok(await _service.BuildDTO(await _service.GetByCodigo(codigo)));
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
     }
