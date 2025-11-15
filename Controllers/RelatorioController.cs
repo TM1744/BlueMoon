@@ -1,25 +1,50 @@
-// using Microsoft.AspNetCore.Mvc;
-// using QuestPDF.Fluent;
-// using QuestPDF.Helpers;
-// using QuestPDF.Infrastructure;
-// using QuestPDF.Infrastructure;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using BlueMoon.DTO;
+using BlueMoon.Entities.Models;
+using BlueMoon.Repositories;
+using BlueMoon.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
+namespace BlueMoon.Controllers
+{
+    [ApiController]
+    [Route("/Bluemoon/[Controller]")]
+    public class RelatoriosController : ControllerBase
+    {
+        private readonly IRelatorioService _service;
 
+        public RelatoriosController(IRelatorioService service) => _service = service;
 
-// namespace BlueMoon.Controllers
-// {
-//     [ApiController]
-//     [Route("Bluemoon/[controller]")] // ← corrigido o uso do [controller]
-//     public class RelatoriosController : ControllerBase
-//     {
-//         [HttpGet("gerar")]
-//         public IActionResult GerarRelatorio()
-//         {
-//             // Gera o PDF em memória
-//             var pdf = GerarRelatorioExemplo();
+        [HttpGet("ProdutosMaisVendidos_R")]
+        public async Task<IActionResult> GetProdutosMaisVendidosRelatorio(PeriodoBuscaDTO dto)
+        {
+            try
+            {
+                var pdfBytes = await _service.GerarRelatorioProdutosMaisVendidosAsync(dto.DataInicio, dto.DataFim);
+                return File(pdfBytes, "application/pdf", "RelatorioProdutosMaisVendidos.pdf");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
-//             // Retorna o PDF como arquivo
-//             return File(pdf, "application/pdf", "relatorio.pdf");
-//         }
-//     }
-// }
+        }
+
+        [HttpGet("ProdutosMaisVendidos")]
+        public async Task<IActionResult> GetProdutosMaisVendidos(PeriodoBuscaDTO dto)
+        {
+            try
+            {
+                return Ok(await _service.GetProdutosMaisVendidosAsync(dto.DataInicio, dto.DataFim));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+    }
+}

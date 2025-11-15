@@ -1,83 +1,113 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BlueMoon.Services.Interfaces;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
+using BlueMoon.Repositories.Interfaces;
+using BlueMoon.Services.Interfaces;
+using System.Text.RegularExpressions;
+using System.Globalization;
+using Microsoft.VisualBasic;
+using BlueMoon.DTO;
 
 namespace BlueMoon.Services
 {
     public class RelatorioService : IRelatorioService
     {
-        public byte[] GerarRelatorioProdutosMaisVendidos()
-        {
-            
+        private readonly IRelatorioRepositorio _repostorio;
 
+        public RelatorioService(IRelatorioRepositorio repositorio) => _repostorio = repositorio;
+
+        public async Task<byte[]> GerarRelatorioProdutosMaisVendidosAsync(string inicio, string fim)
+        {
+            var dateInicio = StringToDateTime(inicio);
+            var dateFim = StringToDateTime(fim);
+
+            // 1. Buscar os dados do relatório
+            var dados = await _repostorio.GetProdutosMaisVendidos(dateInicio, dateFim);
+
+            // 2. Criar o documento PDF
             var document = Document.Create(container =>
             {
                 container.Page(page =>
                 {
-                    page.Margin(50);
-                    page.Size(PageSizes.A4);
-                    page.PageColor(Colors.White);
-                    page.DefaultTextStyle(x => x.FontSize(12));
+                    page.Margin(30);
 
-                    page.Header()
-                        .Text("Relatório Genérico")
-                        .SemiBold().FontSize(20).FontColor(Colors.Blue.Medium);
+                    // Cabeçalho
+                    page.Header().Text("Relatório - Produtos Mais Vendidos")
+                        .SemiBold().FontSize(18).FontColor(Colors.Blue.Medium);
 
-                    page.Content()
-                        .PaddingVertical(20)
-                        .Column(col =>
+                    page.Content().Column(col =>
+                    {
+                        // Período consultado
+                        col.Item().Text($"Período: {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}")
+                            .FontSize(12).FontColor(Colors.Grey.Darken1);
+
+                        col.Item().PaddingVertical(10);
+
+                        // Tabela com os dados
+                        col.Item().Table(table =>
                         {
-                            col.Spacing(10);
-
-                            col.Item().Text($"Data de geração: {DateTime.Now:dd/MM/yyyy HH:mm}");
-                            col.Item().Text("Este é um relatório de exemplo gerado com QuestPDF em uma API ASP.NET Core convencional.");
-
-                            col.Item().LineHorizontal(1).LineColor(Colors.Grey.Lighten1);
-
-                            col.Item().Table(table =>
+                            // Definição das colunas
+                            table.ColumnsDefinition(columns =>
                             {
-                                table.ColumnsDefinition(columns =>
-                                {
-                                    columns.ConstantColumn(40);
-                                    columns.RelativeColumn();
-                                    columns.RelativeColumn();
-                                });
-
-                                // Cabeçalho
-                                table.Header(header =>
-                                {
-                                    header.Cell().Text("#").Bold();
-                                    header.Cell().Text("Nome").Bold();
-                                    header.Cell().Text("Valor").Bold();
-                                });
-
-                                // Dados de exemplo
-                                for (int i = 1; i <= 5; i++)
-                                {
-                                    table.Cell().Text(i.ToString());
-                                    table.Cell().Text($"Item {i}");
-                                    table.Cell().Text($"R$ {i * 10},00");
-                                }
+                                columns.RelativeColumn(1); // Código
+                                columns.RelativeColumn(3); // Nome
+                                columns.RelativeColumn(2); // Quantidade
+                                columns.RelativeColumn(2); // Total vendido
                             });
-                        });
 
-                    page.Footer()
-                        .AlignCenter()
-                        .Text(x =>
-                        {
-                            x.Span("Página ").FontSize(10);
-                            x.CurrentPageNumber().FontSize(10);
-                            x.Span(" de ").FontSize(10);
-                            x.TotalPages().FontSize(10);
+                            // Cabeçalho da tabela
+                            table.Header(header =>
+                            {
+                                header.Cell().Element(CellStyle).Text("Código");
+                                header.Cell().Element(CellStyle).Text("Nome");
+                                header.Cell().Element(CellStyle).Text("Quantidade de vendas");
+                                header.Cell().Element(CellStyle).Text("Valor total das vendas (R$)");
+                            });
+
+                            // Linhas da tabela
+                            foreach (var item in dados)
+                            {
+                                table.Cell().Element(CellStyle).Text(item.Codigo.ToString());
+                                table.Cell().Element(CellStyle).Text(item.Nome);
+                                table.Cell().Element(CellStyle).Text(item.QuantidadeVendida.ToString());
+                                table.Cell().Element(CellStyle).Text(item.TotalVendido.ToString("N2"));
+                            }
+
+                            // Estilo das células
+                            static IContainer CellStyle(IContainer container)
+                            {
+                                return container
+                                    .Padding(6)
+                                    .BorderBottom(1)
+                                    .BorderColor(Colors.Grey.Lighten2);
+                            }
                         });
+                    });
+
+                    // Rodapé
+                    page.Footer().AlignCenter().Text($"Gerado em {DateTime.Now:dd/MM/yyyy HH:mm}");
                 });
             });
 
+            // 3. Renderizar PDF em memória
             return document.GeneratePdf();
         }
+
+        public async Task<IEnumerable<ProdutosMaisVendidosDTO>> GetProdutosMaisVendidosAsync(string inicio, string fim)
+        {
+            var itens = await _repostorio.GetProdutosMaisVendidos(StringToDateTime(inicio), StringToDateTime(fim));
+            return itens;
+        }
+
+        private DateTime StringToDateTime(string data)
+        {
+            data = Regex.Replace(data, "[^0-9]", "");
+
+            if (data.Length != 8)
+                throw new ArgumentException("Data informada é inválida");
+
+            return DateTime.ParseExact(data, "ddMMyyyy", CultureInfo.InvariantCulture);
+        }
+
     }
 }

@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BlueMoon.Context;
-using BlueMoon.Entities.Relatories;
+using BlueMoon.DTO;
 
 namespace BlueMoon.Repositories.Interfaces
 {
     public interface IRelatorioRepositorio
     {
-        Task<ProdutoMaisVendido> GetProdutosMaisVendidos (DateTime inicio, DateTime fim);
+        Task<IEnumerable<ProdutosMaisVendidosDTO>> GetProdutosMaisVendidos (DateTime inicio, DateTime fim);
         
     }
 }

@@ -25,12 +25,14 @@ builder.Services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
 builder.Services.AddScoped<IPessoaRepositorio, PessoaRepositorio>();
 builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
 builder.Services.AddScoped<IVendaRepositorio, VendaRepositorio>();
+builder.Services.AddScoped<IRelatorioRepositorio, RelatorioRepositorio>();
 
 // Configuração de serviços
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
 builder.Services.AddScoped<IPessoaService, PessoaService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IVendaService, VendaService>();
+builder.Services.AddScoped<IRelatorioService, RelatorioService>();
 
 
 // Configuração do validadores

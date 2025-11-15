@@ -1,0 +1,22 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace BlueMoon.DTO
+{
+    public class ProdutosMaisVendidosDTO
+    {
+        public string Id {get;set;} = string.Empty;
+        public int Codigo {get;set;}
+        public string Nome {get;set;} = string.Empty;
+        public int QuantidadeVendida {get;set;}
+        public decimal TotalVendido {get;set;} = 0.00m;
+    }
+
+    public class PeriodoBuscaDTO
+    {
+        public string DataInicio {get;set;} = string.Empty;
+        public string DataFim {get;set;} = string.Empty;
+    }
+}
