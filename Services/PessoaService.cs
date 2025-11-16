@@ -126,6 +126,7 @@ namespace BlueMoon.Services
                 dto.Telefone = pessoa.Telefone;
                 dto.Cidade = pessoa.Cidade;
                 dto.Endereco = pessoa.Logradouro + ", " + pessoa.Numero;
+                dto.Telefone = pessoa.Telefone;
                 dtos.Add(dto);
             }
 
@@ -135,6 +136,7 @@ namespace BlueMoon.Services
         public async Task<IEnumerable<Pessoa>> GetBySearch(PessoaSearchDTO dto)
         {
             dto.Documento = Regex.Replace(dto.Documento, "[^0-9]", "");
+            dto.Telefone = Regex.Replace(dto.Telefone, "[^0-9]", "");
 
             var pessoas = await _pessoaRepositorio.GetBySearch(dto);
 

@@ -66,6 +66,7 @@ namespace BlueMoon.Repositories
                     x => x.Codigo == dto.Codigo &&
                     x.Nome.Contains(dto.Nome.ToUpper()) &&
                     x.Documento.Contains(dto.Documento) &&
+                    x.Telefone.Contains(dto.Telefone) &&
                     x.Situacao == SituacaoPessoaEnum.ATIVO
                     )
                 .ToListAsync();
@@ -74,6 +75,7 @@ namespace BlueMoon.Repositories
             .Where(
                 x => x.Nome.Contains(dto.Nome.ToUpper()) &&
                 x.Documento.Contains(dto.Documento) &&
+                x.Telefone.Contains(dto.Telefone) &&
                 x.Situacao == SituacaoPessoaEnum.ATIVO
             )
             .ToListAsync();
