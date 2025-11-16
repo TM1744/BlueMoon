@@ -22,15 +22,18 @@ namespace BlueMoon.Repositories
                         SELECT
                             CAST(Produtos.id AS CHAR(36)) as Id,
                             Produtos.codigo AS Codigo, 
-                            Produtos.nome AS Nome, 
+                            Produtos.nome AS Nome,
+                            Produtos.quantidade_estoque AS EstoqueAtual, 
                             SUM(ItemVendas.quantidade) AS QuantidadeVendida, 
                             SUM(ItemVendas.subtotal) AS TotalVendido
                         FROM Vendas
                         JOIN ItemVendas ON ItemVendas.id_venda = Vendas.id
                         JOIN Produtos ON ItemVendas.id_produto = Produtos.id
-                        WHERE Vendas.data_faturamento >= @inicio
-                        AND Vendas.data_faturamento <  @fim
-                        GROUP BY Produtos.id, Produtos.codigo, Produtos.nome
+                        WHERE 
+                            Vendas.data_faturamento >= @inicio
+                            AND Vendas.data_faturamento <  @fim
+                            AND Vendas.situacao = 5
+                        GROUP BY Id, Codigo, Nome, EstoqueAtual
                         ORDER BY QuantidadeVendida DESC;
                     ";
 

@@ -11,6 +11,7 @@ namespace BlueMoon.DTO
         public int Codigo {get;set;}
         public string Nome {get;set;} = string.Empty;
         public int QuantidadeVendida {get;set;}
+        public int EstoqueAtual {get;set;}
         public decimal TotalVendido {get;set;} = 0.00m;
     }
 

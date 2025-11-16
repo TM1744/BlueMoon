@@ -28,23 +28,39 @@ namespace BlueMoon.Services
                 container.Page(page =>
                 {
                     page.Margin(30);
+                    page.Header().Element(ComposeHeader);
 
-                    page.Header().Text("Relatório - Produtos Mais Vendidos")
-                        .SemiBold().FontSize(18).FontColor(Colors.Blue.Darken4);
+                    void ComposeHeader(IContainer container)
+                    {
+                        container.Row(row =>
+                        {
+                            row.RelativeItem().Column(column =>
+                            {
+                                column.Item()
+                                    .Text("Relatório - Vendedores que mais venderam")
+                                    .SemiBold().FontSize(18).FontColor(Colors.Blue.Darken4);
+
+                                column.Item()
+                                    .Text($"Período: {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}")
+                                    .FontSize(12).FontColor(Colors.Grey.Darken2);
+                                
+                                column.Item().PaddingBottom(10);
+                            });
+                        });
+                    }
 
                     page.Content().Column(col =>
                     {
-                        col.Item().Text($"Período: {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}")
-                            .FontSize(12).FontColor(Colors.Grey.Darken1);
-
-                        col.Item().PaddingVertical(10);
+                        var faturamentoTotalDoPeriodo = 0.00m;
 
                         col.Item().Table(table =>
                         {
+
                             table.ColumnsDefinition(columns =>
                             {
                                 columns.RelativeColumn(1);
                                 columns.RelativeColumn(3);
+                                columns.RelativeColumn(2);
                                 columns.RelativeColumn(2);
                                 columns.RelativeColumn(2);
                             });
@@ -53,7 +69,8 @@ namespace BlueMoon.Services
                             {
                                 header.Cell().Element(CellStyle).AlignLeft().Text("Código");
                                 header.Cell().Element(CellStyle).AlignCenter().Text("Nome");
-                                header.Cell().Element(CellStyle).AlignCenter().Text("Quantidade de vendas");
+                                header.Cell().Element(CellStyle).AlignCenter().Text("Quantidade vendida");
+                                header.Cell().Element(CellStyle).AlignCenter().Text("Estoque atual");
                                 header.Cell().Element(CellStyle).AlignRight().Text("Faturamento total");
 
                                 static IContainer CellStyle(IContainer container)
@@ -66,12 +83,14 @@ namespace BlueMoon.Services
                                 }
                             });
 
+
                             var i = 1;
                             foreach (var item in dados)
                             {
                                 table.Cell().Element(CellStyle).AlignLeft().Text(item.Codigo.ToString());
                                 table.Cell().Element(CellStyle).AlignCenter().Text(item.Nome);
                                 table.Cell().Element(CellStyle).AlignCenter().Text(item.QuantidadeVendida.ToString());
+                                table.Cell().Element(CellStyle).AlignCenter().Text(item.EstoqueAtual.ToString());
                                 table.Cell().Element(CellStyle).AlignRight().Text("R$" + item.TotalVendido.ToString("N2"));
 
                                 IContainer CellStyle(IContainer container)
@@ -87,8 +106,16 @@ namespace BlueMoon.Services
                                 }
 
                                 i++;
+                                faturamentoTotalDoPeriodo += item.TotalVendido;
                             }
                         });
+
+                        col.Item().PaddingTop(20);
+
+                        col.Item().Text($"Faturamento total somado entre {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}:")
+                                    .Italic().FontSize(14).FontColor(Colors.Grey.Darken2);
+                        col.Item().Text("R$" + faturamentoTotalDoPeriodo.ToString("N2"))
+                                    .FontSize(13).FontColor(Colors.Grey.Darken2);
                     });
 
                     page.Footer().AlignCenter().PaddingTop(10).Row(row =>
@@ -125,19 +152,34 @@ namespace BlueMoon.Services
                 container.Page(page =>
                 {
                     page.Margin(30);
+                    page.Header().Element(ComposeHeader);
 
-                    page.Header().Text("Relatório - Pessoas que mais compraram")
-                        .SemiBold().FontSize(18).FontColor(Colors.Blue.Darken4);
+                    void ComposeHeader(IContainer container)
+                    {
+                        container.Row(row =>
+                        {
+                            row.RelativeItem().Column(column =>
+                            {
+                                column.Item()
+                                    .Text("Relatório - Pessoas que mais compraram")
+                                    .SemiBold().FontSize(18).FontColor(Colors.Blue.Darken4);
+
+                                column.Item()
+                                    .Text($"Período: {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}")
+                                    .FontSize(12).FontColor(Colors.Grey.Darken2);
+                                
+                                column.Item().PaddingBottom(10);
+                            });
+                        });
+                    }
 
                     page.Content().Column(col =>
                     {
-                        col.Item().Text($"Período: {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}")
-                            .FontSize(12).FontColor(Colors.Grey.Darken1);
-
-                        col.Item().PaddingVertical(10);
+                        var faturamentoTotalDoPeriodo = 0.00m;
 
                         col.Item().Table(table =>
                         {
+
                             table.ColumnsDefinition(columns =>
                             {
                                 columns.RelativeColumn(1);
@@ -163,6 +205,7 @@ namespace BlueMoon.Services
                                 }
                             });
 
+
                             var i = 1;
                             foreach (var item in dados)
                             {
@@ -184,8 +227,16 @@ namespace BlueMoon.Services
                                 }
 
                                 i++;
+                                faturamentoTotalDoPeriodo += item.ValorTotalVendas;
                             }
                         });
+
+                        col.Item().PaddingTop(20);
+
+                        col.Item().Text($"Faturamento total somado entre {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}:")
+                                    .Italic().FontSize(14).FontColor(Colors.Grey.Darken2);
+                        col.Item().Text("R$" + faturamentoTotalDoPeriodo.ToString("N2"))
+                                    .FontSize(13).FontColor(Colors.Grey.Darken2);
                     });
 
                     page.Footer().AlignCenter().PaddingTop(10).Row(row =>
@@ -222,19 +273,34 @@ namespace BlueMoon.Services
                 container.Page(page =>
                 {
                     page.Margin(30);
+                    page.Header().Element(ComposeHeader);
 
-                    page.Header().Text("Relatório - Vendedores que mais venderam")
-                        .SemiBold().FontSize(18).FontColor(Colors.Blue.Darken4);
+                    void ComposeHeader(IContainer container)
+                    {
+                        container.Row(row =>
+                        {
+                            row.RelativeItem().Column(column =>
+                            {
+                                column.Item()
+                                    .Text("Relatório - Vendedores que mais venderam")
+                                    .SemiBold().FontSize(18).FontColor(Colors.Blue.Darken4);
+
+                                column.Item()
+                                    .Text($"Período: {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}")
+                                    .FontSize(12).FontColor(Colors.Grey.Darken2);
+                                
+                                column.Item().PaddingBottom(10);
+                            });
+                        });
+                    }
 
                     page.Content().Column(col =>
                     {
-                        col.Item().Text($"Período: {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}")
-                            .FontSize(12).FontColor(Colors.Grey.Darken1);
-
-                        col.Item().PaddingVertical(10);
+                        var faturamentoTotalDoPeriodo = 0.00m;
 
                         col.Item().Table(table =>
                         {
+
                             table.ColumnsDefinition(columns =>
                             {
                                 columns.RelativeColumn(1);
@@ -260,6 +326,7 @@ namespace BlueMoon.Services
                                 }
                             });
 
+
                             var i = 1;
                             foreach (var item in dados)
                             {
@@ -281,8 +348,16 @@ namespace BlueMoon.Services
                                 }
 
                                 i++;
+                                faturamentoTotalDoPeriodo += item.ValorTotalVendas;
                             }
                         });
+
+                        col.Item().PaddingTop(20);
+
+                        col.Item().Text($"Faturamento total somado entre {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}:")
+                                    .Italic().FontSize(14).FontColor(Colors.Grey.Darken2);
+                        col.Item().Text("R$" + faturamentoTotalDoPeriodo.ToString("N2"))
+                                    .FontSize(13).FontColor(Colors.Grey.Darken2);
                     });
 
                     page.Footer().AlignCenter().PaddingTop(10).Row(row =>
