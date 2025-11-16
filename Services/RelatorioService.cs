@@ -21,75 +21,89 @@ namespace BlueMoon.Services
             var dateInicio = StringToDateTime(inicio);
             var dateFim = StringToDateTime(fim);
 
-            // 1. Buscar os dados do relatório
             var dados = await _repostorio.GetProdutosMaisVendidos(dateInicio, dateFim);
 
-            // 2. Criar o documento PDF
             var document = Document.Create(container =>
             {
                 container.Page(page =>
                 {
                     page.Margin(30);
 
-                    // Cabeçalho
                     page.Header().Text("Relatório - Produtos Mais Vendidos")
-                        .SemiBold().FontSize(18).FontColor(Colors.Blue.Medium);
+                        .SemiBold().FontSize(18).FontColor(Colors.Blue.Darken4);
 
                     page.Content().Column(col =>
                     {
-                        // Período consultado
                         col.Item().Text($"Período: {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}")
                             .FontSize(12).FontColor(Colors.Grey.Darken1);
 
                         col.Item().PaddingVertical(10);
 
-                        // Tabela com os dados
                         col.Item().Table(table =>
                         {
-                            // Definição das colunas
                             table.ColumnsDefinition(columns =>
                             {
-                                columns.RelativeColumn(1); // Código
-                                columns.RelativeColumn(3); // Nome
-                                columns.RelativeColumn(2); // Quantidade
-                                columns.RelativeColumn(2); // Total vendido
+                                columns.RelativeColumn(1);
+                                columns.RelativeColumn(3);
+                                columns.RelativeColumn(2);
+                                columns.RelativeColumn(2);
                             });
 
-                            // Cabeçalho da tabela
                             table.Header(header =>
                             {
-                                header.Cell().Element(CellStyle).Text("Código");
-                                header.Cell().Element(CellStyle).Text("Nome");
-                                header.Cell().Element(CellStyle).Text("Quantidade de vendas");
-                                header.Cell().Element(CellStyle).Text("Valor total das vendas (R$)");
+                                header.Cell().Element(CellStyle).AlignLeft().Text("Código");
+                                header.Cell().Element(CellStyle).AlignCenter().Text("Nome");
+                                header.Cell().Element(CellStyle).AlignCenter().Text("Quantidade de vendas");
+                                header.Cell().Element(CellStyle).AlignRight().Text("Faturamento total");
+
+                                static IContainer CellStyle(IContainer container)
+                                {
+                                    return container
+                                        .Background(Colors.Blue.Darken4)
+                                        .DefaultTextStyle(x => x.FontColor(Colors.White).Bold())
+                                        .PaddingVertical(8)
+                                        .PaddingHorizontal(5);
+                                }
                             });
 
-                            // Linhas da tabela
+                            var i = 1;
                             foreach (var item in dados)
                             {
-                                table.Cell().Element(CellStyle).Text(item.Codigo.ToString());
-                                table.Cell().Element(CellStyle).Text(item.Nome);
-                                table.Cell().Element(CellStyle).Text(item.QuantidadeVendida.ToString());
-                                table.Cell().Element(CellStyle).Text(item.TotalVendido.ToString("N2"));
-                            }
+                                table.Cell().Element(CellStyle).AlignLeft().Text(item.Codigo.ToString());
+                                table.Cell().Element(CellStyle).AlignCenter().Text(item.Nome);
+                                table.Cell().Element(CellStyle).AlignCenter().Text(item.QuantidadeVendida.ToString());
+                                table.Cell().Element(CellStyle).AlignRight().Text("R$" + item.TotalVendido.ToString("N2"));
 
-                            // Estilo das células
-                            static IContainer CellStyle(IContainer container)
-                            {
-                                return container
-                                    .Padding(6)
-                                    .BorderBottom(1)
-                                    .BorderColor(Colors.Grey.Lighten2);
+                                IContainer CellStyle(IContainer container)
+                                {
+                                    var backgroundColor = i % 2 == 0
+                                        ? Colors.White
+                                        : Colors.Grey.Lighten4;
+
+                                    return container
+                                        .Background(backgroundColor)
+                                        .PaddingVertical(8)
+                                        .PaddingHorizontal(16);
+                                }
+
+                                i ++;
                             }
                         });
                     });
 
-                    // Rodapé
-                    page.Footer().AlignCenter().Text($"Gerado em {DateTime.Now:dd/MM/yyyy HH:mm}");
+                    page.Footer().AlignCenter().PaddingTop(10).Row(row =>
+                    {
+                        row.AutoItem().Text(text =>
+                        {
+                            text.Span($"Gerado em {DateTime.Now:dd/MM/yyyy HH:mm} | ");
+                            text.CurrentPageNumber();
+                            text.Span(" / ");
+                            text.TotalPages();
+                        });
+                    });
                 });
             });
 
-            // 3. Renderizar PDF em memória
             return document.GeneratePdf();
         }
 

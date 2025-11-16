@@ -31,7 +31,7 @@ namespace BlueMoon.Repositories
                         WHERE Vendas.data_faturamento >= @inicio
                         AND Vendas.data_faturamento <  @fim
                         GROUP BY Produtos.id, Produtos.codigo, Produtos.nome
-                        ORDER BY TotalVendido DESC;
+                        ORDER BY QuantidadeVendida DESC;
                     ";
 
             return await _context.Database
