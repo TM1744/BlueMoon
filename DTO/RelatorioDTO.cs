@@ -14,6 +14,24 @@ namespace BlueMoon.DTO
         public decimal TotalVendido {get;set;} = 0.00m;
     }
 
+    public class PessoasQueMaisCompraramDTO
+    {
+        public string Id {get;set;} = string.Empty;
+        public int Codigo {get;set;}
+        public string Nome {get;set;} = string.Empty;
+        public int QuantidadeVendas{get;set;}
+        public decimal ValorTotalVendas{get;set;}
+    }
+
+    public class VendedoresQueMaisVenderamDTO
+    {
+        public string Id {get;set;} = string.Empty;
+        public int Codigo {get;set;}
+        public string Nome {get;set;} = string.Empty;
+        public int QuantidadeVendas {get;set;}
+        public decimal ValorTotalVendas {get;set;}
+    }
+
     public class PeriodoBuscaDTO
     {
         public string DataInicio {get;set;} = string.Empty;
