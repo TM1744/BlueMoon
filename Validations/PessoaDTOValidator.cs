@@ -143,7 +143,7 @@ namespace BlueMoon.Validations
 
                 string ddd = telefone.Substring(0, 2);
 
-                if (!int.TryParse(ddd, out int numero))
+                if (!int.TryParse(ddd, out int numero) || ddd == "00")
                     return false;
 
                 bool dddValido = Enum.IsDefined(typeof(DddEnum), numero);

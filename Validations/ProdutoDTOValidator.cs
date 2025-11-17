@@ -114,12 +114,16 @@ namespace BlueMoon.Validations
             if (codigo == null || codigo.Trim() == "")
                 return true;
 
+            if(codigo.Length < 3 || codigo.Length > 13)
+                return false;
+
             if (codigo.Length >= 3 || codigo.Length <= 9)
                 return ValidarCode39(codigo);
 
+            codigo = Regex.Replace(codigo, "[^0-9]", "");
+
             if (codigo.Length >= 13)
             {
-                codigo = Regex.Replace(codigo, "[^0-9]", "");
                 return ValidarEAN(codigo);
             }
 
