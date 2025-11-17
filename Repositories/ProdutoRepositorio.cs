@@ -59,6 +59,7 @@ namespace BlueMoon.Repositories
                     x.Marca.Contains(dto.Marca.ToUpper()) &&
                     x.Situacao == SituacaoProdutoEnum.ATIVO
                     )
+                .OrderBy(x => x.Codigo)
                 .ToListAsync();
 
             return await _dbSet

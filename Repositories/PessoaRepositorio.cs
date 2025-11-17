@@ -69,6 +69,7 @@ namespace BlueMoon.Repositories
                     x.Telefone.Contains(dto.Telefone) &&
                     x.Situacao == SituacaoPessoaEnum.ATIVO
                     )
+                .OrderBy(x => x.Codigo)
                 .ToListAsync();
 
             return await _dbSet
