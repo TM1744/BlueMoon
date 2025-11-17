@@ -60,26 +60,25 @@ namespace BlueMoon.Repositories
 
         public async Task<IEnumerable<Pessoa>> GetBySearch(PessoaSearchDTO dto)
         {
+            var nome = (dto.Nome ?? "").ToUpper();
+
+            IQueryable<Pessoa> query = _dbSet
+                .Where(x => x.Situacao == SituacaoPessoaEnum.ATIVO);
+
             if (dto.Codigo != 0)
-                return await _dbSet
-                .Where(
-                    x => x.Codigo == dto.Codigo &&
-                    x.Nome.Contains(dto.Nome.ToUpper()) &&
-                    x.Documento.Contains(dto.Documento) &&
-                    x.Telefone.Contains(dto.Telefone) &&
-                    x.Situacao == SituacaoPessoaEnum.ATIVO
-                    )
+            {
+                query = query.Where(x => x.Codigo == dto.Codigo);
+                return await query.ToListAsync();
+            }
+
+            query = query
+                .Where(x => x.Nome.ToUpper().Contains(nome))
+                .Where(x => x.Documento.Contains(dto.Documento))
+                .Where(x => x.Telefone.Contains(dto.Telefone));
+
+            return await query
                 .OrderBy(x => x.Codigo)
                 .ToListAsync();
-
-            return await _dbSet
-            .Where(
-                x => x.Nome.Contains(dto.Nome.ToUpper()) &&
-                x.Documento.Contains(dto.Documento) &&
-                x.Telefone.Contains(dto.Telefone) &&
-                x.Situacao == SituacaoPessoaEnum.ATIVO
-            )
-            .ToListAsync();
         }
     }
 }

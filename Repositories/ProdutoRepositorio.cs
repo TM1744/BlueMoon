@@ -22,7 +22,7 @@ namespace BlueMoon.Repositories
         {
             return await _dbSet.FirstOrDefaultAsync(x => x.Id == id && x.Situacao == SituacaoProdutoEnum.ATIVO);
         }
-        
+
         public async Task LogicalDeleteByIdAsync(Produto produto)
         {
             produto.Inativar();
@@ -51,24 +51,25 @@ namespace BlueMoon.Repositories
 
         public async Task<IEnumerable<Produto>> GetBySearch(ProdutoSearchDTO dto)
         {
+            var nome = (dto.Nome ?? "").ToUpper();
+            var marca = (dto.Marca ?? "").ToUpper();
+
+            IQueryable<Produto> query = _dbSet
+                .Where(x => x.Situacao == SituacaoProdutoEnum.ATIVO);
+
             if (dto.Codigo != 0)
-                return await _dbSet
-                .Where(
-                    x => x.Codigo == dto.Codigo &&
-                    x.Nome.Contains(dto.Nome.ToUpper()) &&
-                    x.Marca.Contains(dto.Marca.ToUpper()) &&
-                    x.Situacao == SituacaoProdutoEnum.ATIVO
-                    )
+            {
+                query = query.Where(x => x.Codigo == dto.Codigo);
+                return await query.ToListAsync();
+            }
+
+            query = query
+                .Where(x => x.Nome.ToUpper().Contains(nome))
+                .Where(x => x.Marca.ToUpper().Contains(marca));
+
+            return await query
                 .OrderBy(x => x.Codigo)
                 .ToListAsync();
-
-            return await _dbSet
-            .Where(
-                x => x.Nome.Contains(dto.Nome.ToUpper()) &&
-                x.Marca.Contains(dto.Marca.ToUpper()) &&
-                x.Situacao == SituacaoProdutoEnum.ATIVO
-            )
-            .ToListAsync();
         }
     }
 }
