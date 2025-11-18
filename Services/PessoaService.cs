@@ -59,9 +59,6 @@ namespace BlueMoon.Services
         {
             var old = await _pessoaRepositorio.GetByIdAsync(pessoa.Id);
 
-            if (old.Documento != "N/D" && old.Documento != pessoa.Documento)
-                throw new ArgumentException("Não é possível alterar o documento de pessoa");
-
             if (!await _pessoaRepositorio.ValidateUniqueness(pessoa))
                 throw new ArgumentException("A documentação, e-mail, inscrição municipal ou inscrição estadual" +
                 " da pessoa já foram cadastrados");

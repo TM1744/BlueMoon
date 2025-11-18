@@ -74,9 +74,6 @@ namespace BlueMoon.Services
         {
             var old = await _repositorio.GetByIdAsync(usuario.Id);
 
-            if (old.Pessoa.Documento != "N/D" && old.Pessoa.Documento != usuario.Pessoa.Documento)
-                throw new ArgumentException("Não é possível alterar o documento de usuário");
-
             if (old.Admissao != DateOnly.MinValue && old.Admissao != usuario.Admissao)
                 throw new ArgumentException("Não é possível alterar a data de admissão");
 
