@@ -31,6 +31,9 @@ namespace BlueMoon.Controllers
         [HttpPost]
         public async Task<ActionResult<VendaReadDTO>> PostVenda(VendaCreateDTO dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
                 var pessoa = await _pessoaService.GetByIdAssync(Guid.Parse(dto.IdPessoa));
@@ -47,6 +50,9 @@ namespace BlueMoon.Controllers
         [HttpPost("{id}/Itens")]
         public async Task<ActionResult<VendaReadDTO>> PostItens(string id, IEnumerable<ItemVendaCreateDTO> dtos)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
                 var venda = await _vendaService.GetByIdAsync(Guid.Parse(id));
