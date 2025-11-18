@@ -127,7 +127,8 @@ namespace BlueMoon.Services
             foreach (Usuario usuario in usuarios)
             {
                 UsuarioMiniReadDTO dto = new UsuarioMiniReadDTO();
-                dto.Id = usuario.Id.ToString();
+                dto.IdUsuario = usuario.Id.ToString();
+                dto.IdPessoa = usuario.Pessoa.Id.ToString();
                 dto.Nome = usuario.Pessoa.Nome;
                 dto.Codigo = usuario.Codigo;
                 dto.Cargo = (int)usuario.Cargo;

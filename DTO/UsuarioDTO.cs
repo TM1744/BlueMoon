@@ -69,7 +69,8 @@ namespace BlueMoon.DTO
 
     public class UsuarioMiniReadDTO
     {
-        public string Id {get;set;} = string.Empty;
+        public string IdUsuario {get;set;} = string.Empty;
+        public string IdPessoa {get;set;} = string.Empty;
         public int Codigo {get;set;}
         public string Nome {get;set;} = string.Empty;
         public int Cargo {get;set;}
