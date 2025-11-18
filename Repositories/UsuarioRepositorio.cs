@@ -33,42 +33,7 @@ namespace BlueMoon.Repositories
         {
             return await _dbSet.AnyAsync(x => x.Id == id && x.Situacao == SituacaoPessoaEnum.ATIVO);
         }
-
-        public async Task<Usuario?> GetByCodigo(int codigo)
-        {
-            return await _dbSet.FirstOrDefaultAsync(x => x.Codigo == codigo
-             && x.Situacao == SituacaoPessoaEnum.ATIVO);
-        }
-
-        public async Task<Usuario?> GetByDocumento(string documento)
-        {
-            return await _dbSet.FirstOrDefaultAsync(x => x.Pessoa.Documento == documento
-             && x.Situacao == SituacaoPessoaEnum.ATIVO);
-        }
-
-        public async Task<IEnumerable<Usuario?>> GetByLocal(string local)
-        {
-            return await _dbSet.Where(x =>
-             (x.Pessoa.Logradouro.Contains(local) ||
-             x.Pessoa.Cidade.Contains(local) ||
-             x.Pessoa.Complemento.Contains(local) ||
-             x.Pessoa.Bairro.Contains(local) ||
-             x.Pessoa.Numero.Contains(local))
-             && x.Situacao == SituacaoPessoaEnum.ATIVO).ToListAsync();
-        }
-
-        public async Task<IEnumerable<Usuario?>> GetByNome(string nome)
-        {
-            return await _dbSet.Where(x => x.Pessoa.Nome.Contains(nome)
-                && x.Situacao == SituacaoPessoaEnum.ATIVO).ToListAsync();
-        }
-
-        public async Task<IEnumerable<Usuario?>> GetByTelefone(string telefone)
-        {
-            return await _dbSet.Where(x => x.Pessoa.Telefone.Contains(telefone) &&
-             x.Situacao == SituacaoPessoaEnum.ATIVO).ToListAsync();
-        }
-
+        
         public int GetGreaterCodeNumber()
         {
             return _dbSet.Select(x => (int?)x.Codigo).Max() ?? 0;
@@ -96,6 +61,29 @@ namespace BlueMoon.Repositories
         public async Task<bool> ValidateLogin(string login, string senha)
         {
             return await _dbSet.AnyAsync(x => x.Login == login && x.Senha == senha);
+        }
+
+        public async Task<IEnumerable<Usuario>> GetBySearch(UsuarioSearchDTO dto)
+        {
+            IQueryable<Usuario> query = _dbSet
+                .Where(x => x.Situacao == SituacaoPessoaEnum.ATIVO);
+
+            if (dto.Codigo != 0)
+            {
+                query = query.Where(x => x.Codigo == dto.Codigo)
+                                .Include(x => x.Pessoa);
+                return await query.ToListAsync();
+            }
+
+            query = query
+                .Where(x => x.Pessoa.Nome.Contains(dto.Nome))
+                .Where(x => x.Pessoa.Documento.Contains(dto.Documento))
+                .Where(x => x.Pessoa.Telefone.Contains(dto.Telefone))
+                .Include(x => x.Pessoa);
+
+            return await query
+                .OrderBy(x => x.Codigo)
+                .ToListAsync();
         }
     }
 }

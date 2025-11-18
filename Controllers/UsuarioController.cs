@@ -20,7 +20,7 @@ namespace BlueMoon.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UsuarioReadDTO>>> Get()
+        public async Task<ActionResult<IEnumerable<UsuarioMiniReadDTO>>> Get()
         {
             try
             {
@@ -106,68 +106,16 @@ namespace BlueMoon.Controllers
             }
         }
 
-        [HttpGet("/por-nome/{nome}")]
-        public async Task<ActionResult<IEnumerable<UsuarioReadDTO>>> GetByNome(string nome)
+        [HttpPost("Search")]
+        public async Task<ActionResult<IEnumerable<UsuarioMiniReadDTO>>> Search(UsuarioSearchDTO dto)
         {
             try
             {
-                return Ok(await _usuarioService.BuildDTOList(await _usuarioService.GetByNome(nome)));
+                return Ok(await _usuarioService.BuildDTOList(await _usuarioService.GetBySearch(dto)));
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
-            }
-        }
-
-        [HttpGet("/por-documento/{documento}")]
-        public async Task<ActionResult<UsuarioReadDTO>> GetByDocumento(string documento)
-        {
-            try
-            {
-                return Ok(await _usuarioService.BuildDTO(await _usuarioService.GetByDocumento(documento)));
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
-
-        [HttpGet("/por-telefone/{telefone}")]
-        public async Task<ActionResult<IEnumerable<UsuarioReadDTO>>> GetByTelefone(string telefone)
-        {
-            try
-            {
-                return Ok(await _usuarioService.BuildDTOList(await _usuarioService.GetByTelefone(telefone)));
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
-
-        [HttpGet("/por-local/{local}")]
-        public async Task<ActionResult<IEnumerable<UsuarioReadDTO>>> GetByLocal(string local)
-        {
-            try
-            {
-                return Ok(await _usuarioService.BuildDTOList(await _usuarioService.GetByLocal(local)));
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
-
-        [HttpGet("/por-codigo/{codigo}")]
-        public async Task<ActionResult<IEnumerable<UsuarioReadDTO>>> GetByCodigo(int codigo)
-        {
-            try
-            {
-                return Ok(await _usuarioService.BuildDTO(await _usuarioService.GetByCodigo(codigo)));
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 

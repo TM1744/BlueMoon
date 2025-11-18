@@ -51,9 +51,6 @@ namespace BlueMoon.Repositories
 
         public async Task<IEnumerable<Produto>> GetBySearch(ProdutoSearchDTO dto)
         {
-            var nome = (dto.Nome ?? "").ToUpper();
-            var marca = (dto.Marca ?? "").ToUpper();
-
             IQueryable<Produto> query = _dbSet
                 .Where(x => x.Situacao == SituacaoProdutoEnum.ATIVO);
 
@@ -64,8 +61,8 @@ namespace BlueMoon.Repositories
             }
 
             query = query
-                .Where(x => x.Nome.ToUpper().Contains(nome))
-                .Where(x => x.Marca.ToUpper().Contains(marca));
+                .Where(x => x.Nome.Contains(dto.Nome))
+                .Where(x => x.Marca.Contains(dto.Marca));
 
             return await query
                 .OrderBy(x => x.Codigo)

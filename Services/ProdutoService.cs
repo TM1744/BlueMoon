@@ -17,6 +17,9 @@ namespace BlueMoon.Services
 
         public async Task<IEnumerable<Produto>> GetBySearch(ProdutoSearchDTO dto)
         {
+            dto.Nome = dto.Nome.ToUpper();
+            dto.Marca = dto.Marca.ToUpper();
+
             var produtos = await _produtoRepositorio.GetBySearch(dto);
 
             if (!produtos.Any())

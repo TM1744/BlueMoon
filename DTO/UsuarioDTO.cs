@@ -59,6 +59,22 @@ namespace BlueMoon.DTO
         public string HorarioFimCargaHoraria { get; set; } = string.Empty;
     }
 
+    public class UsuarioSearchDTO
+    {
+        public int Codigo {get;set;}
+        public string Nome {get;set;} = string.Empty;
+        public string Telefone {get;set;} = string.Empty;
+        public string Documento {get;set;} = string.Empty;
+    }
+
+    public class UsuarioMiniReadDTO
+    {
+        public string Id {get;set;} = string.Empty;
+        public int Codigo {get;set;}
+        public string Nome {get;set;} = string.Empty;
+        public int Cargo {get;set;}
+    }
+
     public class UsuarioPostLoginDTO
     {
         public string Login { get; set; } = string.Empty;

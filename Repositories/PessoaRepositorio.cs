@@ -60,8 +60,6 @@ namespace BlueMoon.Repositories
 
         public async Task<IEnumerable<Pessoa>> GetBySearch(PessoaSearchDTO dto)
         {
-            var nome = (dto.Nome ?? "").ToUpper();
-
             IQueryable<Pessoa> query = _dbSet
                 .Where(x => x.Situacao == SituacaoPessoaEnum.ATIVO);
 
@@ -72,7 +70,7 @@ namespace BlueMoon.Repositories
             }
 
             query = query
-                .Where(x => x.Nome.ToUpper().Contains(nome))
+                .Where(x => x.Nome.Contains(dto.Nome))
                 .Where(x => x.Documento.Contains(dto.Documento))
                 .Where(x => x.Telefone.Contains(dto.Telefone));
 

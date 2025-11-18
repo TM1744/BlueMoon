@@ -137,6 +137,7 @@ namespace BlueMoon.Services
         {
             dto.Documento = Regex.Replace(dto.Documento, "[^0-9]", "");
             dto.Telefone = Regex.Replace(dto.Telefone, "[^0-9]", "");
+            dto.Nome = dto.Nome.ToUpper();
 
             var pessoas = await _pessoaRepositorio.GetBySearch(dto);
 

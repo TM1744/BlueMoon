@@ -50,26 +50,6 @@ namespace BlueMoon.Services
             return usuarios;
         }
 
-        public async Task<Usuario> GetByCodigo(int codigo)
-        {
-            var usuario = await _repositorio.GetByCodigo(codigo);
-
-            if (usuario == null)
-                throw new ArgumentException("Não há nenhum usuário com esse codigo");
-
-            return usuario;
-        }
-
-        public async Task<Usuario> GetByDocumento(string documento)
-        {
-            var usuario = await _repositorio.GetByDocumento(Regex.Replace(documento, "[^0-9]", ""));
-
-            if (usuario == null)
-                throw new ArgumentException("Não há nenhum usuário com esse documento");
-
-            return usuario;
-        }
-
         public async Task<Usuario> GetByIdAssync(Guid id)
         {
             var usuario = await _repositorio.GetByIdAsync(id);
@@ -78,36 +58,6 @@ namespace BlueMoon.Services
                 throw new ArgumentException("Não há nenhum Usuário com esse ID");
 
             return usuario;
-        }
-
-        public async Task<IEnumerable<Usuario>> GetByLocal(string local)
-        {
-            var usuarios = await _repositorio.GetByLocal(local.ToUpper());
-
-            if (!usuarios.Any())
-                throw new ArgumentException("Não há nenhum usuário que reside nesse local");
-
-            return usuarios;
-        }
-
-        public async Task<IEnumerable<Usuario>> GetByNome(string nome)
-        {
-            var usuarios = await _repositorio.GetByNome(nome.ToUpper());
-
-            if (!usuarios.Any())
-                throw new ArgumentException("Não há nenhum usuário com esse nome");
-
-            return usuarios;
-        }
-
-        public async Task<IEnumerable<Usuario>> GetByTelefone(string telefone)
-        {
-            var usuarios = await _repositorio.GetByTelefone(Regex.Replace(telefone, "[^0-9]", ""));
-
-            if (!usuarios.Any())
-                throw new ArgumentException("Não há nenhum usuário com esse telefone");
-
-            return usuarios;
         }
 
         public async Task LogicalDeleteByIdAsync(Guid id)
@@ -173,39 +123,17 @@ namespace BlueMoon.Services
             return dto;
         }
 
-        public async Task<IEnumerable<UsuarioReadDTO>> BuildDTOList(IEnumerable<Usuario> usuarios)
+        public async Task<IEnumerable<UsuarioMiniReadDTO>> BuildDTOList(IEnumerable<Usuario> usuarios)
         {
-            ICollection<UsuarioReadDTO> dtos = [];
+            ICollection<UsuarioMiniReadDTO> dtos = [];
 
             foreach (Usuario usuario in usuarios)
             {
-                UsuarioReadDTO dto = new UsuarioReadDTO();
+                UsuarioMiniReadDTO dto = new UsuarioMiniReadDTO();
                 dto.Id = usuario.Id.ToString();
-                dto.IdPessoa = usuario.Pessoa.Id.ToString();
-                dto.CodigoPessoa = usuario.Pessoa.Codigo;
                 dto.Nome = usuario.Pessoa.Nome;
-                dto.Telefone = usuario.Pessoa.Telefone;
-                dto.Documento = usuario.Pessoa.Documento;
-                dto.Tipo = (int)usuario.Pessoa.Tipo;
-                dto.SituacaoPessoa = (int)usuario.Pessoa.Situacao;
-                dto.Email = usuario.Pessoa.Email;
-                dto.InscricaoMunicipal = usuario.Pessoa.InscricaoMunicipal;
-                dto.InscricaoEstadual = usuario.Pessoa.InscricaoEstadual;
-                dto.CEP = usuario.Pessoa.CEP;
-                dto.Logradouro = usuario.Pessoa.Logradouro;
-                dto.Complemento = usuario.Pessoa.Complemento;
-                dto.Cidade = usuario.Pessoa.Cidade;
-                dto.Bairro = usuario.Pessoa.Bairro;
-                dto.Numero = usuario.Pessoa.Numero;
-                dto.Estado = (int)usuario.Pessoa.Estado;
-                dto.SituacaoUsuario = (int)usuario.Situacao;
-                dto.Salario = usuario.Salario;
-                dto.HorarioInicioCargaHoraria = usuario.HorarioInicioCargaHoraria.ToString();
-                dto.HorarioFimCargaHoraria = usuario.HorarioFimCargaHoraria.ToString();
-                dto.Admissao = usuario.Admissao.ToString();
+                dto.Codigo = usuario.Codigo;
                 dto.Cargo = (int)usuario.Cargo;
-                dto.CodigoUsuario = usuario.Codigo;
-
                 dtos.Add(dto);
             }
 
@@ -230,6 +158,20 @@ namespace BlueMoon.Services
 
                 return sb.ToString();
             }
+        }
+
+        public async Task<IEnumerable<Usuario>> GetBySearch(UsuarioSearchDTO dto)
+        {
+            dto.Documento = Regex.Replace(dto.Documento, "[^0-9]", "");
+            dto.Telefone = Regex.Replace(dto.Telefone, "[^0-9]", "");
+            dto.Nome = dto.Nome.ToUpper();
+
+            var usuarios = await _repositorio.GetBySearch(dto);
+
+            if(!usuarios.Any())
+                throw new ArgumentException("Não há nenhum usuário compatível com as descrições de busca");
+
+            return usuarios;
         }
     }
 }
