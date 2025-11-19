@@ -84,22 +84,111 @@ namespace BlueMoon.Repositories
         {
             var sql = @"
                         SELECT
-	                        CAST(Pessoas.id AS CHAR(36)) as Id,
-                            Pessoas.codigo as Codigo,
-                            Pessoas.nome as Nome,
-                            Pessoas.telefone as Telefone,
-                            Pessoas.cidade as Cidade,
-                            CONCAT(Pessoas.logradouro, ', ', Pessoas.numero) as Endereco
+                            CAST(P.id AS CHAR(36)) AS Id,
+                            P.codigo AS Codigo,
+                            P.nome AS Nome,
+                            P.telefone AS Telefone,
+                            P.cidade AS Cidade,
+                            CONCAT(P.logradouro, ', ', P.numero) AS Endereco
                         FROM 
-	                        Pessoas LEFT JOIN Usuarios on Pessoas.id = Usuarios.id_pessoa
-                        WHERE
-	                        Usuarios.id_pessoa is NULL
-                        ORDER BY Codigo ASC;
+                            Pessoas P
+                        LEFT JOIN Usuarios U ON P.id = U.id_pessoa
+                        GROUP BY
+                            P.id, P.codigo, P.nome, P.telefone, P.cidade, P.logradouro, P.numero
+                        HAVING
+                        COUNT(U.id_pessoa) = 0
+                        OR
+                        SUM(CASE WHEN U.situacao = 1 THEN 1 ELSE 0 END) = 0
+                        ORDER BY 
+                        Codigo ASC;
                     ";
 
             return await _context.Database
                 .SqlQueryRaw<PessoaMiniReadDTO>(
                     sql
+                )
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Pessoa>> GetBySearchNoUsers(PessoaSearchDTO dto)
+        {
+            var sql = "";
+            if (dto.Codigo != 0)
+            {
+                sql = @"
+                    SELECT
+                        p.id AS Id,
+                        p.tipo AS Tipo,
+                        p.situacao AS Situacao,
+                        p.codigo AS Codigo,
+                        p.email AS Email,
+                        p.nome AS Nome,
+                        p.documento AS Documento,
+                        p.inscricao_municipal AS InscricaoMunicipal,
+                        p.inscricao_estadual AS InscricaoEstadual,
+                        p.bairro AS Bairro,
+                        p.cep AS CEP,
+                        p.cidade AS Cidade,
+                        p.complemento AS Complemento,
+                        p.estado AS Estado,
+                        p.logradouro AS Logradouro,
+                        p.numero AS Numero,
+                        p.telefone AS Telefone
+                    FROM Pessoas p
+                    WHERE
+                        NOT EXISTS (
+                            SELECT 1
+                            FROM Usuarios u
+                            WHERE u.id_pessoa = p.id
+                                AND u.situacao = 1  -- ativo
+                        )
+                        AND p.codigo = @codigo;
+                    ";
+            }
+            else
+            {
+                sql = @"
+                    SELECT
+                        p.id AS Id,
+                        p.tipo AS Tipo,
+                        p.situacao AS Situacao,
+                        p.codigo AS Codigo,
+                        p.email AS Email,
+                        p.nome AS Nome,
+                        p.documento AS Documento,
+                        p.inscricao_municipal AS InscricaoMunicipal,
+                        p.inscricao_estadual AS InscricaoEstadual,
+                        p.bairro AS Bairro,
+                        p.cep AS CEP,
+                        p.cidade AS Cidade,
+                        p.complemento AS Complemento,
+                        p.estado AS Estado,
+                        p.logradouro AS Logradouro,
+                        p.numero AS Numero,
+                        p.telefone AS Telefone
+                    FROM Pessoas p
+                    WHERE
+                        NOT EXISTS (
+                            SELECT 1
+                            FROM Usuarios u
+                            WHERE u.id_pessoa = p.id
+                                AND u.situacao = 1  -- ativo
+                        )
+                        AND p.nome LIKE @nome
+                        AND p.documento LIKE @documento
+                        AND p.telefone LIKE @telefone
+                        ORDER BY p.codigo ASC;
+                ";
+            }
+
+
+            return await _context.Database
+                .SqlQueryRaw<Pessoa>(
+                    sql,
+                    new MySqlParameter("@nome", $"%{dto.Nome}%"),
+                    new MySqlParameter("@documento", $"%{dto.Documento}%"),
+                    new MySqlParameter("@telefone", $"%{dto.Telefone}%"),
+                    new MySqlParameter("@codigo", dto.Codigo)
                 )
                 .ToListAsync();
         }

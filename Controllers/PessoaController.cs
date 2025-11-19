@@ -117,5 +117,18 @@ namespace BlueMoon.Controllers
                 return NotFound(ex.Message);
             }
         }
+    
+        [HttpPost("Search-No-Users")]
+        public async Task<ActionResult<IEnumerable<PessoaMiniReadDTO>>> SearchNoUsers(PessoaSearchDTO dto)
+        {
+            try
+            {
+                return Ok(await _service.BuildDTOList(await _service.GetBySearchNoUsers(dto)));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

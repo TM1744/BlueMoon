@@ -23,7 +23,7 @@ namespace BlueMoon.Services
         {
             _pessoaRepositorio = pessoaRepositorio;
         }
-        
+
         public async Task<Pessoa> AddAssync(Pessoa pessoa)
         {
             if (!await _pessoaRepositorio.ValidateUniqueness(pessoa))
@@ -138,7 +138,7 @@ namespace BlueMoon.Services
 
             var pessoas = await _pessoaRepositorio.GetBySearch(dto);
 
-            if(!pessoas.Any())
+            if (!pessoas.Any())
                 throw new ArgumentException("Não há nenhuma pessoa compatível com as descrições de busca");
 
             return pessoas;
@@ -148,8 +148,22 @@ namespace BlueMoon.Services
         {
             var pessoas = await _pessoaRepositorio.GetNoUsers();
 
-            if(!pessoas.Any())
+            if (!pessoas.Any())
                 throw new InvalidOperationException("Não há nenhuma pessoa cadastrada ou não há nenhuma pessoa que não seja usuário");
+
+            return pessoas;
+        }
+
+        public async Task<IEnumerable<Pessoa>> GetBySearchNoUsers(PessoaSearchDTO dto)
+        {
+            dto.Documento = Regex.Replace(dto.Documento, "[^0-9]", "");
+            dto.Telefone = Regex.Replace(dto.Telefone, "[^0-9]", "");
+            dto.Nome = dto.Nome.ToUpper();
+
+            var pessoas = await _pessoaRepositorio.GetBySearchNoUsers(dto);
+
+            if (!pessoas.Any())
+                throw new ArgumentException("Não há nenhuma pessoa compatível com as descrições de busca");
 
             return pessoas;
         }
