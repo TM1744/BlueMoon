@@ -143,5 +143,15 @@ namespace BlueMoon.Services
 
             return pessoas;
         }
+
+        public async Task<IEnumerable<PessoaMiniReadDTO>> GetNoUsers()
+        {
+            var pessoas = await _pessoaRepositorio.GetNoUsers();
+
+            if(!pessoas.Any())
+                throw new InvalidOperationException("Não há nenhuma pessoa cadastrada ou não há nenhuma pessoa que não seja usuário");
+
+            return pessoas;
+        }
     }
 }

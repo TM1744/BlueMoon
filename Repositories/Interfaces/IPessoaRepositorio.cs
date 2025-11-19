@@ -9,6 +9,7 @@ namespace BlueMoon.Repositories.Interfaces
 {
     public interface IPessoaRepositorio : IRepositorio<Pessoa>
     {
+        Task<IEnumerable<PessoaMiniReadDTO>> GetNoUsers();
         Task<IEnumerable<Pessoa>> GetBySearch(PessoaSearchDTO dto);
         Task LogicalDeleteByIdAsync(Pessoa pessoa);
         Task<bool> Exists(Guid id);

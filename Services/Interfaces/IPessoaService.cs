@@ -5,6 +5,7 @@ namespace BlueMoon.Services.Interfaces
 {
     public interface IPessoaService
     {
+        Task<IEnumerable<PessoaMiniReadDTO>> GetNoUsers();
         Task<IEnumerable<Pessoa>> GetBySearch(PessoaSearchDTO dto);
         Task LogicalDeleteByIdAsync(Guid id);
         Task<Pessoa> GetByIdAssync(Guid id);

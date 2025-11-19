@@ -104,5 +104,18 @@ namespace BlueMoon.Controllers
                 return BadRequest(ex.Message);
             }
         }
+    
+        [HttpGet("No-users")]
+        public async Task<ActionResult<IEnumerable<PessoaMiniReadDTO>>> GetNoUsers()
+        {
+            try
+            {
+                return Ok(await _service.GetNoUsers());
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
     }
 }

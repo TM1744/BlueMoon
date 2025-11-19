@@ -11,6 +11,7 @@ using BlueMoon.Entities.Models;
 using BlueMoon.Repositories.Interfaces;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
 
 namespace BlueMoon.Repositories
 {
@@ -76,6 +77,30 @@ namespace BlueMoon.Repositories
 
             return await query
                 .OrderBy(x => x.Codigo)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<PessoaMiniReadDTO>> GetNoUsers()
+        {
+            var sql = @"
+                        SELECT
+	                        CAST(Pessoas.id AS CHAR(36)) as Id,
+                            Pessoas.codigo as Codigo,
+                            Pessoas.nome as Nome,
+                            Pessoas.telefone as Telefone,
+                            Pessoas.cidade as Cidade,
+                            CONCAT(Pessoas.logradouro, ', ', Pessoas.numero) as Endereco
+                        FROM 
+	                        Pessoas LEFT JOIN Usuarios on Pessoas.id = Usuarios.id_pessoa
+                        WHERE
+	                        Usuarios.id_pessoa is NULL
+                        ORDER BY Codigo ASC;
+                    ";
+
+            return await _context.Database
+                .SqlQueryRaw<PessoaMiniReadDTO>(
+                    sql
+                )
                 .ToListAsync();
         }
     }
