@@ -49,11 +49,7 @@ namespace BlueMoon.Repositories
         public async Task<bool> ValidateUniqueness(Usuario usuario)
         {
             return !await _dbSet.AnyAsync(x =>
-            ((x.Pessoa.Documento == usuario.Pessoa.Documento && usuario.Pessoa.Documento != "N/D") ||
-            (x.Pessoa.InscricaoEstadual == usuario.Pessoa.InscricaoEstadual && usuario.Pessoa.InscricaoEstadual != "N/D") ||
-            (x.Pessoa.InscricaoMunicipal == usuario.Pessoa.InscricaoMunicipal && usuario.Pessoa.InscricaoMunicipal != "N/D") ||
-            (x.Pessoa.Email == usuario.Pessoa.Email && usuario.Pessoa.Email != "N/D") ||
-            x.Login.Equals(usuario.Login) ||
+            (x.Login.Equals(usuario.Login) ||
             (x.Pessoa.Id == usuario.Pessoa.Id))
             && x.Id != usuario.Id && x.Situacao == SituacaoPessoaEnum.ATIVO);
         }

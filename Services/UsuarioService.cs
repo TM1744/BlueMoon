@@ -26,8 +26,7 @@ namespace BlueMoon.Services
         public async Task<Usuario> AddAssync(Usuario usuario)
         {
             if (!await _repositorio.ValidateUniqueness(usuario))
-                throw new ArgumentException("A documentação, e-mail, inscrição municipal, login ou inscrição estadual" +
-                " do usuário já foram cadastrados, ou há outro registro ativo de usuário para a mesma pessoa");
+                throw new ArgumentException("Login já existente ou há outro registro ativo de usuário para a mesma pessoa");
 
             usuario.Codigo = _repositorio.GetGreaterCodeNumber() + 1;
             await _repositorio.AddAsync(usuario);
@@ -78,8 +77,7 @@ namespace BlueMoon.Services
                 throw new ArgumentException("Não é possível alterar a data de admissão");
 
             if (!await _repositorio.ValidateUniqueness(usuario))
-                throw new ArgumentException("A documentação, e-mail, inscrição municipal, login ou inscrição estadual" +
-                " do usuário já foram cadastrados, ou há outro registro ativo de usuário para a mesma pessoa");
+                throw new ArgumentException("Login já existente ou há outro registro ativo de usuário para a mesma pessoa");
 
             old.Atualizar(usuario);
 
