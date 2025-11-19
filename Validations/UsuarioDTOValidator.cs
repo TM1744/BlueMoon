@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Net.Mail;
 using System.Text.RegularExpressions;
 using BlueMoon.DTO;
 using FluentValidation;
@@ -17,7 +18,8 @@ namespace BlueMoon.Validations
 
                 RuleFor(dto => dto.Login)
                     .NotEmpty().WithMessage("Login é obrigatório")
-                    .MaximumLength(100).WithMessage("Login não deve ter mais de 100 caracteres");
+                    .MaximumLength(100).WithMessage("Login não deve ter mais de 100 caracteres")
+                    .Must(Validacoes.EmailValido).WithMessage("Login deve ser um e-mail válido");
 
                 RuleFor(dto => dto.Senha)
                     .NotEmpty().WithMessage("Senha é obrigatória")
@@ -113,7 +115,29 @@ namespace BlueMoon.Validations
                     return true;
 
                 tempo = Regex.Replace(tempo, "[^0-9]", "");
-                return TimeOnly.TryParseExact(tempo, "HHmm", CultureInfo.InvariantCulture, DateTimeStyles.None, out _);            
+                return TimeOnly.TryParseExact(tempo, "HHmm", CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
+            }
+
+            public static bool EmailValido(string email)
+            {
+                if (email == null || email.Trim() == "")
+                    return true;
+
+                email = email.Trim();
+
+                string modelo = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+                if (!Regex.IsMatch(email, modelo))
+                    return false;
+
+                try
+                {
+                    var mail = new MailAddress(email);
+                    return mail.Address == email;
+                }
+                catch
+                {
+                    return false;
+                }
             }
         }
     }
