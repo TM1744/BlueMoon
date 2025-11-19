@@ -9,9 +9,9 @@ namespace BlueMoon.Entities.Models
         public string ProdutoNome { get; private set; } = string.Empty;
         public string ProdutoMarca { get; private set; } = string.Empty;
         public int ProdutoCodigo { get; private set; }
-        public decimal ProdutoValorVenda { get; private set; }
+        public decimal ProdutoValorVenda { get; private set; } = decimal.Round(0.00m, 2);
         public int Quantidade { get; private set; }
-        public decimal SubTotal { get; private set; } = decimal.Zero;
+        public decimal SubTotal { get; private set; } = decimal.Round(0.00m, 2);
 
         private ItemVenda() { }
 

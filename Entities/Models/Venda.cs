@@ -10,7 +10,7 @@ namespace BlueMoon.Entities.Models
         public Usuario Vendedor { get; private set; }
         public int Codigo { get; set; }
         public EnumSituacaoVenda Situacao { get; set; }
-        public decimal ValorTotal { get; private set; } = 0.00m;
+        public decimal ValorTotal { get; private set; } = decimal.Round(0.00m, 2);
         public DateTime DataAbertura { get; private set; } = DateTime.Now;
         public DateTime DataFaturamento { get; private set; } = DateTime.MinValue;
 
