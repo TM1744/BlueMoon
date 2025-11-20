@@ -71,10 +71,14 @@ namespace BlueMoon.Services
 
         public async Task<Produto> UpdateAsync(Produto produto)
         {
+            var old = await _produtoRepositorio.GetByIdAsync(produto.Id);
+
             if (!await _produtoRepositorio.ValidateUniqueness(produto))
                 throw new ArgumentException("A descrição do produto ou seu código de barras já foram cadastrados");
 
-            await _produtoRepositorio.UpdateAsync(produto);
+            old.Atualizar(produto);
+
+            await _produtoRepositorio.UpdateAsync(old);
 
             return produto;
         }

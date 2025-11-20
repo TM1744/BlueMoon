@@ -53,6 +53,22 @@ namespace BlueMoon.Entities.Models
             MargemLucro = decimal.Round(dto.MargemLucro, 2);
         }
 
+        public void Atualizar(Produto produto)
+        {
+            Id = produto.Id;
+            Nome = produto.Nome;
+            Descricao = produto.Descricao;
+            Marca = produto.Marca;
+            QuantidadeEstoque = produto.QuantidadeEstoque;
+            QuantidadeEstoqueMinimo = produto.QuantidadeEstoqueMinimo;
+            NCM = produto.NCM;
+            CodigoBarras = produto.CodigoBarras;
+            Situacao = produto.Situacao;
+            ValorCusto = produto.ValorCusto;
+            ValorVenda = produto.ValorVenda;
+            MargemLucro = produto.MargemLucro;
+        }
+
         public void Inativar() => Situacao = SituacaoProdutoEnum.INATIVO;
 
         public void AdicionarEstoque(int quantidade)

@@ -94,15 +94,12 @@ namespace BlueMoon.Validations
                     .Must(Validacoes.DocumentoValido).WithMessage("Documento informado não é valido");
 
                 RuleFor(dto => dto.InscricaoMunicipal)
-                    .MaximumLength(12).WithMessage("Inscrição municipal não deve ter mais de 12 caracteres")
                     .Must(Validacoes.InscricaoMunicipalValida).WithMessage("Inscrição municipal informada não é válida");
 
                 RuleFor(dto => dto.InscricaoEstadual)
-                    .MaximumLength(13).WithMessage("Inscrição estadual não deve ter mais de 13 caracteres")
                     .Must(Validacoes.InscricaoEstadualValida).WithMessage("Inscrição estadual informada não é válida");
 
                 RuleFor(dto => dto.CEP)
-                    .MaximumLength(8).WithMessage("CEP não deve ter mais de 8 caracteres")
                     .Must(Validacoes.CepValido).WithMessage("CEP informado não é válido");
 
                 RuleFor(dto => dto.Logradouro)
