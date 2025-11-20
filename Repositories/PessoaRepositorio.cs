@@ -93,6 +93,8 @@ namespace BlueMoon.Repositories
                         FROM 
                             Pessoas P
                         LEFT JOIN Usuarios U ON P.id = U.id_pessoa
+                        WHERE
+                            P.situacao = 1
                         GROUP BY
                             P.id, P.codigo, P.nome, P.telefone, P.cidade, P.logradouro, P.numero
                         HAVING
@@ -143,6 +145,7 @@ namespace BlueMoon.Repositories
                                 AND u.situacao = 1  -- ativo
                         )
                         AND p.codigo = @codigo;
+                        AND p.situacao = 1
                     ";
             }
             else
@@ -177,6 +180,7 @@ namespace BlueMoon.Repositories
                         AND p.nome LIKE @nome
                         AND p.documento LIKE @documento
                         AND p.telefone LIKE @telefone
+                        AND p.situacao = 1
                         ORDER BY p.codigo ASC;
                 ";
             }
