@@ -18,7 +18,7 @@ namespace BlueMoon.Controllers
 
         public RelatoriosController(IRelatorioService service) => _service = service;
 
-        [HttpGet("ProdutosMaisVendidos_R")]
+        [HttpPost("ProdutosMaisVendidos_R")]
         public async Task<IActionResult> GetProdutosMaisVendidosRelatorio(PeriodoBuscaDTO dto)
         {
             if (!ModelState.IsValid)
@@ -35,7 +35,7 @@ namespace BlueMoon.Controllers
 
         }
 
-        [HttpGet("ProdutosMaisVendidos")]
+        [HttpPost("ProdutosMaisVendidos")]
         public async Task<IActionResult> GetProdutosMaisVendidos(PeriodoBuscaDTO dto)
         {
             if (!ModelState.IsValid)
@@ -52,7 +52,7 @@ namespace BlueMoon.Controllers
 
         }
 
-        [HttpGet("PessoasQueMaisCompraram_R")]
+        [HttpPost("PessoasQueMaisCompraram_R")]
         public async Task<IActionResult> GetPessoasQueMaisCompraramRelatorio(PeriodoBuscaDTO dto)
         {
             if (!ModelState.IsValid)
@@ -69,7 +69,7 @@ namespace BlueMoon.Controllers
             }
         }
 
-        [HttpGet("PessoasQueMaisCompraram")]
+        [HttpPost("PessoasQueMaisCompraram")]
         public async Task<IActionResult> GetPessoasQueMaisCompraram(PeriodoBuscaDTO dto)
         {
             if (!ModelState.IsValid)
@@ -85,7 +85,7 @@ namespace BlueMoon.Controllers
             }
         }
 
-        [HttpGet("VendedoresQueMaisVenderam")]
+        [HttpPost("VendedoresQueMaisVenderam")]
         public async Task<IActionResult> GetVendedoresQueMaisVenderam(PeriodoBuscaDTO dto)
         {
             if (!ModelState.IsValid)
@@ -101,7 +101,7 @@ namespace BlueMoon.Controllers
             }
         }
 
-        [HttpGet("VendedoresQueMaisVenderam_R")]
+        [HttpPost("VendedoresQueMaisVenderam_R")]
         public async Task<IActionResult> GetVendedoresQueMaisVenderamRelatorio(PeriodoBuscaDTO dto)
         {
             if (!ModelState.IsValid)
