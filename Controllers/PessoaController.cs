@@ -18,7 +18,7 @@ namespace BlueMoon.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PessoaReadDTO>>> Get()
+        public async Task<ActionResult<IEnumerable<PessoaMiniReadDTO>>> Get()
         {
             try
             {
