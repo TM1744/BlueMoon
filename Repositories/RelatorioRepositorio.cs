@@ -34,7 +34,10 @@ namespace BlueMoon.Repositories
                             AND Vendas.data_faturamento <  @fim
                             AND Vendas.situacao = 5
                         GROUP BY Id, Codigo, Nome, EstoqueAtual
-                        ORDER BY QuantidadeVendida DESC;
+                        ORDER BY 
+                            QuantidadeVendida DESC,
+                            TotalVendido DESC,
+                            Codigo ASC;
                     ";
 
             return await _context.Database
@@ -60,7 +63,10 @@ namespace BlueMoon.Repositories
 	                        Vendas.data_faturamento >= @inicio AND Vendas.data_faturamento < @fim AND
 	                        Vendas.situacao = 5
                         GROUP BY Id, Codigo, Nome
-                        ORDER BY QuantidadeVendas DESC;
+                        ORDER BY
+                            ValorTotalVendas DESC,
+                            QuantidadeVendas DESC,
+                            Codigo ASC;
                     ";
 
             return await _context.Database
@@ -88,7 +94,10 @@ namespace BlueMoon.Repositories
 	                        Vendas.data_faturamento >= @inicio AND Vendas.data_faturamento < @fim AND
 	                        Vendas.situacao = 5
                         GROUP BY Id, Codigo, Nome
-                        ORDER BY QuantidadeVendas DESC;
+                        ORDER BY 
+                            ValorTotalVendas DESC,
+                            QuantidadeVendas DESC,
+                            Codigo ASC;
                     ";
 
             return await _context.Database
