@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using BlueMoon.Context;
+using BlueMoon.DTO;
 using BlueMoon.Entities.Enuns;
 using BlueMoon.Entities.Models;
 using BlueMoon.Repositories.Interfaces;
@@ -77,6 +79,44 @@ namespace BlueMoon.Repositories
         public async Task<bool> ValidateIntegrity(Venda venda)
         {
             return !await _dbSet.AnyAsync(x => x.Situacao != EnumSituacaoVenda.ABERTA && x.Id == venda.Id);
+        }
+
+        public async Task<IEnumerable<Venda>> GetBySearch(VendaSearchDTO dto)
+        {
+            IQueryable<Venda> query = _dbSet
+                                            .Include(x => x.Cliente)
+                                            .Include(x => x.Vendedor)
+                                                .ThenInclude(x => x.Pessoa)
+                                            .Include(x => x.Itens)
+                                                .ThenInclude(x => x.Produto);
+
+            if (dto.Codigo != 0)
+            {
+                query = query.Where(x => x.Codigo == dto.Codigo);
+                return await query.ToListAsync();
+            }
+
+            if(dto.DataAbertura == "")
+            {
+                query = query
+                .Where(x => x.Cliente.Nome.Contains(dto.NomeCliente))
+                .Where(x => x.Situacao == (EnumSituacaoVenda)dto.Situacao);
+            }
+            else
+            {
+                DateTime dataConvertida = DateTime.ParseExact(dto.DataAbertura,
+                "ddMMyyyy", CultureInfo.InvariantCulture);
+
+                query = query
+                .Where(x => x.Cliente.Nome.Contains(dto.NomeCliente))
+                .Where(x => x.Situacao == (EnumSituacaoVenda)dto.Situacao)
+                .Where(x => x.DataAbertura == dataConvertida);
+            }
+
+
+            return await query
+                .OrderBy(x => x.Codigo)
+                .ToListAsync();
         }
     }
 }

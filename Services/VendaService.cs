@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BlueMoon.DTO;
 using BlueMoon.Entities.Enuns;
@@ -174,6 +176,20 @@ namespace BlueMoon.Services
                 throw new InvalidOperationException("Só é possível estornar vendas faturadas");
 
             await _repositorio.Estornar(venda);
+        }
+
+        public async Task<IEnumerable<Venda>> GetBySearch(VendaSearchDTO dto)
+        {
+            dto.NomeCliente = dto.NomeCliente.ToUpper();
+            dto.DataAbertura = Regex.Replace(dto.DataAbertura, "[^0-9]", "");
+            DateOnly dataAbertura;
+            var teste = DateOnly.TryParseExact(dto.DataAbertura, "ddMMyyyy",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out dataAbertura);
+
+            if(!teste && (dto.DataAbertura != ""))
+                throw new ArgumentException("Data informada é inválida");
+            
+            return await _repositorio.GetBySearch(dto);
         }
     }
 }

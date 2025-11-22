@@ -140,5 +140,18 @@ namespace BlueMoon.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("Search")]
+        public async Task<ActionResult<IEnumerable<VendaReadDTO>>> Search(VendaSearchDTO dto)
+        {
+            try
+            {
+                return Ok(await _vendaService.BuildDTOList(await _vendaService.GetBySearch(dto)));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace BlueMoon.Services.Interfaces
 {
     public interface IVendaService
     {
+        Task<IEnumerable<Venda>> GetBySearch(VendaSearchDTO dto);
         Task<Venda> GetByIdAsync(Guid id);
         Task<Venda> AddAsync(Venda venda);
         Task<Venda> AddItensAsync(Venda venda);

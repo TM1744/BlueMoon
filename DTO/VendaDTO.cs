@@ -26,4 +26,12 @@ namespace BlueMoon.DTO
         public string DataFaturamento { get; set; } = string.Empty;
 
     }
+
+    public class VendaSearchDTO
+    {
+        public string NomeCliente {get;set;} = string.Empty;
+        public int Situacao {get;set;}
+        public string DataAbertura {get;set;} = string.Empty;
+        public int Codigo {get;set;}
+    }
 }
