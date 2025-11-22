@@ -161,7 +161,7 @@ namespace BlueMoon.Services
                             row.RelativeItem().Column(column =>
                             {
                                 column.Item()
-                                    .Text("Relatório - Pessoas que mais compraram")
+                                    .Text("Relatório - Clientes que mais compraram")
                                     .SemiBold().FontSize(18).FontColor(Colors.Blue.Darken4);
 
                                 column.Item()
