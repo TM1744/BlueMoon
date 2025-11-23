@@ -56,7 +56,7 @@ namespace BlueMoon.Repositories
 
         public async Task<bool> ValidateLogin(string login, string senha)
         {
-            return await _dbSet.AnyAsync(x => x.Login == login && x.Senha == senha);
+            return await _dbSet.AnyAsync(x => x.Login == login && x.Senha == senha && x.Situacao == SituacaoPessoaEnum.ATIVO);
         }
 
         public async Task<IEnumerable<Usuario>> GetBySearch(UsuarioSearchDTO dto)
