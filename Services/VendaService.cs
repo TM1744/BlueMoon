@@ -188,8 +188,13 @@ namespace BlueMoon.Services
 
             if(!teste && (dto.DataAbertura != ""))
                 throw new ArgumentException("Data informada é inválida");
-            
-            return await _repositorio.GetBySearch(dto);
+
+            var vendas = await _repositorio.GetBySearch(dto);
+
+            if(!vendas.Any())
+                throw new ArgumentException("Não há nenhuma venda compatível com as descrições de busca");
+
+            return vendas;
         }
     }
 }

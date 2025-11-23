@@ -104,16 +104,18 @@ namespace BlueMoon.Repositories
             }
             else
             {
-                DateTime dataConvertida = DateTime.ParseExact(dto.DataAbertura,
-                "ddMMyyyy", CultureInfo.InvariantCulture);
+                DateTime data = DateTime.ParseExact(dto.DataAbertura, "ddMMyyyy", CultureInfo.InvariantCulture);
+
+                DateTime inicioDoDia = data.Date;
+                DateTime fimDoDia = data.Date.AddDays(1).AddTicks(-1);
 
                 query = query
                 .Where(x => x.Cliente.Nome.Contains(dto.NomeCliente))
                 .Where(x => x.Situacao == (EnumSituacaoVenda)dto.Situacao)
-                .Where(x => x.DataAbertura == dataConvertida);
+                .Where(x => x.DataAbertura >= inicioDoDia &&
+                                          x.DataAbertura <= fimDoDia);
             }
-
-
+            
             return await query
                 .OrderBy(x => x.Codigo)
                 .ToListAsync();
