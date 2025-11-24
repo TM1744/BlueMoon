@@ -49,7 +49,7 @@ namespace BlueMoon.Repositories
                 _context.Produtos.Update(item.Produto);
             }
             _dbSet.Update(venda);
-                
+
             await _context.SaveChangesAsync();
         }
 
@@ -84,38 +84,37 @@ namespace BlueMoon.Repositories
         public async Task<IEnumerable<Venda>> GetBySearch(VendaSearchDTO dto)
         {
             IQueryable<Venda> query = _dbSet
-                                            .Include(x => x.Cliente)
-                                            .Include(x => x.Vendedor)
-                                                .ThenInclude(x => x.Pessoa)
-                                            .Include(x => x.Itens)
-                                                .ThenInclude(x => x.Produto);
+                .Include(x => x.Cliente)
+                .Include(x => x.Vendedor).ThenInclude(x => x.Pessoa)
+                .Include(x => x.Itens).ThenInclude(x => x.Produto);
 
             if (dto.Codigo != 0)
             {
-                query = query.Where(x => x.Codigo == dto.Codigo);
-                return await query.ToListAsync();
+                return await query
+                    .Where(x => x.Codigo == dto.Codigo)
+                    .OrderBy(x => x.Codigo)
+                    .ToListAsync();
             }
 
-            if(dto.DataAbertura == "")
+            if (!string.IsNullOrWhiteSpace(dto.NomeCliente))
             {
-                query = query
-                .Where(x => x.Cliente.Nome.Contains(dto.NomeCliente))
-                .Where(x => x.Situacao == (EnumSituacaoVenda)dto.Situacao);
+                query = query.Where(x => x.Cliente.Nome.Contains(dto.NomeCliente));
             }
-            else
+
+            if (dto.Situacao > 0)
+            {
+                query = query.Where(x => x.Situacao == (EnumSituacaoVenda)dto.Situacao);
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.DataAbertura))
             {
                 DateTime data = DateTime.ParseExact(dto.DataAbertura, "ddMMyyyy", CultureInfo.InvariantCulture);
+                DateTime inicio = data.Date;
+                DateTime fim = data.Date.AddDays(1).AddTicks(-1);
 
-                DateTime inicioDoDia = data.Date;
-                DateTime fimDoDia = data.Date.AddDays(1).AddTicks(-1);
-
-                query = query
-                .Where(x => x.Cliente.Nome.Contains(dto.NomeCliente))
-                .Where(x => x.Situacao == (EnumSituacaoVenda)dto.Situacao)
-                .Where(x => x.DataAbertura >= inicioDoDia &&
-                                          x.DataAbertura <= fimDoDia);
+                query = query.Where(x => x.DataAbertura >= inicio && x.DataAbertura <= fim);
             }
-            
+
             return await query
                 .OrderBy(x => x.Codigo)
                 .ToListAsync();
