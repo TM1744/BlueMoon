@@ -37,7 +37,7 @@ namespace BlueMoon.Repositories
                         ORDER BY 
                             QuantidadeVendida DESC,
                             TotalVendido DESC,
-                            Codigo ASC;
+                            Codigo DESC;
                     ";
 
             return await _context.Database
@@ -66,7 +66,7 @@ namespace BlueMoon.Repositories
                         ORDER BY
                             ValorTotalVendas DESC,
                             QuantidadeVendas DESC,
-                            Codigo ASC;
+                            Codigo DESC;
                     ";
 
             return await _context.Database
@@ -97,7 +97,7 @@ namespace BlueMoon.Repositories
                         ORDER BY 
                             ValorTotalVendas DESC,
                             QuantidadeVendas DESC,
-                            Codigo ASC;
+                            Codigo DESC;
                     ";
 
             return await _context.Database

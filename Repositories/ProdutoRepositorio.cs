@@ -15,7 +15,11 @@ namespace BlueMoon.Repositories
 
         public override async Task<IEnumerable<Produto?>> GetAllAsync()
         {
-            return await _dbSet.Where(x => x.Situacao == SituacaoProdutoEnum.ATIVO).OrderBy(x => x.Codigo).ToListAsync();
+            return await _dbSet
+                .Where(x => x.Situacao == SituacaoProdutoEnum.ATIVO)
+                .OrderByDescending(x => x.Codigo)
+                .ThenBy(x => x.Nome)
+                .ToListAsync();
         }
 
         public override async Task<Produto?> GetByIdAsync(Guid id)
@@ -65,7 +69,8 @@ namespace BlueMoon.Repositories
                 .Where(x => x.Marca.Contains(dto.Marca));
 
             return await query
-                .OrderBy(x => x.Codigo)
+                .OrderByDescending(x => x.Codigo)
+                .ThenBy(x => x.Nome)
                 .ToListAsync();
         }
     }

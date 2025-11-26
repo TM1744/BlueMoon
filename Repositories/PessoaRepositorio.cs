@@ -23,7 +23,11 @@ namespace BlueMoon.Repositories
 
         public override async Task<IEnumerable<Pessoa?>> GetAllAsync()
         {
-            return await _dbSet.Where(x => x.Situacao == SituacaoPessoaEnum.ATIVO).OrderBy(x => x.Codigo).ToListAsync();
+            return await _dbSet
+                .Where(x => x.Situacao == SituacaoPessoaEnum.ATIVO)
+                .OrderByDescending(x => x.Codigo)
+                .ThenBy(x => x.Nome)
+                .ToListAsync();
         }
 
         public async Task<bool> Exists(Guid id)
@@ -76,7 +80,8 @@ namespace BlueMoon.Repositories
                 .Where(x => x.Telefone.Contains(dto.Telefone));
 
             return await query
-                .OrderBy(x => x.Codigo)
+                .OrderByDescending(x => x.Codigo)
+                .ThenBy(x => x.Nome)
                 .ToListAsync();
         }
 
@@ -102,7 +107,8 @@ namespace BlueMoon.Repositories
                         OR
                         SUM(CASE WHEN U.situacao = 1 THEN 1 ELSE 0 END) = 0
                         ORDER BY 
-                        Codigo ASC;
+                            Codigo DESC,
+                            Nome ASC;
                     ";
 
             return await _context.Database
@@ -181,7 +187,9 @@ namespace BlueMoon.Repositories
                         AND p.documento LIKE @documento
                         AND p.telefone LIKE @telefone
                         AND p.situacao = 1
-                        ORDER BY p.codigo ASC;
+                        ORDER BY
+                            p.codigo DESC,
+                            p.nome ASC;
                 ";
             }
 

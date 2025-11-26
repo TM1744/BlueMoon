@@ -19,14 +19,20 @@ namespace BlueMoon.Repositories
 
         public override async Task<Usuario?> GetByIdAsync(Guid id)
         {
-            return await _dbSet.Where(x => x.Id == id && x.Situacao == SituacaoPessoaEnum.ATIVO)
-                                    .Include(x => x.Pessoa).FirstOrDefaultAsync();
+            return await _dbSet
+                .Where(x => x.Id == id && x.Situacao == SituacaoPessoaEnum.ATIVO)
+                .Include(x => x.Pessoa)
+                .FirstOrDefaultAsync();
         }  
 
         public override async Task<IEnumerable<Usuario?>> GetAllAsync()
         {
-            return await _dbSet.Where(x => x.Situacao == SituacaoPessoaEnum.ATIVO)
-                                .Include(x => x.Pessoa).OrderBy(x => x.Codigo).ToListAsync();
+            return await _dbSet
+                .Where(x => x.Situacao == SituacaoPessoaEnum.ATIVO)
+                .Include(x => x.Pessoa)
+                .OrderByDescending(x => x.Codigo)
+                .ThenBy(x => x.Pessoa.Nome)
+                .ToListAsync();
         }
 
         public async Task<bool> Exists(Guid id)
@@ -78,7 +84,8 @@ namespace BlueMoon.Repositories
                 .Include(x => x.Pessoa);
 
             return await query
-                .OrderBy(x => x.Codigo)
+                .OrderByDescending(x => x.Codigo)
+                .ThenBy(x => x.Pessoa.Nome)
                 .ToListAsync();
         }
     }

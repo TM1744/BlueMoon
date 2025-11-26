@@ -32,13 +32,14 @@ namespace BlueMoon.Repositories
 
         public override async Task<IEnumerable<Venda?>> GetAllAsync()
         {
-            return await _dbSet.Include(x => x.Cliente)
-                                .Include(x => x.Vendedor)
-                                    .ThenInclude(x => x.Pessoa)
-                                .Include(x => x.Itens)
-                                    .ThenInclude(y => y.Produto)
-                                .OrderBy(x => x.Codigo)
-                                .ToListAsync();
+            return await _dbSet
+                .Include(x => x.Cliente)
+                .Include(x => x.Vendedor)
+                    .ThenInclude(x => x.Pessoa)
+                .Include(x => x.Itens)
+                    .ThenInclude(y => y.Produto)
+                .OrderByDescending(x => x.Codigo)
+                .ToListAsync();
         }
 
         public async Task AddItensAsync(Venda venda)
@@ -116,7 +117,7 @@ namespace BlueMoon.Repositories
             }
 
             return await query
-                .OrderBy(x => x.Codigo)
+                .OrderByDescending(x => x.Codigo)
                 .ToListAsync();
         }
     }
