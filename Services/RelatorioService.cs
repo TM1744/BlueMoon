@@ -18,10 +18,12 @@ namespace BlueMoon.Services
 
         public async Task<byte[]> GerarRelatorioProdutosMaisVendidosAsync(string inicio, string fim)
         {
-            var dateInicio = StringToDateTime(inicio);
-            var dateFim = StringToDateTime(fim);
+            var dateInicio = StringToDateTimeInicio(inicio);
+            var dateFim = StringToDateTimeFim(fim);
 
             var dados = await _repostorio.GetProdutosMaisVendidos(dateInicio, dateFim);
+
+            dateFim = dateFim.AddDays(-1);
 
             var document = Document.Create(container =>
             {
@@ -43,7 +45,7 @@ namespace BlueMoon.Services
                                 column.Item()
                                     .Text($"Período: {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}")
                                     .FontSize(12).FontColor(Colors.Grey.Darken2);
-                                
+
                                 column.Item().PaddingBottom(10);
                             });
                         });
@@ -136,16 +138,18 @@ namespace BlueMoon.Services
 
         public async Task<IEnumerable<ProdutosMaisVendidosDTO>> GetProdutosMaisVendidosAsync(string inicio, string fim)
         {
-            var itens = await _repostorio.GetProdutosMaisVendidos(StringToDateTime(inicio), StringToDateTime(fim));
+            var itens = await _repostorio.GetProdutosMaisVendidos(StringToDateTimeInicio(inicio), StringToDateTimeFim(fim));
             return itens;
         }
 
         public async Task<byte[]> GerarRelatorioPessoasQueMaisCompraramAsync(string inicio, string fim)
         {
-            var dateInicio = StringToDateTime(inicio);
-            var dateFim = StringToDateTime(fim);
+            var dateInicio = StringToDateTimeInicio(inicio);
+            var dateFim = StringToDateTimeFim(fim);
 
             var dados = await _repostorio.GetPessoasQueMaisCompraram(dateInicio, dateFim);
+
+            dateFim = dateFim.AddDays(-1);
 
             var document = Document.Create(container =>
             {
@@ -167,7 +171,7 @@ namespace BlueMoon.Services
                                 column.Item()
                                     .Text($"Período: {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}")
                                     .FontSize(12).FontColor(Colors.Grey.Darken2);
-                                
+
                                 column.Item().PaddingBottom(10);
                             });
                         });
@@ -257,16 +261,18 @@ namespace BlueMoon.Services
 
         public async Task<IEnumerable<PessoasQueMaisCompraramDTO>> GetPessoasQueMaisCompraramAsync(string inicio, string fim)
         {
-            var itens = await _repostorio.GetPessoasQueMaisCompraram(StringToDateTime(inicio), StringToDateTime(fim));
+            var itens = await _repostorio.GetPessoasQueMaisCompraram(StringToDateTimeInicio(inicio), StringToDateTimeFim(fim));
             return itens;
         }
 
         public async Task<byte[]> GerarRelatorioVendedoresQueMaisVenderamAsync(string inicio, string fim)
         {
-            var dateInicio = StringToDateTime(inicio);
-            var dateFim = StringToDateTime(fim);
+            var dateInicio = StringToDateTimeInicio(inicio);
+            var dateFim = StringToDateTimeFim(fim);
 
             var dados = await _repostorio.GetVendedoresQueMaisVenderam(dateInicio, dateFim);
+
+            dateFim = dateFim.AddDays(-1);
 
             var document = Document.Create(container =>
             {
@@ -288,7 +294,7 @@ namespace BlueMoon.Services
                                 column.Item()
                                     .Text($"Período: {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}")
                                     .FontSize(12).FontColor(Colors.Grey.Darken2);
-                                
+
                                 column.Item().PaddingBottom(10);
                             });
                         });
@@ -378,11 +384,11 @@ namespace BlueMoon.Services
 
         public async Task<IEnumerable<VendedoresQueMaisVenderamDTO>> GetVendedoresQueMaisVenderamsAsync(string inicio, string fim)
         {
-            var itens = await _repostorio.GetVendedoresQueMaisVenderam(StringToDateTime(inicio), StringToDateTime(fim));
+            var itens = await _repostorio.GetVendedoresQueMaisVenderam(StringToDateTimeInicio(inicio), StringToDateTimeFim(fim));
             return itens;
         }
 
-        private DateTime StringToDateTime(string data)
+        private DateTime StringToDateTimeInicio(string data)
         {
             data = Regex.Replace(data, "[^0-9]", "");
 
@@ -392,6 +398,16 @@ namespace BlueMoon.Services
             return DateTime.ParseExact(data, "ddMMyyyy", CultureInfo.InvariantCulture);
         }
 
+        private DateTime StringToDateTimeFim(string data)
+        {
+            data = Regex.Replace(data, "[^0-9]", "");
 
+            if (data.Length != 8)
+                throw new ArgumentException("Data informada é inválida");
+
+            var date = DateTime.ParseExact(data, "ddMMyyyy", CultureInfo.InvariantCulture);
+
+            return date.Date.AddDays(1);
+        }
     }
 }
