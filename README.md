@@ -24,7 +24,7 @@ Ademais, o projeto também é útil como **projeto avaliativo para a conclusão 
 ---
 
 ## ⚙️ Instalação  
-> O projeto **BlueMoon** em sua idealização busca ser um software que funciona em nuvem, entretanto, até o momento atual (2025), seu processo de instalação cosiste no download do conteúdo do reposítório e na sua execução por meio do *.NET Runtime*. A previsão é de que sua execução em nuvem esteja pronta até o final do primeiro semestre de 2026.
+> O projeto **BlueMoon** em sua idealização busca ser um software que funciona em nuvem, entretanto, até o momento atual (2025), seu processo de instalação consiste no download do conteúdo do reposítório e na sua execução por meio do *.NET Runtime*. A previsão é de que sua execução em nuvem esteja pronta até o final do primeiro semestre de 2026.
 
 ---
 
