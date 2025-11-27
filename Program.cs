@@ -1,0 +1,59 @@
+using BlueMoon.Context;
+using BlueMoon.Repositories;
+using BlueMoon.Repositories.Interfaces;
+using BlueMoon.Services;
+using BlueMoon.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using BlueMoon.Validations;
+using BlueMoon.DTO;
+using QuestPDF.Infrastructure; 
+
+var builder = WebApplication.CreateBuilder(args);
+
+QuestPDF.Settings.License = LicenseType.Community;
+
+// Configuração do contexto do banco de dados
+builder.Services.AddDbContext<MySqlDataBaseContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
+
+// Configuração de repositórios
+builder.Services.AddScoped(typeof(IRepositorio<>), typeof(Repositorio<>));
+builder.Services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
+builder.Services.AddScoped<IPessoaRepositorio, PessoaRepositorio>();
+builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
+builder.Services.AddScoped<IVendaRepositorio, VendaRepositorio>();
+builder.Services.AddScoped<IRelatorioRepositorio, RelatorioRepositorio>();
+
+// Configuração de serviços
+builder.Services.AddScoped<IProdutoService, ProdutoService>();
+builder.Services.AddScoped<IPessoaService, PessoaService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IVendaService, VendaService>();
+builder.Services.AddScoped<IRelatorioService, RelatorioService>();
+
+
+// Configuração do validadores
+builder.Services.AddControllers()
+    .AddFluentValidation(fv =>
+    {
+        fv.RegisterValidatorsFromAssemblyContaining<ProdutoCreateDTOValidator>();
+    });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost5500", policy =>
+    {
+        policy.WithOrigins("http://127.0.0.1:5500", "http://localhost:5500")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+var app = builder.Build();
+app.UseCors("AllowLocalhost5500");
+app.UseHttpsRedirection();
+app.MapControllers();
+app.Run();
