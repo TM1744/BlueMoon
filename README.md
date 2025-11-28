@@ -6,7 +6,7 @@
 ---
 
 ## 🎯 Objetivo  
-O principal objetivo da API **BlueMoon**, ao lado do **Moonlight**, é suprir as necessidades de gerenciamento da loja **Atuall Informática**, com a intenção de escalá-lo para outras empresas no futuro.
+O principal objetivo da API **BlueMoon**, ao lado do **Moonlight**, é suprir as necessidades de gerenciamento da **Atuall Informática**, com a intenção de escalá-lo para outras empresas no futuro.
 
 Este objetivo é alcançado por meio de um gerenciamento completo e eficiente de:
 
