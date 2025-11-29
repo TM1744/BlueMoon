@@ -90,7 +90,12 @@ namespace BlueMoon.Services
                             foreach (var item in dados)
                             {
                                 table.Cell().Element(CellStyle).AlignLeft().Text(item.Codigo.ToString());
-                                table.Cell().Element(CellStyle).AlignCenter().Text(item.Nome);
+
+                                if (item.Situacao != 1)
+                                    table.Cell().Element(CellStyle).AlignCenter().Text($"<{item.Nome}> - INATIVADO").FontColor(Colors.Red.Accent1);
+                                else
+                                    table.Cell().Element(CellStyle).AlignCenter().Text(item.Nome);
+                                    
                                 table.Cell().Element(CellStyle).AlignCenter().Text(item.QuantidadeVendida.ToString());
                                 table.Cell().Element(CellStyle).AlignCenter().Text(item.EstoqueAtual.ToString());
                                 table.Cell().Element(CellStyle).AlignRight().Text("R$" + item.TotalVendido.ToString("N2"));
@@ -214,7 +219,12 @@ namespace BlueMoon.Services
                             foreach (var item in dados)
                             {
                                 table.Cell().Element(CellStyle).AlignLeft().Text(item.Codigo.ToString());
-                                table.Cell().Element(CellStyle).AlignCenter().Text(item.Nome);
+
+                                if (item.Situacao != 1)
+                                    table.Cell().Element(CellStyle).AlignCenter().Text($"<{item.Nome}> - INATIVADO").FontColor(Colors.Red.Accent1);
+                                else
+                                    table.Cell().Element(CellStyle).AlignCenter().Text(item.Nome);
+
                                 table.Cell().Element(CellStyle).AlignCenter().Text(item.QuantidadeVendas.ToString());
                                 table.Cell().Element(CellStyle).AlignRight().Text("R$" + item.ValorTotalVendas.ToString("N2"));
 
@@ -337,7 +347,12 @@ namespace BlueMoon.Services
                             foreach (var item in dados)
                             {
                                 table.Cell().Element(CellStyle).AlignLeft().Text(item.Codigo.ToString());
-                                table.Cell().Element(CellStyle).AlignCenter().Text(item.Nome);
+
+                                if (item.Situacao != 1)
+                                    table.Cell().Element(CellStyle).AlignCenter().Text($"<{item.Nome}> - INATIVADO").FontColor(Colors.Red.Accent1);
+                                else
+                                    table.Cell().Element(CellStyle).AlignCenter().Text(item.Nome);
+
                                 table.Cell().Element(CellStyle).AlignCenter().Text(item.QuantidadeVendas.ToString());
                                 table.Cell().Element(CellStyle).AlignRight().Text("R$" + item.ValorTotalVendas.ToString("N2"));
 
