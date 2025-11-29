@@ -39,7 +39,7 @@ namespace BlueMoon.Services
                             row.RelativeItem().Column(column =>
                             {
                                 column.Item()
-                                    .Text("Relatório - Produtos mais vendidos")
+                                    .Text("Relatório - Produtos mais vendidos por período")
                                     .SemiBold().FontSize(18).FontColor(Colors.Blue.Darken4);
 
                                 column.Item()
@@ -165,7 +165,7 @@ namespace BlueMoon.Services
                             row.RelativeItem().Column(column =>
                             {
                                 column.Item()
-                                    .Text("Relatório - Clientes que mais compraram")
+                                    .Text("Relatório - Clientes que mais compraram por período")
                                     .SemiBold().FontSize(18).FontColor(Colors.Blue.Darken4);
 
                                 column.Item()
@@ -288,7 +288,7 @@ namespace BlueMoon.Services
                             row.RelativeItem().Column(column =>
                             {
                                 column.Item()
-                                    .Text("Relatório - Vendedores que mais venderam")
+                                    .Text("Relatório - Vendedores que mais venderam por período")
                                     .SemiBold().FontSize(18).FontColor(Colors.Blue.Darken4);
 
                                 column.Item()
