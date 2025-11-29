@@ -21,7 +21,8 @@ namespace BlueMoon.Repositories
             var sql = @"
                         SELECT
                             CAST(Produtos.id AS CHAR(36)) as Id,
-                            Produtos.codigo AS Codigo, 
+                            Produtos.codigo AS Codigo,
+                            Produtos.situacao AS Situacao, 
                             Produtos.nome AS Nome,
                             Produtos.quantidade_estoque AS EstoqueAtual, 
                             SUM(ItemVendas.quantidade) AS QuantidadeVendida, 
@@ -33,7 +34,7 @@ namespace BlueMoon.Repositories
                             Vendas.data_faturamento >= @inicio
                             AND Vendas.data_faturamento <  @fim
                             AND Vendas.situacao = 5
-                        GROUP BY Id, Codigo, Nome, EstoqueAtual
+                        GROUP BY Id, Codigo, Nome, EstoqueAtual, Situacao
                         ORDER BY 
                             QuantidadeVendida DESC,
                             TotalVendido DESC,
@@ -55,6 +56,7 @@ namespace BlueMoon.Repositories
                         SELECT
 	                        CAST(Pessoas.id AS CHAR(36)) as Id,
 	                        Pessoas.codigo as Codigo,
+                            Pessoas.situacao as Situacao,
 	                        Pessoas.nome as Nome,
 	                        COUNT(Vendas.id) as QuantidadeVendas,
 	                        SUM(Vendas.valor_total) as ValorTotalVendas
@@ -62,7 +64,7 @@ namespace BlueMoon.Repositories
                         WHERE
 	                        Vendas.data_faturamento >= @inicio AND Vendas.data_faturamento < @fim AND
 	                        Vendas.situacao = 5
-                        GROUP BY Id, Codigo, Nome
+                        GROUP BY Id, Codigo, Nome, Situacao
                         ORDER BY
                             ValorTotalVendas DESC,
                             QuantidadeVendas DESC,
@@ -84,6 +86,7 @@ namespace BlueMoon.Repositories
                         SELECT
 	                        CAST(Usuarios.id AS CHAR(36)) as Id,
 	                        Usuarios.codigo as Codigo,
+                            Usuarios.situacao as Situacao,
 	                        Pessoas.nome as Nome,
 	                        COUNT(Vendas.id) as QuantidadeVendas,
 	                        SUM(Vendas.valor_total) as ValorTotalVendas
@@ -93,7 +96,7 @@ namespace BlueMoon.Repositories
                         WHERE
 	                        Vendas.data_faturamento >= @inicio AND Vendas.data_faturamento < @fim AND
 	                        Vendas.situacao = 5
-                        GROUP BY Id, Codigo, Nome
+                        GROUP BY Id, Codigo, Nome, Situacao
                         ORDER BY 
                             ValorTotalVendas DESC,
                             QuantidadeVendas DESC,

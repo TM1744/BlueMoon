@@ -9,6 +9,7 @@ namespace BlueMoon.DTO
     {
         public string Id {get;set;} = string.Empty;
         public int Codigo {get;set;}
+        public int Situacao {get; set;}
         public string Nome {get;set;} = string.Empty;
         public int QuantidadeVendida {get;set;}
         public int EstoqueAtual {get;set;}
@@ -19,6 +20,7 @@ namespace BlueMoon.DTO
     {
         public string Id {get;set;} = string.Empty;
         public int Codigo {get;set;}
+        public int Situacao {get;set;}
         public string Nome {get;set;} = string.Empty;
         public int QuantidadeVendas{get;set;}
         public decimal ValorTotalVendas{get;set;}
@@ -28,6 +30,7 @@ namespace BlueMoon.DTO
     {
         public string Id {get;set;} = string.Empty;
         public int Codigo {get;set;}
+        public int Situacao {get;set;}
         public string Nome {get;set;} = string.Empty;
         public int QuantidadeVendas {get;set;}
         public decimal ValorTotalVendas {get;set;}
