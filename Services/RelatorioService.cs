@@ -39,14 +39,24 @@ namespace BlueMoon.Services
                             row.RelativeItem().Column(column =>
                             {
                                 column.Item()
-                                    .Text("Relatório - Produtos mais vendidos por período")
-                                    .SemiBold().FontSize(18).FontColor(Colors.Blue.Darken4);
-
+                                .Text("Relatório - Vendedores que mais venderam por período")
+                                .SemiBold().FontSize(18).FontColor(Colors.Blue.Darken4);
+        
                                 column.Item()
-                                    .Text($"Período: {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}")
-                                    .FontSize(12).FontColor(Colors.Grey.Darken2);
-
+                                .Text($"Período: {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}")
+                                .FontSize(12).FontColor(Colors.Grey.Darken2);
+        
                                 column.Item().PaddingBottom(10);
+                            });
+        
+                            byte[] logoBytes = File.ReadAllBytes("Utilities/logo.png");
+        
+                            row.RelativeItem().AlignRight().Column(column =>
+                            {
+                                column.Item()
+                                .Width(80)
+                                .Height(80)
+                                .Image(logoBytes);
                             });
                         });
                     }
@@ -95,7 +105,7 @@ namespace BlueMoon.Services
                                     table.Cell().Element(CellStyle).AlignCenter().Text($"<{item.Nome}> - INATIVADO").FontColor(Colors.Red.Accent1);
                                 else
                                     table.Cell().Element(CellStyle).AlignCenter().Text(item.Nome);
-                                    
+
                                 table.Cell().Element(CellStyle).AlignCenter().Text(item.QuantidadeVendida.ToString());
                                 table.Cell().Element(CellStyle).AlignCenter().Text(item.EstoqueAtual.ToString());
                                 table.Cell().Element(CellStyle).AlignRight().Text("R$" + item.TotalVendido.ToString("N2"));
@@ -170,14 +180,24 @@ namespace BlueMoon.Services
                             row.RelativeItem().Column(column =>
                             {
                                 column.Item()
-                                    .Text("Relatório - Clientes que mais compraram por período")
-                                    .SemiBold().FontSize(18).FontColor(Colors.Blue.Darken4);
-
+                                .Text("Relatório - Vendedores que mais venderam por período")
+                                .SemiBold().FontSize(18).FontColor(Colors.Blue.Darken4);
+        
                                 column.Item()
-                                    .Text($"Período: {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}")
-                                    .FontSize(12).FontColor(Colors.Grey.Darken2);
-
+                                .Text($"Período: {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}")
+                                .FontSize(12).FontColor(Colors.Grey.Darken2);
+        
                                 column.Item().PaddingBottom(10);
+                            });
+        
+                            byte[] logoBytes = File.ReadAllBytes("Utilities/logo.png");
+        
+                            row.RelativeItem().AlignRight().Column(column =>
+                            {
+                                column.Item()
+                                .Width(80)
+                                .Height(80)
+                                .Image(logoBytes);
                             });
                         });
                     }
@@ -298,14 +318,24 @@ namespace BlueMoon.Services
                             row.RelativeItem().Column(column =>
                             {
                                 column.Item()
-                                    .Text("Relatório - Vendedores que mais venderam por período")
-                                    .SemiBold().FontSize(18).FontColor(Colors.Blue.Darken4);
+                                .Text("Relatório - Vendedores que mais venderam por período")
+                                .SemiBold().FontSize(18).FontColor(Colors.Blue.Darken4);
 
                                 column.Item()
-                                    .Text($"Período: {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}")
-                                    .FontSize(12).FontColor(Colors.Grey.Darken2);
+                                .Text($"Período: {dateInicio:dd/MM/yyyy} até {dateFim:dd/MM/yyyy}")
+                                .FontSize(12).FontColor(Colors.Grey.Darken2);
 
                                 column.Item().PaddingBottom(10);
+                            });
+
+                            byte[] logoBytes = File.ReadAllBytes("Utilities/logo.png");
+
+                            row.RelativeItem().AlignRight().Column(column =>
+                            {
+                                column.Item()
+                                .Width(80)
+                                .Height(80)
+                                .Image(logoBytes);
                             });
                         });
                     }
