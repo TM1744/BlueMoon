@@ -73,9 +73,6 @@ namespace BlueMoon.Services
         {
             var old = await _repositorio.GetByIdAsync(usuario.Id);
 
-            if (old.Admissao != DateOnly.MinValue && old.Admissao != usuario.Admissao)
-                throw new ArgumentException("Não é possível alterar a data de admissão");
-
             if (!await _repositorio.ValidateUniqueness(usuario))
                 throw new ArgumentException("Login já existente ou há outro registro ativo de usuário para a mesma pessoa");
 
